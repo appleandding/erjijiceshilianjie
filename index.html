@@ -102,14 +102,28 @@
         /* 可导入图片头像触发器 */
         .uploadable-img {
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            position: relative !important;
+            overflow: hidden !important;
             transition: transform 0.15s ease;
             user-select: none;
             -webkit-user-select: none;
         }
         .uploadable-img:active {
             transform: scale(0.92);
+        }
+
+        /* 动态注入的防黑屏、防溢出、防撑大尺寸锁定图片层 */
+        .custom-user-img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            position: absolute !important;
+            inset: 0 !important;
+            z-index: 10 !important;
+            pointer-events: none;
+            border-radius: inherit;
+            display: block;
+            background-color: transparent;
         }
 
         /* Message APP 专属全屏壁纸层（铺满全屏并独立覆盖） */
