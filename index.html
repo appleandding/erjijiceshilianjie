@@ -3011,11 +3011,11 @@
                 <div style="display: flex; gap: 8px; justify-content: center;">
                     <div class="glass-card" style="border-radius: 18px; padding: 4px 12px; font-size: 11.5px; display: flex; align-items: center; gap: 6px;">
                         <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
-                        <span class="editable" contenteditable="true" id="p1WeekEn">Tuesday</span>
+                        <span class="editable" contenteditable="true" id="p1WeekEn" data-text-id="p1_week_en">Tuesday</span>
                     </div>
                     <div class="glass-card" style="border-radius: 18px; padding: 4px 12px; font-size: 11.5px; display: flex; align-items: center; gap: 6px;">
                         <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"></path></svg>
-                        <span class="editable" contenteditable="true">Loading</span>
+                        <span class="editable" contenteditable="true" data-text-id="p1_loading_text">Loading</span>
                     </div>
                 </div>
 
@@ -3028,8 +3028,8 @@
                     
                     <!-- 双行垂直居中容器 -->
                     <div class="clock-date-col">
-                        <div id="p1DateCn" class="clock-date-line editable" contenteditable="true">9月15日</div>
-                        <div id="p1WeekCn" class="clock-date-line editable" contenteditable="true">星期二</div>
+                        <div id="p1DateCn" class="clock-date-line editable" contenteditable="true" data-text-id="p1_date_cn">9月15日</div>
+                        <div id="p1WeekCn" class="clock-date-line editable" contenteditable="true" data-text-id="p1_week_cn">星期二</div>
                     </div>
                 </div>
 
@@ -3040,7 +3040,7 @@
                             <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         </div>
                         <div class="pill-content">
-                            <span class="editable" contenteditable="true">冬に抱きしめて</span>
+                            <span class="editable" contenteditable="true" data-text-id="p1_pill_top_text">冬に抱きしめて</span>
                             <div class="pill-equalizer"><span></span><span></span><span></span></div>
                             <span style="font-size: 10px; opacity: 0.6;">·</span>
                             <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"></line></svg>
@@ -3050,7 +3050,7 @@
                     <div class="p1-slanted-pill bottom">
                         <div class="pill-content" style="padding-left: 12px;">
                             <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/></svg>
-                            <span class="editable" contenteditable="true" style="font-style: italic; font-size: 12px; opacity: 0.9;">* · In winter · *</span>
+                            <span class="editable" contenteditable="true" data-text-id="p1_pill_bottom_text" style="font-style: italic; font-size: 12px; opacity: 0.9;">* · In winter · *</span>
                             <svg width="9" height="9" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
                         </div>
                         <div class="pill-avatar uploadable-img" title="点击更换头像">
@@ -3065,8 +3065,8 @@
                         <div class="pill-avatar uploadable-img" style="width: 48px; height: 48px;" title="点击更换头像">
                             <svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         </div>
-                        <div class="editable" contenteditable="true" style="font-size: 13px; font-weight: 600;">char</div>
-                        <div class="editable" contenteditable="true" style="font-size: 10px; color: var(--text-tertiary);">对方在线</div>
+                        <div class="editable" contenteditable="true" data-text-id="p1_lora_name" style="font-size: 13px; font-weight: 600;">char</div>
+                        <div class="editable" contenteditable="true" data-text-id="p1_lora_status" style="font-size: 10px; color: var(--text-tertiary);">对方在线</div>
                         <div style="width: 100%; height: 26px; border-radius: 13px; background: var(--bg-surface-press); display: flex; align-items: center; justify-content: center; margin-top: 4px;">
                             <svg width="12" height="12" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                         </div>
@@ -3076,20 +3076,19 @@
                     <div class="app-grid grid-2x2">
                         <div class="app-item" onclick="openMessageApp()">
                             <div class="app-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                            <span class="app-title editable" contenteditable="true">message</span>
+                            <span class="app-title">message</span>
                         </div>
                         <div class="app-item" onclick="openWorldBookApp()">
                             <div class="app-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
-                            <span class="app-title editable" contenteditable="true">世界书</span>
+                            <span class="app-title">世界书</span>
                         </div>
-                        <!-- 联系人 App (点击打开联系人页面) -->
                         <div class="app-item" onclick="openContactsScreen()">
                             <div class="app-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
-                            <span class="app-title editable" contenteditable="true">联系人</span>
+                            <span class="app-title">联系人</span>
                         </div>
                         <div class="app-item">
                             <div class="app-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path></svg></div>
-                            <span class="app-title editable" contenteditable="true">QQ</span>
+                            <span class="app-title">QQ</span>
                         </div>
                     </div>
                 </div>
@@ -3101,7 +3100,7 @@
                     <div class="p2-album-navbar">
                         <div class="p2-album-back">
                             <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                            <span class="editable" contenteditable="true">Albums</span>
+                            <span class="editable" contenteditable="true" data-text-id="p2_album_title">Albums</span>
                         </div>
                         <div class="p2-album-actions">
                             <button class="p2-btn-select">Select</button>
@@ -3111,8 +3110,7 @@
 
                     <div class="p2-status-input-line">
                         <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2l3 6 7 .5-5 5 1.5 7-6.5-3.5L5.5 20.5 7 13.5 2 8.5 9 8z"/></svg>
-                        <span class="editable" contenteditable="true" style="width: 100%;">
-                        一个天使文案</span>
+                        <span class="editable" contenteditable="true" data-text-id="p2_angel_quote" style="width: 100%;">一个天使文案</span>
                     </div>
 
                     <!-- 6宫格相册 -->
@@ -3165,7 +3163,7 @@
                         <div class="p3-diary-tab-back">
                             <svg width="13" height="13" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
                         </div>
-                        <div class="p3-diary-tab-title editable" contenteditable="true">一则sad . 日记</div>
+                        <div class="p3-diary-tab-title editable" contenteditable="true" data-text-id="p3_diary_title">一则sad . 日记</div>
                     </div>
 
                     <div class="p3-diary-card-body">
@@ -3177,16 +3175,16 @@
                                 </svg>
                             </div>
                             <div class="p3-diary-author-meta">
-                                <div class="p3-diary-author-name editable" contenteditable="true">小雨淅沥沥</div>
+                                <div class="p3-diary-author-name editable" contenteditable="true" data-text-id="p3_diary_author">小雨淅沥沥</div>
                                 <div class="p3-diary-location-time">
-                                    <span class="editable" contenteditable="true">济州岛</span>
-                                    <span id="p3DiaryWeek">星期二</span>
-                                    <span class="editable" contenteditable="true">阴</span>
+                                    <span class="editable" contenteditable="true" data-text-id="p3_diary_loc">济州岛</span>
+                                    <span id="p3DiaryWeek" data-text-id="p3_diary_week">星期二</span>
+                                    <span class="editable" contenteditable="true" data-text-id="p3_diary_weather">阴</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="p3-diary-text-content editable" contenteditable="true">
+                        <div class="p3-diary-text-content editable" contenteditable="true" data-text-id="p3_diary_content">
                             变成平静的人 这一课要流很多眼泪
                         </div>
 
@@ -3197,7 +3195,7 @@
                             </div>
                             <div class="p3-diary-status-item">
                                 <svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                                <span class="editable" contenteditable="true">私密</span>
+                                <span class="editable" contenteditable="true" data-text-id="p3_diary_privacy">私密</span>
                             </div>
                         </div>
 
@@ -3255,7 +3253,7 @@
                     <div class="p3-countdown-custom-widget">
                         <div class="p3-twin-avatars-row">
                             <div class="p3-avatar-bubble-col">
-                                <div class="p3-mini-bubble editable" contenteditable="true">"Ou&lt;"</div>
+                                <div class="p3-mini-bubble editable" contenteditable="true" data-text-id="p3_cnt_b1">"Ou&lt;"</div>
                                 <div class="p3-circle-avatar uploadable-img" title="点击更换左头像">
                                     <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8">
                                         <circle cx="12" cy="12" r="9"></circle>
@@ -3264,7 +3262,7 @@
                                 </div>
                             </div>
                             <div class="p3-avatar-bubble-col">
-                                <div class="p3-mini-bubble editable" contenteditable="true">Zzz</div>
+                                <div class="p3-mini-bubble editable" contenteditable="true" data-text-id="p3_cnt_b2">Zzz</div>
                                 <div class="p3-circle-avatar uploadable-img" title="点击更换右头像">
                                     <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8">
                                         <circle cx="12" cy="12" r="9"></circle>
@@ -3278,7 +3276,7 @@
                             <svg class="p3-wing-svg" viewBox="0 0 24 24" stroke-width="1.5">
                                 <path d="M22 6C16 4 10 7 6 12C4 14.5 3 18 5 20C7 20.5 10 19 12 17C14 18 17 17.5 19 15C20.5 13 22 9 22 6Z"/>
                             </svg>
-                            <div class="p3-days-pill editable" contenteditable="true">2天</div>
+                            <div class="p3-days-pill editable" contenteditable="true" data-text-id="p3_cnt_days">2天</div>
                             <svg class="p3-wing-svg" viewBox="0 0 24 24" stroke-width="1.5">
                                 <path d="M2 6C8 4 14 7 18 12C20 14.5 21 18 19 20C17 20.5 14 19 12 17C10 18 7 17.5 5 15C3.5 13 2 9 2 6Z"/>
                             </svg>
@@ -3320,7 +3318,7 @@
                     <div class="p4-url-bar">
                         <div style="display: flex; align-items: center; gap: 5px;">
                             <div class="p4-url-wave"><span></span><span></span><span></span></div>
-                            <span class="editable" contenteditable="true" style="font-family: monospace; font-size: 10px;">http: //^your·loveme 63 *°+</span>
+                            <span class="editable" contenteditable="true" data-text-id="p4_url_text" style="font-family: monospace; font-size: 10px;">http: //^your·loveme 63 *°+</span>
                         </div>
                         <div style="display: flex; align-items: center; gap: 5px;">
                             <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="14" width="3" height="6" rx="1"/><rect x="8" y="10" width="3" height="10" rx="1"/><rect x="13" y="6" width="3" height="14" rx="1"/><rect x="18" y="2" width="3" height="18" rx="1"/></svg>
@@ -3334,14 +3332,14 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     </div>
                     <div class="p4-profile-right">
-                        <div class="p4-profile-name editable" contenteditable="true">小雨淅沥沥</div>
+                        <div class="p4-profile-name editable" contenteditable="true" data-text-id="p4_profile_name">小雨淅沥沥</div>
                         <div class="p4-profile-divider"></div>
                         <div class="p4-profile-meta">
-                            <span class="editable" contenteditable="true">星座</span>
+                            <span class="editable" contenteditable="true" data-text-id="p4_meta_const">星座</span>
                             <span style="user-select: none;">·</span>
-                            <span class="editable" contenteditable="true">绿色</span>
+                            <span class="editable" contenteditable="true" data-text-id="p4_meta_color">绿色</span>
                             <span style="user-select: none;">·</span>
-                            <span class="editable" contenteditable="true">济州岛</span>
+                            <span class="editable" contenteditable="true" data-text-id="p4_meta_city">济州岛</span>
                         </div>
                     </div>
                 </div>
@@ -3350,7 +3348,7 @@
                     <div class="p4-section-header">
                         <div class="p4-header-left">
                             <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-                            <span class="editable" contenteditable="true">今日运势</span>
+                            <span class="editable" contenteditable="true" data-text-id="p4_fortune_title">今日运势</span>
                         </div>
                         <div style="display: flex; gap: 3px; opacity: 0.8; user-select: none;">
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -3358,22 +3356,22 @@
                         </div>
                         <span class="p4-btn-view">查看</span>
                     </div>
-                    <div class="p4-body-text editable" contenteditable="true">
+                    <div class="p4-body-text editable" contenteditable="true" data-text-id="p4_fortune_body">
                         没有运势的考验，你最需要克服的就是自己的拖延症。即便在时间宽裕的前提下，也不要磨磨蹭蹭，会导致你错失最佳的出击时机，而且还可能会因为间隔时间太长而留下问题。生活方面你要有自己的空间，不要总是盲目参与社...
                     </div>
 
                     <div class="p4-section-header" style="margin-top: 3px;">
                         <div class="p4-header-left">
                             <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-                            <span class="editable" contenteditable="true">今日留言</span>
+                            <span class="editable" contenteditable="true" data-text-id="p4_note_title">今日留言</span>
                         </div>
                         <span class="p4-btn-view">查看</span>
                     </div>
                     <div class="p4-poem-tag">
                         <svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2a5 5 0 0 0-5 5c0 4 5 9 5 9s5-5 5-9a5 5 0 0 0-5-5z"/></svg>
-                        <span class="editable" contenteditable="true">少女樣本</span>
+                        <span class="editable" contenteditable="true" data-text-id="p4_note_tag">少女樣本</span>
                     </div>
-                    <div class="p4-body-text editable" contenteditable="true" style="font-style: italic;">
+                    <div class="p4-body-text editable" contenteditable="true" data-text-id="p4_note_body" style="font-style: italic;">
                         雨声潺潺，像住在溪边。宁愿天天天下雨，以为你是因为下雨不来。
                     </div>
                 </div>
@@ -3402,7 +3400,6 @@
             </div>
 
         </div>
-    </div>
 
     <!-- 页面指示圆点 -->
     <div class="page-dots">
@@ -10118,33 +10115,44 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
             return null;
         }
     }
-    document.querySelectorAll('.editable').forEach((el, idx) => {
-        const textKey = el.id ? `custom_text_${el.id}` : `custom_text_idx_${idx}`;
-        
-        const localVal = localStorage.getItem(textKey);
-        if (localVal !== null) {
-            el.innerText = localVal;
-            el.dataset.userEdited = "true";
+    // 采用专属语义化 ID 绑定，彻底杜绝下标移位导致的文案错乱
+    function initPersistentEditableTexts() {
+        // 自动清理历史遗留的错乱下标缓存
+        for (let i = 0; i < 60; i++) {
+            localStorage.removeItem(`custom_text_idx_${i}`);
         }
-        
-        dbGet(textKey).then(dbVal => {
-            if (dbVal !== null && dbVal !== undefined) {
-                el.innerText = dbVal;
+
+        document.querySelectorAll('.editable').forEach((el, idx) => {
+            // 优先读取 data-text-id，其次读 id，绝不再产生易错乱的数字索引
+            const textKey = el.dataset.textId ? `custom_text_${el.dataset.textId}` : (el.id ? `custom_text_${el.id}` : null);
+            if (!textKey) return;
+            
+            const localVal = localStorage.getItem(textKey);
+            if (localVal !== null && localVal.trim() !== '') {
+                el.innerText = localVal;
                 el.dataset.userEdited = "true";
-                localStorage.setItem(textKey, dbVal);
             }
+            
+            dbGet(textKey).then(dbVal => {
+                if (dbVal !== null && dbVal !== undefined && String(dbVal).trim() !== '') {
+                    el.innerText = dbVal;
+                    el.dataset.userEdited = "true";
+                    localStorage.setItem(textKey, dbVal);
+                }
+            });
+
+            const saveContent = () => {
+                const currentTxt = el.innerText;
+                el.dataset.userEdited = "true";
+                localStorage.setItem(textKey, currentTxt);
+                dbSet(textKey, currentTxt);
+            };
+
+            el.addEventListener('input', saveContent);
+            el.addEventListener('blur', saveContent);
         });
-
-        const saveContent = () => {
-            const currentTxt = el.innerText;
-            el.dataset.userEdited = "true";
-            localStorage.setItem(textKey, currentTxt);
-            dbSet(textKey, currentTxt);
-        };
-
-        el.addEventListener('input', saveContent);
-        el.addEventListener('blur', saveContent);
-    });
+    }
+    initPersistentEditableTexts();
 
     /* ================= 12. 真实时间与电量 ================= */
     const weekNamesEn = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
