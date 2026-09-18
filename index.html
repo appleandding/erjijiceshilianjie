@@ -4512,11 +4512,11 @@
                         <span class="theme-sec-title">专属头像定制 (仅在当前聊天生效)</span>
                         <div style="display: flex; justify-content: space-around; align-items: center; padding: 4px 0;">
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
-                                <div class="pill-avatar uploadable-img" id="chatCharAvatarPreview" style="width: 54px; height: 54px; border-radius: 50%;" onclick="chooseChatCharAvatar()" title="更换角色在聊天中的头像"></div>
+                                <div class="pill-avatar" id="chatCharAvatarPreview" style="width: 54px; height: 54px; border-radius: 50%; cursor: pointer; background-size: cover; background-position: center;" onclick="chooseChatCharAvatar()" title="更换角色在聊天中的头像"></div>
                                 <span style="font-size: 10.5px; color: var(--text-secondary);">角色聊天头像</span>
                             </div>
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
-                                <div class="pill-avatar uploadable-img" id="chatUserAvatarPreview" style="width: 54px; height: 54px; border-radius: 50%;" onclick="chooseChatUserAvatar()" title="更换你在聊天中的头像"></div>
+                                <div class="pill-avatar" id="chatUserAvatarPreview" style="width: 54px; height: 54px; border-radius: 50%; cursor: pointer; background-size: cover; background-position: center;" onclick="chooseChatUserAvatar()" title="更换你在聊天中的头像"></div>
                                 <span style="font-size: 10.5px; color: var(--text-secondary);">你的专属头像</span>
                             </div>
                         </div>
@@ -5229,7 +5229,7 @@
     const imageUploader = document.getElementById('imageUploader');
 
     function bindUploadableImages() {
-        document.querySelectorAll('.uploadable-img').forEach((elem, index) => {
+        document.querySelectorAll('.page .uploadable-img').forEach((elem, index) => {
             elem.onclick = (e) => {
                 e.stopPropagation();
                 currentUploadTarget = elem;
@@ -8689,18 +8689,11 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
         if (!currentChatChar) return;
         const custom = getChatCustomProfile(currentChatChar.id);
         applyChatWallpaper();
+        updateChatAvatarPreviews();
         
         // 1. 恢复 CHAR 角色设定表单
         document.getElementById('chatCharRemarkInput').value = custom.remark || '';
         document.getElementById('chatLocalPersonaInput').value = custom.persona !== undefined ? custom.persona : (currentChatChar.persona || '');
-
-        const charAv = custom.charAvatar || currentChatChar.avatar || '';
-        const charBox = document.getElementById('chatCharAvatarPreview');
-        charBox.style.backgroundImage = charAv ? `url('${charAv}')` : '';
-
-        const userAv = custom.userAvatar || currentMsgAccount?.avatar || '';
-        const userBox = document.getElementById('chatUserAvatarPreview');
-        userBox.style.backgroundImage = userAv ? `url('${userAv}')` : '';
 
         // 2. 恢复 USER 设定表单 (优先读单聊专属，没有则读账号全局)
         const activeUserP = getCurrentUserPersonaForChat();
@@ -8750,7 +8743,7 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
         document.getElementById('chatSettingsOverlay').classList.remove('open');
     }
 
-    // 修复专属头像：上传后立即双向存盘并刷新预览及正在进行的聊天视窗
+    // 独立管理本对话角色头像
     function chooseChatCharAvatar() {
         if (!currentChatChar) return;
         imageUploader.onchange = function() {
@@ -8758,15 +8751,11 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
                 processSafeImage(this.files[0], async (url) => {
                     if (!allChatCustomProfiles[currentChatChar.id]) allChatCustomProfiles[currentChatChar.id] = {};
                     allChatCustomProfiles[currentChatChar.id].charAvatar = url;
-                    
-                    const p1 = document.getElementById('chatCharAvatarPreview');
-                    const p2 = document.getElementById('beautyPreviewCharAvatar');
-                    if (p1) p1.style.backgroundImage = `url('${url}')`;
-                    if (p2) p2.style.backgroundImage = `url('${url}')`;
-                    
+                    updateChatAvatarPreviews();
                     await syncSaveChatData();
                     renderChatMessages();
                     renderMessageUI();
+                    showGlassAlert("设置成功", "角色专属聊天头像已更新！");
                 });
             }
         };
@@ -8774,6 +8763,7 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
         imageUploader.click();
     }
 
+    // 独立管理本对话你的专属头像
     function chooseChatUserAvatar() {
         if (!currentChatChar) return;
         imageUploader.onchange = function() {
@@ -8781,20 +8771,47 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
                 processSafeImage(this.files[0], async (url) => {
                     if (!allChatCustomProfiles[currentChatChar.id]) allChatCustomProfiles[currentChatChar.id] = {};
                     allChatCustomProfiles[currentChatChar.id].userAvatar = url;
-                    
-                    const p1 = document.getElementById('chatUserAvatarPreview');
-                    const p2 = document.getElementById('beautyPreviewUserAvatar');
-                    if (p1) p1.style.backgroundImage = `url('${url}')`;
-                    if (p2) p2.style.backgroundImage = `url('${url}')`;
-                    
+                    updateChatAvatarPreviews();
                     await syncSaveChatData();
                     renderChatMessages();
                     renderMessageUI();
+                    showGlassAlert("设置成功", "你的专属聊天头像已更新！");
                 });
             }
         };
         imageUploader.value = '';
         imageUploader.click();
+    }
+
+    // 统一刷新所有头像预览框（保持 1:1 自然正圆居中裁剪，不畸形放大）
+    function updateChatAvatarPreviews() {
+        if (!currentChatChar) return;
+        const custom = getChatCustomProfile(currentChatChar.id);
+        const charAv = custom.charAvatar || currentChatChar.avatar || '';
+        const userAv = custom.userAvatar || currentMsgAccount?.avatar || '';
+
+        const c1 = document.getElementById('chatCharAvatarPreview');
+        const c2 = document.getElementById('beautyPreviewCharAvatar');
+        const u1 = document.getElementById('chatUserAvatarPreview');
+        const u2 = document.getElementById('beautyPreviewUserAvatar');
+
+        const applyStyle = (el, url) => {
+            if (!el) return;
+            el.innerHTML = '';
+            if (url) {
+                el.style.backgroundImage = `url('${url}')`;
+                el.style.backgroundSize = 'cover';
+                el.style.backgroundPosition = 'center center';
+                el.style.backgroundRepeat = 'no-repeat';
+            } else {
+                el.style.backgroundImage = 'none';
+            }
+        };
+
+        applyStyle(c1, charAv);
+        applyStyle(c2, charAv);
+        applyStyle(u1, userAv);
+        applyStyle(u2, userAv);
     }
 
     /* ================= 聊天专属壁纸管理核心函数 ================= */
