@@ -1983,22 +1983,45 @@
         .msg-swipe-btn.mute { background: #ff9500; }
         .msg-swipe-btn.del { background: #ff3b30; }
 
+        /* iOS 液体微光半透明毛玻璃卡片 */
         .msg-chat-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 12px;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            box-shadow: var(--shadow-card);
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.46);
+            backdrop-filter: blur(32px) saturate(190%);
+            -webkit-backdrop-filter: blur(32px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            border-top: 1.2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 8px 26px rgba(0, 0, 0, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.85);
             cursor: pointer;
             position: relative;
             z-index: 2;
-            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), background 0.15s;
+            transition: background 0.25s ease, border-color 0.25s ease, transform 0.15s ease;
+        }
+        .dark-mode .msg-chat-item {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1.2px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 8px 26px rgba(0, 0, 0, 0.25);
         }
         .msg-chat-item:active {
-            background: var(--bg-surface-press);
+            transform: scale(0.985);
+            background: rgba(255, 255, 255, 0.58);
+        }
+        /* 置顶项：微深半透明质感灰，明显区分于普通卡片 */
+        .msg-chat-item.is-pinned {
+            background: rgba(220, 222, 228, 0.58) !important;
+            border: 1px solid rgba(255, 255, 255, 0.85) !important;
+            border-top: 1.2px solid rgba(255, 255, 255, 1) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), inset 0 1px 1.5px rgba(255, 255, 255, 0.95) !important;
+        }
+        .dark-mode .msg-chat-item.is-pinned {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.24) !important;
+            border-top: 1.2px solid rgba(255, 255, 255, 0.35) !important;
         }
 
         .msg-item-avatar {
@@ -7318,6 +7341,7 @@
 
     async function openMessageApp() {
         await syncLoadMsgAccounts();
+        await syncLoadChatData(); // 必须先加载聊天档案，确保置顶状态完全同步
 
         // 严格判断：只有当内存与硬盘中完全不存在任何账号时才弹出新建
         if (!currentMsgAccount && (!messageAccounts || messageAccounts.length === 0)) {
@@ -7431,7 +7455,7 @@
         }
     }
 
-    /* ================= 列表联系人长按菜单与渲染 (支持多角色置顶与独立置顶排序) ================= */
+    /* ================= 列表联系人长按菜单与渲染 (支持多角色置顶与半透明液体玻璃) ================= */
     let activeLongPressContactId = null;
 
     function renderMsgContactsAndChats() {
@@ -7460,28 +7484,23 @@
             return;
         }
 
-        // 1. 多角色置顶排序算法：
-        // - 所有置顶角色（无论多少个）统一锁定在最顶部
-        // - 置顶组内部：后置顶的 / 最新聊天的排在置顶组最上面
-        // - 非置顶组：统一排在所有置顶角色下方，按最新消息时间排序
+        // 多置顶排序算法：置顶角色排在最前，后置顶的排在上面，非置顶按最后聊天时间排序
         myChars.sort((a, b) => {
             const profA = getChatCustomProfile(a.id);
             const profB = getChatCustomProfile(b.id);
-            const isPinA = !!profA.isPinned;
-            const isPinB = !!profB.isPinned;
+            const isPinA = profA && profA.isPinned ? 1 : 0;
+            const isPinB = profB && profB.isPinned ? 1 : 0;
 
-            // 一方置顶、一方未置顶时，置顶项永远排在前面
-            if (isPinA && !isPinB) return -1;
-            if (!isPinA && isPinB) return 1;
+            if (isPinA !== isPinB) {
+                return isPinB - isPinA; // 置顶项永远排在前面
+            }
 
-            // 多个角色同时置顶时：按置顶时间倒序（后置顶的排在上面）
             if (isPinA && isPinB) {
                 const timeA = profA.pinnedAt || 0;
                 const timeB = profB.pinnedAt || 0;
-                return timeB - timeA;
+                return timeB - timeA; // 多个置顶按时间倒序
             }
 
-            // 都未置顶时：按最后一条消息时间倒序
             const histA = allChatHistories[a.id];
             const histB = allChatHistories[b.id];
             const lastTimeA = (histA && histA.length > 0) ? (histA[histA.length - 1].timestamp || 0) : 0;
@@ -7498,13 +7517,8 @@
             const isMuted = !!customProfile.isMuted;
 
             const item = document.createElement('div');
-            item.className = 'msg-chat-item';
-            
-            // 置顶项微深灰白底色与微弱边框（支持亮色与暗色模式）
-            if (isPinned) {
-                item.style.background = 'var(--bg-surface-press, rgba(0, 0, 0, 0.04))';
-                item.style.border = '1px solid var(--border-glass-bright, rgba(0, 0, 0, 0.09))';
-            }
+            // 关键：正确附加 is-pinned 类名以触发半透明深灰质感
+            item.className = 'msg-chat-item' + (isPinned ? ' is-pinned' : '');
 
             // 免打扰静音标志
             const muteIconHtml = isMuted 
@@ -7518,9 +7532,9 @@
                 </div>
                 <div class="msg-item-info">
                     <div class="msg-item-name-row">
-                        <div style="display:flex; align-items:center; gap:5px;">
+                        <div style="display:flex; align-items:center; gap:6px;">
                             <span class="msg-item-name">${displayName}</span>
-                            ${isPinned ? '<svg width="11" height="11" viewBox="0 0 24 24" stroke="var(--accent-blue)" fill="none" stroke-width="2.2"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-2l-2-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v7l-2 3v2z"></path></svg>' : ''}
+                            ${isPinned ? '<svg width="12" height="12" viewBox="0 0 24 24" stroke="var(--accent-blue)" fill="none" stroke-width="2.2"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-2l-2-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v7l-2 3v2z"></path></svg>' : ''}
                         </div>
                         <div class="msg-item-time">${muteIconHtml}</div>
                     </div>
@@ -7528,7 +7542,7 @@
                 </div>
             `;
 
-            // 2. 长按触摸判定（450ms触发，滑动自动取消，防止松手误进入聊天）
+            // 长按触摸判定（450ms触发）
             let pressTimer = null;
             let isLongPressed = false;
             let touchStartX = 0, touchStartY = 0;
@@ -7601,14 +7615,14 @@
         menu.style.left = `${left}px`;
         menu.style.top = `${top}px`;
 
-        // 点击【置顶/取消置顶】事件绑定（支持多置顶）
+        // 点击【置顶/取消置顶】
         document.getElementById('menuPinBtn').onclick = async (e) => {
             e.stopPropagation();
             closeMsgContactLongPressMenu();
             const prof = getChatCustomProfile(charId);
             prof.isPinned = !prof.isPinned;
             if (prof.isPinned) {
-                prof.pinnedAt = Date.now(); // 记录置顶时间戳，保证后置顶的排在最上方
+                prof.pinnedAt = Date.now(); // 记录置顶时间戳
             } else {
                 delete prof.pinnedAt;
             }
@@ -7616,7 +7630,7 @@
             renderMsgContactsAndChats();
         };
 
-        // 点击【免打扰/允许提醒】事件绑定
+        // 点击【免打扰/允许提醒】
         document.getElementById('menuMuteBtn').onclick = async (e) => {
             e.stopPropagation();
             closeMsgContactLongPressMenu();
@@ -7626,7 +7640,7 @@
             renderMsgContactsAndChats();
         };
 
-        // 点击【删除对话】事件绑定
+        // 点击【删除对话】
         document.getElementById('menuDelBtn').onclick = async (e) => {
             e.stopPropagation();
             closeMsgContactLongPressMenu();
@@ -8772,8 +8786,11 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
 
     // ================= 聊天专属配置与独立人设管理 =================
     function getChatCustomProfile(charId) {
-        return allChatCustomProfiles[charId] || {};
+    if (!allChatCustomProfiles[charId]) {
+        allChatCustomProfiles[charId] = {};
     }
+    return allChatCustomProfiles[charId];
+}
 
     // 修复：聊天设置页三大主标签切换（人设 / 美化 / 记忆）
     function switchChatSettingTab(tabKey) {
