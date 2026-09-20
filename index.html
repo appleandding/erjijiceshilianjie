@@ -2484,6 +2484,9 @@
             flex-direction: column;
             gap: 8px;
             scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            will-change: scroll-position;
+            transform: translateZ(0);
         }
         .chat-body-scroll::-webkit-scrollbar { display: none; }
 
@@ -2493,6 +2496,8 @@
             align-items: flex-start;
             max-width: 86%;
             margin-bottom: 2px;
+            contain: layout style;
+            transform: translateZ(0);
         }
         .chat-msg-row.user {
             align-self: flex-end;
@@ -8319,180 +8324,175 @@ Example:
         renderMessageUI();
     }
 
-    // 渲染聊天记录（支持承接无头像排版 + 点击角色头像探听心声 + 外置引用）
+    // 构造单个气泡 DOM (高性能复用函数)
+    function createBubbleElement(bText, msgIdx, bIdx, msg, custom) {
+        const bubble = document.createElement('div');
+        bubble.className = 'chat-bubble';
+
+        const spanText = document.createElement('span');
+        spanText.innerText = bText;
+        spanText.style.position = 'relative';
+        spanText.style.zIndex = '1';
+        bubble.appendChild(spanText);
+
+        // 长按手势绑定
+        let pressTimer = null;
+        const onTouchStart = (e) => {
+            if (isMultiSelectMode) return;
+            pressTimer = setTimeout(() => {
+                const rect = bubble.getBoundingClientRect();
+                openBubbleContextMenu(rect, msgIdx, bIdx, msg.role, bText);
+            }, 450);
+        };
+        const onTouchEnd = () => { clearTimeout(pressTimer); };
+
+        bubble.addEventListener('touchstart', onTouchStart, { passive: true });
+        bubble.addEventListener('touchend', onTouchEnd);
+        bubble.addEventListener('touchmove', onTouchEnd);
+        bubble.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            const rect = bubble.getBoundingClientRect();
+            openBubbleContextMenu(rect, msgIdx, bIdx, msg.role, bText);
+        });
+
+        // Char 气泡右滑精准引用
+        if (msg.role === 'char') {
+            let startX = 0, startY = 0;
+            bubble.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, { passive: true });
+            bubble.addEventListener('touchmove', (e) => {
+                const diffX = e.touches[0].clientX - startX;
+                const diffY = Math.abs(e.touches[0].clientY - startY);
+                if (diffX > 0 && diffX < 70 && diffY < 25) {
+                    bubble.style.transform = `translateX(${diffX}px)`;
+                }
+            }, { passive: true });
+            bubble.addEventListener('touchend', (e) => {
+                const diffX = e.changedTouches[0].clientX - startX;
+                bubble.style.transform = 'translateX(0px)';
+                if (diffX > 45) {
+                    const remarkName = custom.remark || currentChatChar.name;
+                    setQuoteReply(remarkName, bText);
+                }
+            });
+        }
+        return bubble;
+    }
+
+    // 构造单条消息行 DOM
+    function createMessageRowDOM(msg, msgIdx, history, custom, userAvatar, charAvatar) {
+        if (msg.type === 'system') {
+            const sysDiv = document.createElement('div');
+            sysDiv.className = 'chat-sys-notice';
+            sysDiv.innerText = msg.text;
+            return sysDiv;
+        }
+
+        const isConsecutive = (msgIdx > 0 && history[msgIdx - 1].role === msg.role && history[msgIdx - 1].type !== 'system');
+        const row = document.createElement('div');
+        row.className = `chat-msg-row ${msg.role} ${isMultiSelectMode ? 'multiselect-active' : ''}`;
+        row.id = `chatMsgRow_${msgIdx}`;
+        if (isConsecutive) row.style.marginTop = '-3px';
+
+        const avatar = msg.role === 'user' ? userAvatar : charAvatar;
+        const avatarElem = document.createElement('div');
+        avatarElem.className = 'chat-msg-avatar';
+        
+        if (avatar && avatar.trim() !== '') {
+            avatarElem.innerHTML = `<img src="${avatar}" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; pointer-events:none;">`;
+        } else {
+            avatarElem.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
+        }
+
+        if (isConsecutive) {
+            avatarElem.style.visibility = 'hidden';
+            avatarElem.style.pointerEvents = 'none';
+        } else if (msg.role === 'char') {
+            avatarElem.style.cursor = 'pointer';
+            avatarElem.title = '点击生成此轮内心心声';
+            avatarElem.onclick = (e) => {
+                e.stopPropagation();
+                generateCharInnerMonologue(msgIdx);
+            };
+        }
+
+        const colElem = document.createElement('div');
+        colElem.className = 'chat-msg-bubbles-col';
+        colElem.id = `chatMsgCol_${msgIdx}`;
+
+        if (msg.type === 'transfer') {
+            const transferCard = createTransferBubble(msg, msgIdx);
+            colElem.appendChild(transferCard);
+        } else {
+            const bubbles = Array.isArray(msg.bubbles) ? msg.bubbles : [msg.text || ''];
+            bubbles.forEach((bText, bIdx) => {
+                const bubble = createBubbleElement(bText, msgIdx, bIdx, msg, custom);
+                colElem.appendChild(bubble);
+
+                if (msg.quote && bIdx === 0) {
+                    const quoteDiv = document.createElement('div');
+                    quoteDiv.className = 'chat-quote-external';
+                    const senderDisplayName = msg.quote.sender || (msg.role === 'user' ? (custom.remark || currentChatChar.name) : (currentMsgAccount?.username || 'User'));
+                    quoteDiv.innerText = `“${senderDisplayName}: ${msg.quote.text}”`;
+                    colElem.appendChild(quoteDiv);
+                }
+            });
+        }
+
+        row.appendChild(avatarElem);
+        row.appendChild(colElem);
+        return row;
+    }
+
+    // 高性能全局渲染（采用 DocumentFragment 单帧批处理，极速不卡）
     function renderChatMessages() {
         const container = document.getElementById('chatMessagesContainer');
-        container.innerHTML = '';
-        if (!currentChatChar) return;
+        if (!container || !currentChatChar) return;
 
         const history = allChatHistories[currentChatChar.id] || [];
         const custom = getChatCustomProfile(currentChatChar.id);
         const charAvatar = custom.charAvatar || currentChatChar.avatar || '';
         const userAvatar = custom.userAvatar || currentMsgAccount?.avatar || '';
 
+        const fragment = document.createDocumentFragment();
         history.forEach((msg, msgIdx) => {
-            // 系统居中提示消息
-            if (msg.type === 'system') {
-                const sysDiv = document.createElement('div');
-                sysDiv.className = 'chat-sys-notice';
-                sysDiv.innerText = msg.text;
-                container.appendChild(sysDiv);
-                return;
-            }
-
-            // 判断是否为同一方的承接连发消息（连发时后续消息不显头像）
-            const isConsecutive = (msgIdx > 0 && history[msgIdx - 1].role === msg.role && history[msgIdx - 1].type !== 'system');
-
-            const row = document.createElement('div');
-            row.className = `chat-msg-row ${msg.role} ${isMultiSelectMode ? 'multiselect-active' : ''}`;
-            if (isConsecutive) {
-                row.style.marginTop = '-3px'; // 承接消息紧凑贴合
-            }
-
-            // 单条气泡粒度的独立选择逻辑移至气泡层渲染
-
-            const avatar = msg.role === 'user' ? userAvatar : charAvatar;
-            const avatarElem = document.createElement('div');
-            avatarElem.className = 'chat-msg-avatar';
-            
-            // 采用真实 <img> 标签强力渲染，彻底解决任何格式下背景图不显示的问题
-            if (avatar && avatar.trim() !== '') {
-                avatarElem.innerHTML = `<img src="${avatar}" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; pointer-events:none;">`;
-            } else {
-                avatarElem.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
-            }
-
-            // 承接消息隐藏头像，仅保留对齐占位
-            if (isConsecutive) {
-                avatarElem.style.visibility = 'hidden';
-                avatarElem.style.pointerEvents = 'none';
-            } else if (msg.role === 'char') {
-                // 首楼角色头像支持点击生成/刷新本轮心声
-                avatarElem.style.cursor = 'pointer';
-                avatarElem.title = '点击生成此轮内心心声';
-                avatarElem.onclick = (e) => {
-                    e.stopPropagation();
-                    generateCharInnerMonologue(msgIdx);
-                };
-            }
-
-            const colElem = document.createElement('div');
-            colElem.className = 'chat-msg-bubbles-col';
-
-            // 转账卡片渲染
-            if (msg.type === 'transfer') {
-                const transferCard = createTransferBubble(msg, msgIdx);
-                colElem.appendChild(transferCard);
-            } else {
-                // 普通气泡（支持单气泡精准多选）
-                const bubbles = Array.isArray(msg.bubbles) ? msg.bubbles : [msg.text || ''];
-                bubbles.forEach((bText, bIdx) => {
-                    const bubbleWrap = document.createElement('div');
-                    bubbleWrap.style.cssText = "display: flex; align-items: center; gap: 6px; width: 100%;" + (msg.role === 'user' ? 'justify-content: flex-end;' : 'justify-content: flex-start;');
-
-                    const bubbleKey = `${msgIdx}_${bIdx}`;
-                    if (isMultiSelectMode) {
-                        const cb = document.createElement('input');
-                        cb.type = 'checkbox';
-                        cb.className = 'chat-select-checkbox';
-                        cb.style.display = 'block';
-                        cb.checked = selectedMsgIndices.has(bubbleKey);
-                        cb.onchange = (e) => {
-                            if (e.target.checked) selectedMsgIndices.add(bubbleKey);
-                            else selectedMsgIndices.delete(bubbleKey);
-                            updateMultiSelectCount();
-                        };
-                        if (msg.role === 'char') bubbleWrap.appendChild(cb);
-                    }
-
-                    const bubble = document.createElement('div');
-                    bubble.className = 'chat-bubble';
-
-                    const spanText = document.createElement('span');
-                    spanText.innerText = bText;
-                    spanText.style.position = 'relative';
-                    spanText.style.zIndex = '1';
-                    bubble.appendChild(spanText);
-
-                    if (isMultiSelectMode && msg.role === 'user') {
-                        const cb = document.createElement('input');
-                        cb.type = 'checkbox';
-                        cb.className = 'chat-select-checkbox';
-                        cb.style.display = 'block';
-                        cb.checked = selectedMsgIndices.has(bubbleKey);
-                        cb.onchange = (e) => {
-                            if (e.target.checked) selectedMsgIndices.add(bubbleKey);
-                            else selectedMsgIndices.delete(bubbleKey);
-                            updateMultiSelectCount();
-                        };
-                        bubbleWrap.appendChild(bubble);
-                        bubbleWrap.appendChild(cb);
-                    } else {
-                        bubbleWrap.appendChild(bubble);
-                    }
-
-                    // 长按触发悬浮菜单 (重回 / 修改 / 删除 / 多选)
-                    let pressTimer = null;
-                    const onTouchStart = (e) => {
-                        if (isMultiSelectMode) return;
-                        pressTimer = setTimeout(() => {
-                            const rect = bubble.getBoundingClientRect();
-                            openBubbleContextMenu(rect, msgIdx, bIdx, msg.role, bText);
-                        }, 500);
-                    };
-                    const onTouchEnd = () => { clearTimeout(pressTimer); };
-
-                    bubble.addEventListener('touchstart', onTouchStart, { passive: true });
-                    bubble.addEventListener('touchend', onTouchEnd);
-                    bubble.addEventListener('touchmove', onTouchEnd);
-                    bubble.addEventListener('contextmenu', (e) => {
-                        e.preventDefault();
-                        const rect = bubble.getBoundingClientRect();
-                        openBubbleContextMenu(rect, msgIdx, bIdx, msg.role, bText);
-                    });
-
-                    // Char 气泡右滑引用
-                    if (msg.role === 'char') {
-                        let startX = 0, startY = 0;
-                        bubble.addEventListener('touchstart', (e) => {
-                            startX = e.touches[0].clientX;
-                            startY = e.touches[0].clientY;
-                        }, { passive: true });
-                        bubble.addEventListener('touchmove', (e) => {
-                            const diffX = e.touches[0].clientX - startX;
-                            const diffY = Math.abs(e.touches[0].clientY - startY);
-                            if (diffX > 0 && diffX < 70 && diffY < 25) {
-                                bubble.style.transform = `translateX(${diffX}px)`;
-                            }
-                        }, { passive: true });
-                        bubble.addEventListener('touchend', (e) => {
-                            const diffX = e.changedTouches[0].clientX - startX;
-                            bubble.style.transform = 'translateX(0px)';
-                            if (diffX > 45) {
-                                const remarkName = custom.remark || currentChatChar.name;
-                                setQuoteReply(remarkName, bText);
-                            }
-                        });
-                    }
-
-                    colElem.appendChild(bubble);
-
-                    // 关键修复：引用紧跟在首楼气泡（bIdx === 0）正下方，绝不随消息无限往下掉
-                    if (msg.quote && bIdx === 0) {
-                        const quoteDiv = document.createElement('div');
-                        quoteDiv.className = 'chat-quote-external';
-                        const senderDisplayName = msg.quote.sender || (msg.role === 'user' ? (custom.remark || currentChatChar.name) : (currentMsgAccount?.username || 'User'));
-                        quoteDiv.innerText = `“${senderDisplayName}: ${msg.quote.text}”`;
-                        colElem.appendChild(quoteDiv);
-                    }
-                });
-            }
-
-            row.appendChild(avatarElem);
-            row.appendChild(colElem);
-            container.appendChild(row);
+            const rowDOM = createMessageRowDOM(msg, msgIdx, history, custom, userAvatar, charAvatar);
+            fragment.appendChild(rowDOM);
         });
 
+        container.innerHTML = '';
+        container.appendChild(fragment);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    // 增量极速追加单个气泡（0 重绘，彻底根治流式回复卡顿）
+    function appendBubbleIncrementally(charMsgObj, bubbleText, msgIdx, bIdx) {
+        const container = document.getElementById('chatMessagesContainer');
+        if (!container || !currentChatChar) return;
+        const custom = getChatCustomProfile(currentChatChar.id);
+
+        let colElem = document.getElementById(`chatMsgCol_${msgIdx}`);
+        if (!colElem) {
+            const history = allChatHistories[currentChatChar.id] || [];
+            const charAvatar = custom.charAvatar || currentChatChar.avatar || '';
+            const userAvatar = custom.userAvatar || currentMsgAccount?.avatar || '';
+            const newRow = createMessageRowDOM(charMsgObj, msgIdx, history, custom, userAvatar, charAvatar);
+            container.appendChild(newRow);
+            colElem = document.getElementById(`chatMsgCol_${msgIdx}`);
+        } else {
+            const bubbleDOM = createBubbleElement(bubbleText, msgIdx, bIdx, charMsgObj, custom);
+            colElem.appendChild(bubbleDOM);
+
+            if (charMsgObj.quote && bIdx === 0) {
+                const quoteDiv = document.createElement('div');
+                quoteDiv.className = 'chat-quote-external';
+                const senderDisplayName = charMsgObj.quote.sender || (currentMsgAccount?.username || 'User');
+                quoteDiv.innerText = `“${senderDisplayName}: ${charMsgObj.quote.text}”`;
+                colElem.appendChild(quoteDiv);
+            }
+        }
         container.scrollTop = container.scrollHeight;
     }
 
@@ -9338,16 +9338,19 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
                     timestamp: Date.now()
                 };
                 allChatHistories[currentChatChar.id].push(charMsgObj);
+                const currentMsgIdx = allChatHistories[currentChatChar.id].length - 1;
 
-                // 1. 逐条渲染回复气泡
+                // 1. 逐条增量追加气泡 (0 整页重排，极速渲染)
                 for (let i = 0; i < bubbles.length; i++) {
-                    await new Promise(resolve => setTimeout(resolve, i === 0 ? 250 : 500));
+                    await new Promise(resolve => setTimeout(resolve, i === 0 ? 180 : 380));
                     charMsgObj.bubbles.push(bubbles[i]);
-                    renderChatMessages();
-                    await syncSaveChatData();
+                    appendBubbleIncrementally(charMsgObj, bubbles[i], currentMsgIdx, i);
                 }
 
-                // 2. 跟着回复完成时，在后台静默调用副 API 生成本轮心声（已备点击头像弹出）
+                // 2. 一轮回复完成后统一写入数据库，绝不在打字途中卡住主线程
+                syncSaveChatData();
+
+                // 3. 跟着回复完成时，在后台静默调用副 API 生成本轮心声（已备点击头像弹出）
                 if (!charMsgObj.thinking) {
                     try {
                         let userPrevText = '';
