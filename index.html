@@ -102,8 +102,8 @@
         /* 可导入图片头像触发器 */
         .uploadable-img {
             cursor: pointer;
-            position: relative !important;
-            overflow: hidden !important;
+            position: relative;
+            overflow: hidden;
             transition: transform 0.15s ease;
             user-select: none;
             -webkit-user-select: none;
@@ -112,125 +112,18 @@
             transform: scale(0.92);
         }
 
-        /* 动态注入的防黑屏、防溢出、防撑大尺寸锁定图片层 */
+        /* 动态注入的防黑屏、防遮挡图片层 */
         .custom-user-img {
-            width: 100% !important;
-            height: 100% !important;
-            object-fit: cover !important;
-            position: absolute !important;
-            inset: 0 !important;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            inset: 0;
             z-index: 10 !important;
             pointer-events: none;
             border-radius: inherit;
             display: block;
             background-color: transparent;
-        }
-
-        /* Message APP 专属全屏壁纸层（铺满全屏并独立覆盖） */
-        .msg-wallpaper-layer {
-            position: absolute;
-            inset: -20px;
-            background-size: cover;
-            background-position: center;
-            z-index: 0;
-            pointer-events: none;
-            transition: filter 0.2s ease, opacity 0.3s ease;
-        }
-
-        .msg-chat-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            background: var(--bg-surface-elevated);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px;
-            box-shadow: var(--shadow-card);
-            cursor: pointer;
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            transition: transform 0.15s ease, background 0.15s ease;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-        .msg-chat-item:active {
-            background: var(--bg-surface-press);
-            transform: scale(0.985);
-        }
-
-        /* 消息列表长按操作菜单（纯净低饱和浅灰微拟态毛玻璃） */
-        .msg-list-context-menu {
-            position: fixed;
-            background: rgba(246, 246, 248, 0.96);
-            backdrop-filter: blur(32px) saturate(180%);
-            -webkit-backdrop-filter: blur(32px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            border-radius: 14px;
-            display: none;
-            flex-direction: column;
-            padding: 4px;
-            z-index: 9999;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-            min-width: 135px;
-            animation: msgMenuPop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .dark-mode .msg-list-context-menu {
-            background: rgba(36, 37, 40, 0.92);
-            border-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
-        }
-        @keyframes msgMenuPop {
-            0% { opacity: 0; transform: scale(0.88); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        .msg-list-menu-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 9px 12px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-primary);
-            cursor: pointer;
-            border-radius: 9px;
-            transition: background 0.15s;
-            user-select: none;
-        }
-        .msg-list-menu-item:active {
-            background: rgba(0, 0, 0, 0.06);
-        }
-        .dark-mode .msg-list-menu-item:active {
-            background: rgba(255, 255, 255, 0.08);
-        }
-        .msg-list-menu-item svg {
-            width: 14px;
-            height: 14px;
-            stroke: var(--icon-fill);
-            fill: none;
-            stroke-width: 2;
-        }
-        .msg-list-menu-item.danger {
-            color: #d94b4b;
-        }
-        .msg-list-menu-item.danger svg {
-            stroke: #d94b4b;
-        }
-        .msg-list-menu-divider {
-            height: 1px;
-            background: var(--border-subtle);
-            margin: 3px 6px;
-        }
-
-        /* 聊天专属独立壁纸层 */
-        .chat-wallpaper-layer {
-            position: absolute;
-            inset: -20px;
-            background-size: cover;
-            background-position: center;
-            z-index: 0;
-            pointer-events: none;
-            transition: filter 0.2s ease, opacity 0.3s ease;
         }
 
         /* 顶部状态栏 */
@@ -2055,9 +1948,57 @@
             stroke-width: 1.8;
         }
 
-        /* 聊天项基础交互 */
-        .msg-chat-item:hover {
-            opacity: 0.96;
+        /* 聊天项左滑容器 */
+        .msg-swipe-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        .msg-swipe-actions {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .msg-swipe-btn {
+            height: 100%;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11.5px;
+            font-weight: 500;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .msg-swipe-btn.pin { background: #5856d6; }
+        .msg-swipe-btn.mute { background: #ff9500; }
+        .msg-swipe-btn.del { background: #ff3b30; }
+
+        .msg-chat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            box-shadow: var(--shadow-card);
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), background 0.15s;
+        }
+        .msg-chat-item:active {
+            background: var(--bg-surface-press);
         }
 
         .msg-item-avatar {
@@ -2969,6 +2910,109 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+/* Message 全局独立壁纸层 */
+        .msg-app-wallpaper-layer {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            pointer-events: none;
+            transition: filter 0.2s ease, opacity 0.3s ease;
+        }
+        .msg-app-viewport, .theme-header, .msg-bottom-nav {
+            position: relative;
+            z-index: 1;
+        }
+        /* 截图同款 iOS 液体微光毛玻璃长按操作卡片 */
+        .msg-contact-menu-modal {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(32px) saturate(190%);
+            -webkit-backdrop-filter: blur(32px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-top: 1.2px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12), inset 0 1px 1.5px rgba(255, 255, 255, 0.9);
+            border-radius: 18px;
+            padding: 6px;
+            display: none;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 155px;
+            z-index: 99999;
+            animation: contactMenuPop 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .dark-mode .msg-contact-menu-modal {
+            background: rgba(36, 37, 40, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-top: 1.2px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+        }
+        @keyframes contactMenuPop {
+            0% { opacity: 0; transform: scale(0.92) translateY(-4px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .msg-menu-row-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+            width: 100%;
+            text-align: left;
+            user-select: none;
+        }
+        .msg-menu-row-btn:active {
+            background: var(--bg-surface-press);
+        }
+        .msg-menu-row-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.9;
+            flex-shrink: 0;
+        }
+        .msg-menu-row-btn.danger {
+            color: #e54d42;
+        }
+        .msg-menu-row-btn.danger svg {
+            stroke: #e54d42;
+        }
+        .msg-menu-divider-line {
+            width: 100%;
+            height: 1px;
+            background: var(--border-subtle);
+            margin: 2px 0;
+        }
+        /* 头像右上角消息提示角标 */
+        .msg-unread-badge {
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            background: #e54d42;
+            color: #ffffff;
+            font-size: 9.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            border: 1.5px solid var(--bg-surface-elevated);
+        }
+        .msg-unread-badge.muted {
+            background: #9c9da3; /* 免打扰时的低饱和灰 */
+        }
     </style>
 </head>
 <body>
@@ -3011,11 +3055,11 @@
                 <div style="display: flex; gap: 8px; justify-content: center;">
                     <div class="glass-card" style="border-radius: 18px; padding: 4px 12px; font-size: 11.5px; display: flex; align-items: center; gap: 6px;">
                         <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"></circle></svg>
-                        <span class="editable" contenteditable="true" id="p1WeekEn" data-text-id="p1_week_en">Tuesday</span>
+                        <span class="editable" contenteditable="true" id="p1WeekEn">Tuesday</span>
                     </div>
                     <div class="glass-card" style="border-radius: 18px; padding: 4px 12px; font-size: 11.5px; display: flex; align-items: center; gap: 6px;">
                         <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"></path></svg>
-                        <span class="editable" contenteditable="true" data-text-id="p1_loading_text">Loading</span>
+                        <span class="editable" contenteditable="true">Loading</span>
                     </div>
                 </div>
 
@@ -3028,8 +3072,8 @@
                     
                     <!-- 双行垂直居中容器 -->
                     <div class="clock-date-col">
-                        <div id="p1DateCn" class="clock-date-line editable" contenteditable="true" data-text-id="p1_date_cn">9月15日</div>
-                        <div id="p1WeekCn" class="clock-date-line editable" contenteditable="true" data-text-id="p1_week_cn">星期二</div>
+                        <div id="p1DateCn" class="clock-date-line editable" contenteditable="true">9月15日</div>
+                        <div id="p1WeekCn" class="clock-date-line editable" contenteditable="true">星期二</div>
                     </div>
                 </div>
 
@@ -3040,7 +3084,7 @@
                             <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         </div>
                         <div class="pill-content">
-                            <span class="editable" contenteditable="true" data-text-id="p1_pill_top_text">冬に抱きしめて</span>
+                            <span class="editable" contenteditable="true">冬に抱きしめて</span>
                             <div class="pill-equalizer"><span></span><span></span><span></span></div>
                             <span style="font-size: 10px; opacity: 0.6;">·</span>
                             <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"></line></svg>
@@ -3050,7 +3094,7 @@
                     <div class="p1-slanted-pill bottom">
                         <div class="pill-content" style="padding-left: 12px;">
                             <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/></svg>
-                            <span class="editable" contenteditable="true" data-text-id="p1_pill_bottom_text" style="font-style: italic; font-size: 12px; opacity: 0.9;">* · In winter · *</span>
+                            <span class="editable" contenteditable="true" style="font-style: italic; font-size: 12px; opacity: 0.9;">* · In winter · *</span>
                             <svg width="9" height="9" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
                         </div>
                         <div class="pill-avatar uploadable-img" title="点击更换头像">
@@ -3065,8 +3109,8 @@
                         <div class="pill-avatar uploadable-img" style="width: 48px; height: 48px;" title="点击更换头像">
                             <svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         </div>
-                        <div class="editable" contenteditable="true" data-text-id="p1_lora_name" style="font-size: 13px; font-weight: 600;">char</div>
-                        <div class="editable" contenteditable="true" data-text-id="p1_lora_status" style="font-size: 10px; color: var(--text-tertiary);">对方在线</div>
+                        <div class="editable" contenteditable="true" style="font-size: 13px; font-weight: 600;">char</div>
+                        <div class="editable" contenteditable="true" style="font-size: 10px; color: var(--text-tertiary);">对方在线</div>
                         <div style="width: 100%; height: 26px; border-radius: 13px; background: var(--bg-surface-press); display: flex; align-items: center; justify-content: center; margin-top: 4px;">
                             <svg width="12" height="12" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                         </div>
@@ -3100,7 +3144,7 @@
                     <div class="p2-album-navbar">
                         <div class="p2-album-back">
                             <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                            <span class="editable" contenteditable="true" data-text-id="p2_album_title">Albums</span>
+                            <span class="editable" contenteditable="true">Albums</span>
                         </div>
                         <div class="p2-album-actions">
                             <button class="p2-btn-select">Select</button>
@@ -3110,7 +3154,8 @@
 
                     <div class="p2-status-input-line">
                         <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2l3 6 7 .5-5 5 1.5 7-6.5-3.5L5.5 20.5 7 13.5 2 8.5 9 8z"/></svg>
-                        <span class="editable" contenteditable="true" data-text-id="p2_angel_quote" style="width: 100%;">一个天使文案</span>
+                        <span class="editable" contenteditable="true" style="width: 100%;">
+                        一个天使文案</span>
                     </div>
 
                     <!-- 6宫格相册 -->
@@ -3141,7 +3186,7 @@
                         </div>
                         <div class="app-item">
                             <div class="app-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
-                            <span class="app-title">小说</span>
+                           <span class="app-title">小说</span>
                         </div>
                         <div class="app-item">
                             <div class="app-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
@@ -3163,7 +3208,7 @@
                         <div class="p3-diary-tab-back">
                             <svg width="13" height="13" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
                         </div>
-                        <div class="p3-diary-tab-title editable" contenteditable="true" data-text-id="p3_diary_title">一则sad . 日记</div>
+                        <div class="p3-diary-tab-title editable" contenteditable="true">一则sad . 日记</div>
                     </div>
 
                     <div class="p3-diary-card-body">
@@ -3175,16 +3220,16 @@
                                 </svg>
                             </div>
                             <div class="p3-diary-author-meta">
-                                <div class="p3-diary-author-name editable" contenteditable="true" data-text-id="p3_diary_author">小雨淅沥沥</div>
+                                <div class="p3-diary-author-name editable" contenteditable="true">小雨淅沥沥</div>
                                 <div class="p3-diary-location-time">
-                                    <span class="editable" contenteditable="true" data-text-id="p3_diary_loc">济州岛</span>
-                                    <span id="p3DiaryWeek" data-text-id="p3_diary_week">星期二</span>
-                                    <span class="editable" contenteditable="true" data-text-id="p3_diary_weather">阴</span>
+                                    <span class="editable" contenteditable="true">济州岛</span>
+                                    <span id="p3DiaryWeek">星期二</span>
+                                    <span class="editable" contenteditable="true">阴</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="p3-diary-text-content editable" contenteditable="true" data-text-id="p3_diary_content">
+                        <div class="p3-diary-text-content editable" contenteditable="true">
                             变成平静的人 这一课要流很多眼泪
                         </div>
 
@@ -3195,7 +3240,7 @@
                             </div>
                             <div class="p3-diary-status-item">
                                 <svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                                <span class="editable" contenteditable="true" data-text-id="p3_diary_privacy">私密</span>
+                                <span class="editable" contenteditable="true">私密</span>
                             </div>
                         </div>
 
@@ -3224,7 +3269,7 @@
                     <div class="app-grid grid-2x2">
                         <div class="app-item">
                             <div class="app-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 2l-4 5-4-5"></path></svg></div>
-                            <span class="app-title">哔哩哔哩</span>
+                            <span class="app-title">预设</span>
                         </div>
                         <div class="app-item">
                             <div class="app-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
@@ -3253,7 +3298,7 @@
                     <div class="p3-countdown-custom-widget">
                         <div class="p3-twin-avatars-row">
                             <div class="p3-avatar-bubble-col">
-                                <div class="p3-mini-bubble editable" contenteditable="true" data-text-id="p3_cnt_b1">"Ou&lt;"</div>
+                                <div class="p3-mini-bubble editable" contenteditable="true">"Ou&lt;"</div>
                                 <div class="p3-circle-avatar uploadable-img" title="点击更换左头像">
                                     <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8">
                                         <circle cx="12" cy="12" r="9"></circle>
@@ -3262,7 +3307,7 @@
                                 </div>
                             </div>
                             <div class="p3-avatar-bubble-col">
-                                <div class="p3-mini-bubble editable" contenteditable="true" data-text-id="p3_cnt_b2">Zzz</div>
+                                <div class="p3-mini-bubble editable" contenteditable="true">Zzz</div>
                                 <div class="p3-circle-avatar uploadable-img" title="点击更换右头像">
                                     <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8">
                                         <circle cx="12" cy="12" r="9"></circle>
@@ -3276,7 +3321,7 @@
                             <svg class="p3-wing-svg" viewBox="0 0 24 24" stroke-width="1.5">
                                 <path d="M22 6C16 4 10 7 6 12C4 14.5 3 18 5 20C7 20.5 10 19 12 17C14 18 17 17.5 19 15C20.5 13 22 9 22 6Z"/>
                             </svg>
-                            <div class="p3-days-pill editable" contenteditable="true" data-text-id="p3_cnt_days">2天</div>
+                            <div class="p3-days-pill editable" contenteditable="true">2天</div>
                             <svg class="p3-wing-svg" viewBox="0 0 24 24" stroke-width="1.5">
                                 <path d="M2 6C8 4 14 7 18 12C20 14.5 21 18 19 20C17 20.5 14 19 12 17C10 18 7 17.5 5 15C3.5 13 2 9 2 6Z"/>
                             </svg>
@@ -3288,7 +3333,7 @@
                     <div class="app-grid grid-2x2">
                         <div class="app-item">
                             <div class="app-icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></div>
-                            <span class="app-title">网易云音乐</span>
+                            <span class="app-title">网易云</span>
                         </div>
                         <div class="app-item">
                             <div class="app-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
@@ -3300,7 +3345,7 @@
                         </div>
                         <div class="app-item">
                             <div class="app-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg></div>
-                            <span class="app-title">剪映</span>
+                            <span class="app-title">情侣日常</span>
                         </div>
                     </div>
                 </div>
@@ -3318,7 +3363,7 @@
                     <div class="p4-url-bar">
                         <div style="display: flex; align-items: center; gap: 5px;">
                             <div class="p4-url-wave"><span></span><span></span><span></span></div>
-                            <span class="editable" contenteditable="true" data-text-id="p4_url_text" style="font-family: monospace; font-size: 10px;">http: //^your·loveme 63 *°+</span>
+                            <span class="editable" contenteditable="true" style="font-family: monospace; font-size: 10px;">http: //^your·loveme 63 *°+</span>
                         </div>
                         <div style="display: flex; align-items: center; gap: 5px;">
                             <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="14" width="3" height="6" rx="1"/><rect x="8" y="10" width="3" height="10" rx="1"/><rect x="13" y="6" width="3" height="14" rx="1"/><rect x="18" y="2" width="3" height="18" rx="1"/></svg>
@@ -3332,14 +3377,14 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     </div>
                     <div class="p4-profile-right">
-                        <div class="p4-profile-name editable" contenteditable="true" data-text-id="p4_profile_name">小雨淅沥沥</div>
+                        <div class="p4-profile-name editable" contenteditable="true">小雨淅沥沥</div>
                         <div class="p4-profile-divider"></div>
                         <div class="p4-profile-meta">
-                            <span class="editable" contenteditable="true" data-text-id="p4_meta_const">星座</span>
+                            <span class="editable" contenteditable="true">星座</span>
                             <span style="user-select: none;">·</span>
-                            <span class="editable" contenteditable="true" data-text-id="p4_meta_color">绿色</span>
+                            <span class="editable" contenteditable="true">绿色</span>
                             <span style="user-select: none;">·</span>
-                            <span class="editable" contenteditable="true" data-text-id="p4_meta_city">济州岛</span>
+                            <span class="editable" contenteditable="true">济州岛</span>
                         </div>
                     </div>
                 </div>
@@ -3348,7 +3393,7 @@
                     <div class="p4-section-header">
                         <div class="p4-header-left">
                             <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-                            <span class="editable" contenteditable="true" data-text-id="p4_fortune_title">今日运势</span>
+                            <span class="editable" contenteditable="true">今日运势</span>
                         </div>
                         <div style="display: flex; gap: 3px; opacity: 0.8; user-select: none;">
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -3356,22 +3401,22 @@
                         </div>
                         <span class="p4-btn-view">查看</span>
                     </div>
-                    <div class="p4-body-text editable" contenteditable="true" data-text-id="p4_fortune_body">
+                    <div class="p4-body-text editable" contenteditable="true">
                         没有运势的考验，你最需要克服的就是自己的拖延症。即便在时间宽裕的前提下，也不要磨磨蹭蹭，会导致你错失最佳的出击时机，而且还可能会因为间隔时间太长而留下问题。生活方面你要有自己的空间，不要总是盲目参与社...
                     </div>
 
                     <div class="p4-section-header" style="margin-top: 3px;">
                         <div class="p4-header-left">
                             <svg width="11" height="11" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
-                            <span class="editable" contenteditable="true" data-text-id="p4_note_title">今日留言</span>
+                            <span class="editable" contenteditable="true">今日留言</span>
                         </div>
                         <span class="p4-btn-view">查看</span>
                     </div>
                     <div class="p4-poem-tag">
                         <svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2a5 5 0 0 0-5 5c0 4 5 9 5 9s5-5 5-9a5 5 0 0 0-5-5z"/></svg>
-                        <span class="editable" contenteditable="true" data-text-id="p4_note_tag">少女樣本</span>
+                        <span class="editable" contenteditable="true">少女樣本</span>
                     </div>
-                    <div class="p4-body-text editable" contenteditable="true" data-text-id="p4_note_body" style="font-style: italic;">
+                    <div class="p4-body-text editable" contenteditable="true" style="font-style: italic;">
                         雨声潺潺，像住在溪边。宁愿天天天下雨，以为你是因为下雨不来。
                     </div>
                 </div>
@@ -3382,7 +3427,7 @@
                 <div class="app-grid" style="margin-top: 2px;">
                     <div class="app-item">
                         <div class="app-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path></svg></div>
-                        <span class="app-title">QQ</span>
+                        <span class="app-title">小剧场</span>
                     </div>
                     <div class="app-item">
                         <div class="app-icon"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg></div>
@@ -3400,6 +3445,7 @@
             </div>
 
         </div>
+    </div>
 
     <!-- 页面指示圆点 -->
     <div class="page-dots">
@@ -3433,7 +3479,6 @@
         </div>
     </div>
 
-    <!-- 主题设置页面（全功能版） -->
     <!-- 主题设置页面（全功能版） -->
     <div class="theme-overlay" id="themeOverlay">
         <div class="theme-header">
@@ -3963,53 +4008,47 @@
             <div style="width: 32px;"></div>
         </div>
 
-        <!-- 顶部三级分类标签 -->
+        <!-- 顶部三级分类 -->
         <div class="settings-tabs-nav" style="margin-top: 8px;">
-            <button class="settings-tab-btn active" id="annTabBtn_changelog" onclick="switchAnnounceTab('changelog')">更新公告</button>
+            <button class="settings-tab-btn active" id="annTabBtn_updates" onclick="switchAnnounceTab('updates')">更新公告</button>
             <button class="settings-tab-btn" id="annTabBtn_thoughts" onclick="switchAnnounceTab('thoughts')">耳机的碎碎念</button>
             <button class="settings-tab-btn" id="annTabBtn_disclaimer" onclick="switchAnnounceTab('disclaimer')">用户协议与免责声明</button>
         </div>
 
         <div class="theme-body" style="padding-top: 4px;">
-            <!-- 0. 更新公告（最新在前，以此类推） -->
-            <div id="annPane_changelog" style="display: flex; flex-direction: column; gap: 12px;">
-                <!-- v1.3.0 最新更新 -->
+            <!-- 1. 更新公告列表 (最新在前) -->
+            <div id="annPane_updates" style="display: flex; flex-direction: column; gap: 12px;">
                 <div class="theme-card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:6px;">
-                        <span class="theme-sec-title" style="font-size:13.5px;">版本 1.3.0 更新日志</span>
-                        <span style="font-size:10px; color:var(--accent-blue); font-weight:600;">最新版本</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="theme-sec-title">v1.3.0 深度体验优化更新</span>
+                        <span style="font-size: 10px; color: var(--accent-blue); font-weight: 600;">最新</span>
                     </div>
                     <div style="font-size: 11.5px; line-height: 1.6; color: var(--text-secondary); display: flex; flex-direction: column; gap: 6px;">
-                        <div>1. Message 应用创建账号升级为全屏独立沉浸式界面。</div>
-                        <div>2. 优化联系人列表左滑手势，置顶、免打扰与删除操作栏在未滑动时完全隐藏。</div>
-                        <div>3. 新增 Message 专属独立全屏壁纸，全应用覆盖且不干扰聊天内专属壁纸。</div>
-                        <div>4. 彻底修复聊天独立头像上传不生效 Bug，实时同步气泡与顶栏。</div>
-                        <div>5. 联系人创建与详情页全面支持世界书直接绑定关联。</div>
-                        <div>6. 酒馆卡导入世界书优化，关键词自动置于条目名称下方排版。</div>
-                        <div>7. 主题全局清除与预设切换同步联动小组件图片。</div>
-                        <div>8. 图片引擎全面升级，完整保留透明底 PNG 特性。</div>
-                        <div>9. 锁定应用名称不可编辑，确保界面排版规整。</div>
-                        <div>10. 全应用禁用一切 Emoji，统一替换为极简 SVG 矢量图标。</div>
+                        <div>1. <strong>Message 体验升级</strong>：创建账号改为原生全屏页面；列表好友改为长按弹出置顶/免打扰/删除；新增消息应用独立全局壁纸。</div>
+                        <div>2. <strong>聊天专属头像修复</strong>：修复了在聊天设置中上传专属头像后聊天气泡不显示的重大问题。</div>
+                        <div>3. <strong>世界书与联系人打通</strong>：支持在创建/编辑角色时直接关联世界书，关键词移至条目下方规范排版。</div>
+                        <div>4. <strong>透明底图与主题支持</strong>：上传组件及图标支持 PNG 透明背景；清空主题将同步清空所有小组件图片。</div>
+                        <div>5. <strong>界面固定与纯净色调</strong>：应用名称锁定为不可修改；移除所有 Emoji，全量采用矢量 SVG 图标与灰白质感。</div>
                     </div>
                 </div>
 
-                <!-- v1.2.9 历史更新 -->
                 <div class="theme-card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:6px;">
-                        <span class="theme-sec-title" style="font-size:13.5px;">版本 1.2.9 更新日志</span>
-                        <span style="font-size:10px; color:var(--text-tertiary);">历史归档</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="theme-sec-title">v1.2.0 系统架构与记忆库发布</span>
+                        <span style="font-size: 10px; color: var(--text-tertiary);">历史</span>
                     </div>
                     <div style="font-size: 11.5px; line-height: 1.6; color: var(--text-secondary); display: flex; flex-direction: column; gap: 6px;">
-                        <div>1. 完善世界书全局与角色双分区架构。</div>
-                        <div>2. 增强转账与记忆库系统联动。</div>
+                        <div>1. 新增双 API 架构与 MiniMax 官方直连。</div>
+                        <div>2. 新增长期记忆总结系统与真实环境时间感知。</div>
+                        <div>3. 引入全机数据导出与导入恢复中心。</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 1. 耳机的碎碎念 -->
+            <!-- 2. 耳机的碎碎念 -->
             <div id="annPane_thoughts" style="display: none; flex-direction: column; gap: 12px;">
                 <div class="theme-card">
-                    <span class="theme-sec-title">📝 耳机的碎碎念</span>
+                    <span class="theme-sec-title">耳机的碎碎念</span>
                     <div style="font-size: 12px; line-height: 1.6; color: var(--text-secondary); display: flex; flex-direction: column; gap: 8px;">
                         <div>其实这个机子只是半成品不是很好玩，UI也不是很好看。</div>
                         <div>弹窗也不好看QAQ，会改的！</div>
@@ -4023,10 +4062,10 @@
                 </div>
             </div>
 
-            <!-- 2. 用户协议与免责声明 -->
+            <!-- 3. 用户协议与免责声明 -->
             <div id="annPane_disclaimer" style="display: none; flex-direction: column; gap: 12px;">
                 <div class="theme-card">
-                    <span class="theme-sec-title">📜 用户协议与免责声明</span>
+                    <span class="theme-sec-title">用户协议与免责声明</span>
                     <div style="font-size: 11.5px; line-height: 1.6; color: var(--text-secondary); display: flex; flex-direction: column; gap: 10px; text-align: justify;">
                         <div style="color: var(--text-primary); font-weight: 600;">【重要提示】</div>
                         <div>在使用本工具（小手机）前，请仔细阅读本全部协议与免责声明。使用本工具即代表您已完整阅读、充分理解并同意接受本协议全部条款约束。</div>
@@ -4044,12 +4083,11 @@
     </div>
 
     <!-- ================= MESSAGE APP 全屏应用主视口 ================= -->
-    <div class="contacts-overlay" id="messageAppOverlay" style="overflow: hidden; position: absolute; inset: 0;">
-        <!-- 专属 Message 全屏壁纸层（覆盖整个应用，含状态顶栏） -->
-        <div class="msg-wallpaper-layer" id="msgAppWallpaperLayer"></div>
-
+    <div class="contacts-overlay" id="messageAppOverlay">
+        <!-- Message 全局专属壁纸层 (仅在本 APP 生效) -->
+        <div class="msg-app-wallpaper-layer" id="msgAppWallpaperLayer"></div>
         <!-- 顶栏 -->
-        <div class="theme-header" style="position: relative; z-index: 5;">
+        <div class="theme-header">
             <button class="theme-back-btn" onclick="closeMessageApp()">
                 <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </button>
@@ -4101,6 +4139,13 @@
                 </div>
 
                 <div class="msg-menu-list">
+                    <div class="msg-menu-item" onclick="chooseMessageAppWallpaper()">
+                        <div class="msg-menu-item-left">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            <span>消息全局壁纸</span>
+                        </div>
+                        <span style="color: var(--accent-blue); font-size: 11px; font-weight: 500;">更换壁纸 ›</span>
+                    </div>
                     <div class="msg-menu-item" onclick="handleWalletMenuClick()">
                         <div class="msg-menu-item-left">
                             <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
@@ -4121,25 +4166,6 @@
                             <span>切换账号 / 账号管理</span>
                         </div>
                         <span style="color: var(--accent-blue); font-size: 11px; font-weight: 500;">管理 ›</span>
-                    </div>
-                </div>
-
-                <!-- 消息应用专属壁纸设置卡片 -->
-                <div class="theme-card" style="margin-top: 4px;">
-                    <span class="theme-sec-title">Message 独立壁纸</span>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <div class="wp-preview-box" id="msgWpPreviewBox" onclick="chooseMessageAppWallpaper()" style="width: 56px; height: 72px;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                            <span style="font-size: 9.5px;">导入壁纸</span>
-                        </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
-                            <div class="theme-card-row">
-                                <span style="font-size: 11px; color: var(--text-secondary);">壁纸模糊度</span>
-                                <span id="msgWpBlurText" style="font-size: 11px; color: var(--accent-blue); font-weight: 600;">0px</span>
-                            </div>
-                            <input type="range" class="theme-slider" id="msgWpBlurSlider" min="0" max="30" value="0" oninput="changeMsgAppWpBlur(this.value)">
-                            <button class="theme-btn" style="height: 28px; font-size: 10.5px;" onclick="clearMessageAppWallpaper()">清除消息壁纸</button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -4164,9 +4190,6 @@
                 <span>我的</span>
             </div>
         </div>
-
-        <!-- 消息列表长按操作菜单（低饱和浅灰微拟态） -->
-        <div class="msg-list-context-menu" id="msgListContextMenu"></div>
     </div>
 
     <!-- ================= 账号管理与切换弹层 ================= -->
@@ -4187,7 +4210,7 @@
             <div class="theme-card" style="margin-top: 4px;">
                 <span class="theme-sec-title">添加新账号 / 快捷接入</span>
                 <div class="msg-login-modes-grid">
-                    <div class="msg-login-mode-btn" onclick="openCreateAccountOverlay()">
+                    <div class="msg-login-mode-btn" onclick="openCreateAccountModal()">
                         <svg width="18" height="18" viewBox="0 0 24 24" stroke="var(--accent-blue)" fill="none" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                         <span>新创一个账号</span>
                     </div>
@@ -4209,36 +4232,36 @@
     </div>
 
     <!-- ================= 全屏：创建新账号页面 ================= -->
-    <div class="char-detail-overlay" id="createAccountOverlay" style="z-index: 170;">
+    <div class="char-detail-overlay" id="createAccountOverlay" style="z-index: 140;">
         <div class="theme-header">
             <button class="theme-back-btn" onclick="closeCreateAccountOverlay()">
                 <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                <span>返回</span>
             </button>
-            <span class="theme-title" id="createAccountTitle"></span>
-            <div style="width: 48px;"></div>
+            <span class="theme-title" id="createAccountScreenTitle">创建账号</span>
+            <div style="width: 32px;"></div>
         </div>
 
-        <div class="theme-body" style="padding-top: 14px; gap: 14px;">
-            <div style="display: flex; justify-content: center; margin: 8px 0;">
-                <div class="pill-avatar uploadable-img" id="newAccountAvatarBox" style="width: 72px; height: 72px; border-radius: 50%; box-shadow: var(--shadow-card);" title="点击上传头像">
+        <div class="theme-body" style="padding-top: 20px; gap: 14px;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <div class="pill-avatar uploadable-img" id="newAccountAvatarBox" style="width: 72px; height: 72px; border-radius: 50%;" title="点击上传头像">
                     <svg width="28" height="28" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 </div>
+                <span style="font-size: 11px; color: var(--text-tertiary);">点击设置账号头像</span>
             </div>
 
             <div class="theme-card">
                 <div style="display: flex; flex-direction: column; gap: 4px;">
                     <span style="font-size: 11px; color: var(--text-secondary); font-weight: 500;">用户名 / 昵称</span>
-                    <input type="text" class="theme-input" id="newAccountUsername" placeholder="输入你在 Message 里的身份名字..." autocomplete="off">
+                    <input type="text" class="theme-input" id="newAccountUsername" placeholder="输入你在 Message 里的名字..." autocomplete="off">
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 4px;">
-                    <span style="font-size: 11px; color: var(--text-secondary); font-weight: 500;">账号登录密码</span>
-                    <input type="text" class="theme-input" id="newAccountPassword" placeholder="设置一个简单访问密码..." autocomplete="off">
+                    <span style="font-size: 11px; color: var(--text-secondary); font-weight: 500;">访问密码 (可选)</span>
+                    <input type="text" class="theme-input" id="newAccountPassword" placeholder="设置一个简单密码..." autocomplete="off">
                 </div>
             </div>
 
-            <button class="theme-btn primary" style="min-height: 42px; font-weight: 600;" onclick="confirmCreateAccount()">创建并立即登录</button>
+            <button class="theme-btn primary" style="min-height: 42px; margin-top: 8px; font-weight: 600;" onclick="confirmCreateAccount()">创建并立即登录</button>
         </div>
     </div>
 
@@ -4255,7 +4278,7 @@
         </div>
     </div>
 
-    <!-- ================= 数据管理与备份 APP 界面 ================= -->
+    <!-- ================= 数据管理与备份 APP 界面 (支持 GitHub 私人仓库流式同步) ================= -->
     <div class="contacts-overlay" id="dataAppOverlay" style="z-index: 100;">
         <div class="theme-header">
             <button class="theme-back-btn" onclick="closeDataScreen()">
@@ -4266,28 +4289,78 @@
         </div>
 
         <div class="theme-body" style="padding-top: 14px; gap: 14px;">
+            <!-- 1. 本地 JSON 离线数据管理 (按键1 + 按键2) -->
             <div class="theme-card">
-                <span class="theme-sec-title">导出与备份全机数据</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" stroke="var(--accent-blue)" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    <span class="theme-sec-title">本地 JSON 文件管理</span>
+                </div>
                 <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.45;">
-                    将当前系统的所有数据（Message 账号、聊天记录、自定美化CSS、联系人、世界书、全局壁纸、字体、自定义图标、桌面文字、API 配置等）完整打包导出，可在任何浏览器导入恢复。
+                    将系统所有账号、聊天记录、人设设定、世界书及全局壁纸打包为标准 JSON 格式进行本地存储。
                 </p>
-                <button class="theme-btn primary" style="width: 100%; min-height: 38px;" onclick="exportAllDataJSON()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    <span>导出全机数据 (JSON)</span>
-                </button>
+                <div style="display: flex; gap: 8px; margin-top: 2px;">
+                    <!-- 按键 1: JSON 文件导出格式 -->
+                    <button class="theme-btn primary" style="flex: 1; min-height: 38px; display: flex; align-items: center; justify-content: center; gap: 5px;" onclick="exportAllDataJSON()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        <span>JSON 文件导出</span>
+                    </button>
+                    <!-- 按键 2: 读取全局导出 -->
+                    <button class="theme-btn" style="flex: 1; min-height: 38px; border-color: var(--accent-blue); color: var(--text-primary); font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 5px;" onclick="triggerImportDataJSON()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        <span>读取全局导出</span>
+                    </button>
+                </div>
             </div>
 
+            <!-- 2. GitHub 私人仓库流式同步 (按键3 + 按键4) -->
             <div class="theme-card">
-                <span class="theme-sec-title">导入与恢复数据</span>
-                <p style="font-size: 11px; color: var(--text-secondary); line-height: 1.45;">
-                    选择之前导出的 Erjiji-Phone 备份文件，无缝恢复所有数据并自动刷新界面。
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" stroke="var(--accent-blue)" fill="none" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                        <span class="theme-sec-title">GitHub 私人仓库同步</span>
+                    </div>
+                    <span style="font-size: 10px; color: var(--accent-blue); font-weight: 500;">云端直连</span>
+                </div>
+                
+                <p style="font-size: 10.5px; color: var(--text-tertiary); line-height: 1.4;">
+                    通过 GitHub API 将全量数据直接读写至私人仓库，支持多端与移动端无缝云同步。
                 </p>
-                <button class="theme-btn" style="width: 100%; min-height: 38px; border-color: var(--accent-blue); color: var(--accent-blue); font-weight: 600;" onclick="triggerImportDataJSON()">
-                    <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                    <span>选择 JSON 文件导入恢复</span>
-                </button>
+
+                <!-- 配置表单 -->
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <input type="password" class="theme-input" id="ghTokenInput" placeholder="GitHub Personal Access Token (PAT 密钥)" autocomplete="off" spellcheck="false">
+                    
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" class="theme-input" id="ghOwnerInput" placeholder="用户名 / Owner" style="flex: 1;">
+                        <input type="text" class="theme-input" id="ghRepoInput" placeholder="仓库名 / Repo" style="flex: 1;">
+                    </div>
+
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" class="theme-input" id="ghPathInput" placeholder="备份文件路径 (如: backup/data.json)" style="flex: 1.3;">
+                        <input type="text" class="theme-input" id="ghBranchInput" placeholder="分支 (默认 main)" style="flex: 0.9;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 6px; margin-top: 2px;">
+                    <button class="theme-btn" style="flex: 1; height: 32px; font-size: 11px;" onclick="saveGitHubConfig(true)">保存 Git 配置</button>
+                </div>
+
+                <!-- Git 流式操作栏 -->
+                <div style="display: flex; gap: 8px; margin-top: 4px; padding-top: 8px; border-top: 1px dashed var(--border-subtle);">
+                    <!-- 按键 3: Git 流式上传 -->
+                    <button class="theme-btn primary" style="flex: 1; min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 600;" onclick="uploadDataToGitHub()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        <span>Git 流式上传</span>
+                    </button>
+                    <!-- 按键 4: Git 流式导入数据 -->
+                    <button class="theme-btn" style="flex: 1; min-height: 40px; border-color: var(--accent-blue); color: var(--accent-blue); font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="downloadDataFromGitHub()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        <span>Git 流式导入数据</span>
+                    </button>
+                </div>
             </div>
 
+            <!-- 3. 危险区域 -->
             <div class="theme-card">
                 <span class="theme-sec-title" style="color: #ff3b30;">危险区域</span>
                 <p style="font-size: 11px; color: var(--text-secondary);">
@@ -4301,12 +4374,9 @@
     </div>
 
     <!-- ================= 独立全屏聊天视窗 ================= -->
-    <div class="chat-screen-overlay" id="chatScreenOverlay" style="position: absolute; inset: 0; overflow: hidden;">
-        <!-- 聊天专属独立壁纸层（覆盖全屏，位于消息下方） -->
-        <div class="chat-wallpaper-layer" id="chatWallpaperLayer"></div>
-
+    <div class="chat-screen-overlay" id="chatScreenOverlay">
         <!-- 顶栏 -->
-        <div class="chat-header-bar" style="position: relative; z-index: 5;">
+        <div class="chat-header-bar">
             <button class="theme-back-btn" style="width: 32px; height: 32px; justify-content: flex-start;" onclick="closeChatScreen()">
                 <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </button>
@@ -4384,6 +4454,22 @@
                 <button class="theme-btn" style="height:32px; font-size:11px; padding:0 12px; color:#ff3b30; border-color:rgba(255,59,48,0.3);" onclick="confirmDeleteSelectedMessages()">删除所选</button>
             </div>
         </div>
+    </div>
+<!-- 列表联系人 iOS 竖排长按操作菜单 -->
+    <div class="msg-contact-menu-modal" id="msgContactMenuModal">
+        <button class="msg-menu-row-btn" id="menuPinBtn">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-2l-2-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v7l-2 3v2z"></path></svg>
+            <span id="menuPinText">置顶聊天</span>
+        </button>
+        <button class="msg-menu-row-btn" id="menuMuteBtn">
+            <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+            <span id="menuMuteText">消息免打扰</span>
+        </button>
+        <div class="msg-menu-divider-line"></div>
+        <button class="msg-menu-row-btn danger" id="menuDelBtn">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span>删除对话</span>
+        </button>
     </div>
 
     <!-- 长按气泡悬浮菜单 -->
@@ -4523,11 +4609,11 @@
                         <span class="theme-sec-title">专属头像定制 (仅在当前聊天生效)</span>
                         <div style="display: flex; justify-content: space-around; align-items: center; padding: 4px 0;">
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
-                                <div class="pill-avatar" id="chatCharAvatarPreview" style="width: 54px; height: 54px; border-radius: 50%; cursor: pointer; background-size: cover; background-position: center;" onclick="chooseChatCharAvatar()" title="更换角色在聊天中的头像"></div>
+                                <div class="pill-avatar uploadable-img" id="chatCharAvatarPreview" style="width: 54px; height: 54px; border-radius: 50%;" onclick="chooseChatCharAvatar()" title="更换角色在聊天中的头像"></div>
                                 <span style="font-size: 10.5px; color: var(--text-secondary);">角色聊天头像</span>
                             </div>
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
-                                <div class="pill-avatar" id="chatUserAvatarPreview" style="width: 54px; height: 54px; border-radius: 50%; cursor: pointer; background-size: cover; background-position: center;" onclick="chooseChatUserAvatar()" title="更换你在聊天中的头像"></div>
+                                <div class="pill-avatar uploadable-img" id="chatUserAvatarPreview" style="width: 54px; height: 54px; border-radius: 50%;" onclick="chooseChatUserAvatar()" title="更换你在聊天中的头像"></div>
                                 <span style="font-size: 10.5px; color: var(--text-secondary);">你的专属头像</span>
                             </div>
                         </div>
@@ -5200,11 +5286,10 @@
         dbSet('setting_dark_mode', isDark);
     }
 
-    /* ================= 4. 图片安全处理引擎（完美保留 PNG 透明通道） ================= */
+    /* ================= 4. 图片安全处理引擎 (支持透明 PNG 与大图无损) ================= */
     function processSafeImage(file, callback) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            const isPng = file.type === 'image/png' || (file.name && file.name.toLowerCase().endsWith('.png'));
             const img = new Image();
             img.onload = function() {
                 const maxDim = 1200;
@@ -5223,10 +5308,10 @@
                 canvas.width = w;
                 canvas.height = h;
                 const ctx = canvas.getContext('2d');
-                // 清空画布以确保透明通道不受损
-                ctx.clearRect(0, 0, w, h);
+                ctx.clearRect(0, 0, w, h); // 保证透明通道完整保留
                 ctx.drawImage(img, 0, 0, w, h);
-                const safeUrl = isPng ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.9);
+                // 使用 image/png 完美保留透明背景
+                const safeUrl = canvas.toDataURL('image/png');
                 callback(safeUrl);
             };
             img.onerror = () => callback(e.target.result);
@@ -5240,7 +5325,7 @@
     const imageUploader = document.getElementById('imageUploader');
 
     function bindUploadableImages() {
-        document.querySelectorAll('.page .uploadable-img').forEach((elem, index) => {
+        document.querySelectorAll('.uploadable-img').forEach((elem, index) => {
             elem.onclick = (e) => {
                 e.stopPropagation();
                 currentUploadTarget = elem;
@@ -5280,10 +5365,9 @@
     function chooseWallpaper() {
         imageUploader.onchange = function() {
             if (this.files && this.files[0]) {
-                processSafeImage(this.files[0], async function(safeUrl) {
+                processSafeImage(this.files[0], function(safeUrl) {
                     activeWallpaper = safeUrl;
                     applyWallpaperStyle();
-                    await saveWallpaperSettings(true);
                 });
             }
         };
@@ -5296,44 +5380,29 @@
         const wpBox = document.getElementById('wpPreviewBox');
         if (activeWallpaper) {
             wpLayer.style.backgroundImage = `url('${activeWallpaper}')`;
-            if (wpBox) {
-                wpBox.style.backgroundImage = `url('${activeWallpaper}')`;
-                wpBox.innerHTML = '';
-            }
-        } else {
-            wpLayer.style.backgroundImage = 'none';
-            if (wpBox) {
-                wpBox.style.backgroundImage = 'none';
-                wpBox.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>导入壁纸</span>`;
-            }
+            wpBox.style.backgroundImage = `url('${activeWallpaper}')`;
+            wpBox.innerHTML = '';
         }
         wpLayer.style.backgroundSize = activeWpFit;
         wpLayer.style.filter = `blur(${activeBlur}px)`;
     }
 
-    async function changeWpBlur(val) {
+    function changeWpBlur(val) {
         activeBlur = val;
         document.getElementById('blurValText').innerText = `${val}px`;
         applyWallpaperStyle();
-        await saveWallpaperSettings(true);
     }
 
-    async function changeWpFit(val) {
+    function changeWpFit(val) {
         activeWpFit = val;
         applyWallpaperStyle();
-        await saveWallpaperSettings(true);
     }
 
-    async function saveWallpaperSettings(silent = false) {
-        try {
-            localStorage.setItem('setting_wallpaper', activeWallpaper);
-            localStorage.setItem('setting_wp_blur', String(activeBlur));
-            localStorage.setItem('setting_wp_fit', activeWpFit);
-        } catch(e) {}
-        await dbSet('setting_wallpaper', activeWallpaper);
-        await dbSet('setting_wp_blur', activeBlur);
-        await dbSet('setting_wp_fit', activeWpFit);
-        if (!silent) showGlassAlert("保存成功", "全局壁纸设置已永久保存！");
+    function saveWallpaperSettings() {
+        dbSet('setting_wallpaper', activeWallpaper);
+        dbSet('setting_wp_blur', activeBlur);
+        dbSet('setting_wp_fit', activeWpFit);
+        alert('壁纸设置已成功保存！');
     }
 
     async function renderPresets() {
@@ -5705,11 +5774,12 @@
             if (svg) svg.style.display = 'none';
         }
     }
+    /* 全局清空所有图标与小组件图片 (包含桌面所有微件) */
     async function clearAllCustomIcons() {
         customIconsTemp = {};
         await dbSet('setting_custom_icons', {});
         
-        // 1. 清空图标
+        // 1. 清空应用图标
         const allAppItems = document.querySelectorAll('.page .app-item, .dock .app-item');
         allAppItems.forEach(item => {
             const iconWrap = item.querySelector('.app-icon');
@@ -5721,19 +5791,19 @@
             }
         });
 
-        // 2. 同步清空并重置所有小组件上的自定义图片
+        // 2. 清空桌面所有小组件上传的图片
         const uploadableNodes = document.querySelectorAll('.uploadable-img');
-        uploadableNodes.forEach((elem, index) => {
+        for (let i = 0; i < uploadableNodes.length; i++) {
+            const elem = uploadableNodes[i];
             const customImg = elem.querySelector('.custom-user-img');
             if (customImg) customImg.remove();
-            elem.style.backgroundImage = 'none';
-            elem.querySelectorAll('svg').forEach(s => s.style.display = 'block');
-            elem.querySelectorAll('.placeholder-hide').forEach(p => p.style.display = '');
-            dbSet(`avatar_slot_${index}`, '');
-        });
+            elem.querySelectorAll('svg').forEach(svg => svg.style.display = 'block');
+            elem.querySelectorAll('.placeholder-hide').forEach(el => el.style.display = 'flex');
+            await dbSet(`avatar_slot_${i}`, '');
+        }
 
         initIconManager();
-        showGlassAlert("清除完成", "应用图标与所有小组件自定义图片已全部还原初始状态！");
+        showGlassAlert("已清空", "桌面图标及小组件图片已全部还原！");
     }
 
     const fontFileUploader = document.getElementById('fontFileUploader');
@@ -6262,15 +6332,6 @@
         const savedIcons = await dbGet('setting_custom_icons');
         if (savedIcons) restoreCustomIcons(savedIcons);
 
-        // 恢复 Message 独立壁纸与模糊度
-        msgAppWallpaper = (await dbGet('msg_app_wallpaper')) || '';
-        msgAppWpBlur = (await dbGet('msg_app_wp_blur')) || 0;
-        if (document.getElementById('msgWpBlurSlider')) {
-            document.getElementById('msgWpBlurSlider').value = msgAppWpBlur;
-            document.getElementById('msgWpBlurText').innerText = `${msgAppWpBlur}px`;
-        }
-        applyMessageAppWallpaper();
-
         // 恢复 API 配置
         const mainCfg = await dbGet('api_config_main');
         if (mainCfg) applyApiPreset('main', mainCfg);
@@ -6294,16 +6355,41 @@
         await syncLoadMsgAccounts();
     }
 
-    /* ================= 数据中心 APP 控制逻辑（JSON 导出与恢复） ================= */
+    /* ================= 数据中心 APP 控制逻辑（本地 JSON + GitHub 私人仓库流式同步） ================= */
     const dataAppOverlay = document.getElementById('dataAppOverlay');
-    function openDataScreen() { if (dataAppOverlay) dataAppOverlay.classList.add('open'); }
-    function closeDataScreen() { if (dataAppOverlay) dataAppOverlay.classList.remove('open'); }
+    function openDataScreen() { 
+        if (dataAppOverlay) {
+            loadGitHubConfig();
+            dataAppOverlay.classList.add('open'); 
+        }
+    }
+    function closeDataScreen() { 
+        if (dataAppOverlay) dataAppOverlay.classList.remove('open'); 
+    }
 
-    // 1. 导出全机数据 JSON（前缀统一为 Erjiji-Phone，全量内存+存储同步互通打包）
-    async function exportAllDataJSON() {
+    // Base64 与 UTF-8 互转助手（保证流式处理包含中文、Emoji 与透明底图片时不乱码）
+    function utf8ToBase64Safe(str) {
+        const bytes = new TextEncoder().encode(str);
+        let bin = '';
+        for (let i = 0; i < bytes.length; i++) {
+            bin += String.fromCharCode(bytes[i]);
+        }
+        return btoa(bin);
+    }
+
+    function base64ToUtf8Safe(b64) {
+        const cleanB64 = b64.replace(/\s/g, '');
+        const bin = atob(cleanB64);
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) {
+            bytes[i] = bin.charCodeAt(i);
+        }
+        return new TextDecoder('utf-8').decode(bytes);
+    }
+
+    // 生成全机备份 Payload
+    async function generateFullBackupPayload() {
         await initDB();
-        
-        // 强制即时落盘当前内存状态
         await syncSaveMsgAccounts();
         await syncSaveChatData();
         await syncSaveWorldBookData();
@@ -6315,9 +6401,9 @@
             localDump[k] = localStorage.getItem(k);
         }
 
-        const fullBackup = {
+        return {
             appName: 'Erjiji-Phone',
-            version: '1.2.3',
+            version: '1.3.0',
             timestamp: Date.now(),
             dateString: new Date().toLocaleString(),
             data: {
@@ -6334,7 +6420,49 @@
             db: dbDump,
             local: localDump
         };
+    }
 
+    // 从 Payload 完整恢复所有数据
+    async function restoreFromBackupPayload(parsed) {
+        if (!parsed || (!parsed.db && !parsed.local && !parsed.data)) {
+            throw new Error("无效的备份文件格式！");
+        }
+
+        if (parsed.data) {
+            if (parsed.data.messageAccounts) messageAccounts = parsed.data.messageAccounts;
+            if (parsed.data.chatHistories) allChatHistories = parsed.data.chatHistories;
+            if (parsed.data.chatCustomProfiles) allChatCustomProfiles = parsed.data.chatCustomProfiles;
+            if (parsed.data.worldBookFolders) worldBookFolders = parsed.data.worldBookFolders;
+            if (parsed.data.globalWorldBookEntries) globalWorldBookEntries = parsed.data.globalWorldBookEntries;
+            if (parsed.data.charList) charList = parsed.data.charList;
+            if (parsed.data.npcList) npcList = parsed.data.npcList;
+            if (parsed.data.relationMap) relationMap = parsed.data.relationMap;
+            if (parsed.data.customPresets) customPresets = parsed.data.customPresets;
+        }
+
+        if (parsed.db) {
+            for (let k in parsed.db) {
+                await dbSet(k, parsed.db[k]);
+            }
+        }
+
+        if (parsed.local) {
+            for (let k in parsed.local) {
+                try { localStorage.setItem(k, parsed.local[k]); } catch(e) {}
+            }
+        }
+
+        await syncSaveMsgAccounts();
+        await syncSaveChatData();
+        await syncSaveWorldBookData();
+
+        await restoreAllPersistentData();
+        renderMessageUI();
+    }
+
+    // 【按键 1】: JSON 文件导出格式
+    async function exportAllDataJSON() {
+        const fullBackup = await generateFullBackupPayload();
         const jsonStr = JSON.stringify(fullBackup, null, 2);
         const blob = new Blob([jsonStr], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
@@ -6350,10 +6478,10 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        showGlassAlert("导出成功", `全机完整数据已导出为文件：\n${fileName}\n支持在任意手机与浏览器直接导入恢复。`);
+        showGlassAlert("导出成功", `本地 JSON 格式文件已导出：\n${fileName}`);
     }
 
-    // 2. 跨浏览器完整导入恢复
+    // 【按键 2】: 读取全局导出
     function triggerImportDataJSON() {
         const uploader = document.getElementById('backupDataUploader');
         uploader.onchange = function(e) {
@@ -6363,46 +6491,9 @@
             reader.onload = async function(evt) {
                 try {
                     const parsed = JSON.parse(evt.target.result);
-                    if (!parsed.db && !parsed.local && !parsed.data) {
-                        return showGlassAlert("导入失败", "无效的备份文件格式！");
-                    }
-
-                    // 1. 恢复核心业务实体
-                    if (parsed.data) {
-                        if (parsed.data.messageAccounts) messageAccounts = parsed.data.messageAccounts;
-                        if (parsed.data.chatHistories) allChatHistories = parsed.data.chatHistories;
-                        if (parsed.data.chatCustomProfiles) allChatCustomProfiles = parsed.data.chatCustomProfiles;
-                        if (parsed.data.worldBookFolders) worldBookFolders = parsed.data.worldBookFolders;
-                        if (parsed.data.globalWorldBookEntries) globalWorldBookEntries = parsed.data.globalWorldBookEntries;
-                        if (parsed.data.charList) charList = parsed.data.charList;
-                        if (parsed.data.npcList) npcList = parsed.data.npcList;
-                        if (parsed.data.relationMap) relationMap = parsed.data.relationMap;
-                        if (parsed.data.customPresets) customPresets = parsed.data.customPresets;
-                    }
-
-                    // 2. 写入 IndexedDB 数据库
-                    if (parsed.db) {
-                        for (let k in parsed.db) {
-                            await dbSet(k, parsed.db[k]);
-                        }
-                    }
-
-                    // 3. 写入 localStorage 存储
-                    if (parsed.local) {
-                        for (let k in parsed.local) {
-                            try { localStorage.setItem(k, parsed.local[k]); } catch(e) {}
-                        }
-                    }
-
-                    // 4. 双向同步保存并重载界面
-                    await syncSaveMsgAccounts();
-                    await syncSaveChatData();
-                    await syncSaveWorldBookData();
-
-                    showGlassAlert("恢复成功", "数据已成功跨浏览器导入并恢复！正在重载应用...", async () => {
-                        await restoreAllPersistentData();
+                    await restoreFromBackupPayload(parsed);
+                    showGlassAlert("恢复成功", "已成功读取全局导出文件并恢复全量数据！", () => {
                         closeDataScreen();
-                        renderMessageUI();
                     });
                 } catch(err) {
                     showGlassAlert("导入错误", "解析备份文件失败: " + err.message);
@@ -6414,7 +6505,145 @@
         uploader.click();
     }
 
-    // 3. 清空全机数据
+    // GitHub 配置保存与读取
+    async function saveGitHubConfig(showAlert = false) {
+        const config = {
+            token: (document.getElementById('ghTokenInput').value || '').trim(),
+            owner: (document.getElementById('ghOwnerInput').value || '').trim(),
+            repo: (document.getElementById('ghRepoInput').value || '').trim(),
+            path: (document.getElementById('ghPathInput').value || '').trim() || 'backup/phone-data.json',
+            branch: (document.getElementById('ghBranchInput').value || '').trim() || 'main'
+        };
+        await dbSet('github_sync_config', config);
+        try { localStorage.setItem('github_sync_config', JSON.stringify(config)); } catch(e) {}
+        if (showAlert) showGlassAlert("保存成功", "GitHub 仓库配置已保存！");
+        return config;
+    }
+
+    async function loadGitHubConfig() {
+        let cfg = null;
+        try { cfg = JSON.parse(localStorage.getItem('github_sync_config')); } catch(e) {}
+        if (!cfg) cfg = await dbGet('github_sync_config');
+        if (cfg) {
+            document.getElementById('ghTokenInput').value = cfg.token || '';
+            document.getElementById('ghOwnerInput').value = cfg.owner || '';
+            document.getElementById('ghRepoInput').value = cfg.repo || '';
+            document.getElementById('ghPathInput').value = cfg.path || 'backup/phone-data.json';
+            document.getElementById('ghBranchInput').value = cfg.branch || 'main';
+        }
+    }
+
+    // 【按键 3】: Git 流式上传 (PUT 到 GitHub 私人仓库)
+    async function uploadDataToGitHub() {
+        const config = await saveGitHubConfig(false);
+        if (!config.token || !config.owner || !config.repo) {
+            return showGlassAlert("配置缺失", "请先填写 GitHub PAT 密钥、用户名 (Owner) 以及仓库名 (Repo)！");
+        }
+
+        showGlassAlert("正在上传", "正在打包数据并流式推送至 GitHub 仓库，请稍候...");
+
+        try {
+            const payload = await generateFullBackupPayload();
+            const jsonString = JSON.stringify(payload, null, 2);
+            const base64Content = utf8ToBase64Safe(jsonString);
+
+            const cleanPath = config.path.replace(/^\/+/, '');
+            const apiUrl = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${cleanPath}`;
+
+            // 1. 查询远端文件是否存在以获取最新的 SHA
+            let existingSha = null;
+            try {
+                const checkRes = await fetch(`${apiUrl}?ref=${config.branch}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${config.token}`,
+                        'Accept': 'application/vnd.github+json'
+                    }
+                });
+                if (checkRes.ok) {
+                    const fileData = await checkRes.json();
+                    existingSha = fileData.sha;
+                }
+            } catch(e) {}
+
+            // 2. 发起 PUT 请求上传/覆盖文件
+            const bodyData = {
+                message: `Auto-sync phone data (${new Date().toLocaleString()})`,
+                content: base64Content,
+                branch: config.branch
+            };
+            if (existingSha) bodyData.sha = existingSha;
+
+            const putRes = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${config.token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/vnd.github+json'
+                },
+                body: JSON.stringify(bodyData)
+            });
+
+            if (!putRes.ok) {
+                const errText = await putRes.text();
+                throw new Error(`HTTP ${putRes.status}: ${errText.slice(0, 120)}`);
+            }
+
+            showGlassAlert("Git 上传成功", `已成功流式上传至私人仓库：\n${config.owner}/${config.repo}\n路径: ${cleanPath}`);
+        } catch(err) {
+            showGlassAlert("Git 上传失败", `同步发生异常: ${err.message}\n请检查 Token 权限 (需要 repo 读写权限) 与仓库名称。`);
+        }
+    }
+
+    // 【按键 4】: Git 流式导入数据 (GET 从 GitHub 私人仓库拉取并恢复)
+    async function downloadDataFromGitHub() {
+        const config = await saveGitHubConfig(false);
+        if (!config.token || !config.owner || !config.repo) {
+            return showGlassAlert("配置缺失", "请先填写 GitHub PAT 密钥、用户名 (Owner) 以及仓库名 (Repo)！");
+        }
+
+        showGlassConfirm("Git 流式导入", `确定从远程仓库 ${config.owner}/${config.repo} 拉取最新数据并覆盖当前小手机吗？`, async () => {
+            showGlassAlert("正在导入", "正在从 GitHub 私人仓库拉取数据流，请稍候...");
+
+            try {
+                const cleanPath = config.path.replace(/^\/+/, '');
+                const apiUrl = `https://api.github.com/repos/${config.owner}/${config.repo}/contents/${cleanPath}?ref=${config.branch}`;
+
+                const getRes = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${config.token}`,
+                        'Accept': 'application/vnd.github+json'
+                    }
+                });
+
+                if (getRes.status === 404) {
+                    throw new Error(`在分支 [${config.branch}] 下未找到文件：${cleanPath}`);
+                }
+                if (!getRes.ok) {
+                    const errText = await getRes.text();
+                    throw new Error(`HTTP ${getRes.status}: ${errText.slice(0, 120)}`);
+                }
+
+                const fileData = await getRes.json();
+                if (!fileData.content) {
+                    throw new Error("未能获取到有效的数据流内容");
+                }
+
+                const jsonStr = base64ToUtf8Safe(fileData.content);
+                const parsed = JSON.parse(jsonStr);
+
+                await restoreFromBackupPayload(parsed);
+                showGlassAlert("Git 导入成功", "已从 GitHub 私人仓库拉取最新备份并成功同步全机！", () => {
+                    closeDataScreen();
+                });
+            } catch(err) {
+                showGlassAlert("Git 导入失败", `拉取失败: ${err.message}`);
+            }
+        });
+    }
+
+    // 清空全机数据
     function confirmClearAllSystemData() {
         showGlassConfirm("清空全机数据", "警告：此操作将删除所有账号、人设、壁纸及设置！\n确定要继续吗？", async () => {
             await dbClearAll();
@@ -6455,23 +6684,7 @@
         renderContactsGrid();
     }
 
-    // 动态填充世界书下拉框（防报错，支持联系人绑定）
-    function populateWorldBookDropdown(selectElementId, selectedId = '') {
-        const select = document.getElementById(selectElementId);
-        if (!select) return;
-        select.innerHTML = '<option value="">未绑定世界书 (可选)</option>';
-        if (globalWorldBookEntries && globalWorldBookEntries.length > 0) {
-            select.innerHTML += `<option value="global_wb" ${selectedId === 'global_wb' ? 'selected' : ''}>[全局世界书] (${globalWorldBookEntries.length} 条设定)</option>`;
-        }
-        if (worldBookFolders && worldBookFolders.length > 0) {
-            worldBookFolders.forEach(f => {
-                const count = f.entries ? f.entries.length : 0;
-                select.innerHTML += `<option value="${f.id}" ${selectedId === f.id ? 'selected' : ''}>[文件夹] ${f.name} (${count} 条设定)</option>`;
-            });
-        }
-    }
-
-    // 打开右上角【+】加号弹窗（仅用于新建角色）
+    // 打开右上角【+】加号弹窗（已支持动态载入世界书）
     function openAddPersonModal() {
         tempAvatarBase64 = '';
         if (currentContactsTab === 'char') {
@@ -6482,7 +6695,16 @@
             document.getElementById('charOrientInput').value = '';
             document.getElementById('charGroupInput').value = '';
             document.getElementById('charPersonaInput').value = '';
-            populateWorldBookDropdown('charWorldBookSelect');
+
+            // 动态注入世界书列表供勾选绑定
+            const wbSelect = document.getElementById('charWorldBookSelect');
+            if (wbSelect) {
+                wbSelect.innerHTML = '<option value="">暂不关联世界书</option>';
+                worldBookFolders.forEach(f => {
+                    wbSelect.innerHTML += `<option value="${f.id}">${f.name}</option>`;
+                });
+            }
+
             document.getElementById('addCharModal').classList.add('open');
         } else {
             const select = document.getElementById('npcLinkedCharSelect');
@@ -6503,7 +6725,7 @@
         document.getElementById('addNpcModal').classList.remove('open');
     }
 
-    // ================= 全屏角色详情与编辑打开逻辑 =================
+    // ================= 全屏角色详情与编辑打开逻辑（已支持世界书回显与绑定） =================
     function openCharDetailScreen(item, type) {
         currentDetailId = item.id;
         currentDetailType = type;
@@ -6533,8 +6755,16 @@
             groupRow.style.display = 'flex';
             document.getElementById('detailCharOrientInput').value = item.orient || '';
             document.getElementById('detailCharGroupInput').value = item.group || '';
-            // 填充并选中当前角色绑定的世界书
-            populateWorldBookDropdown('detailCharWorldBookSelect', item.worldBookId || (item.boundWorldBookIds ? item.boundWorldBookIds[0] : ''));
+
+            // 动态回显并绑定关联世界书
+            const wbSelectDetail = document.getElementById('detailCharWorldBookSelect');
+            if (wbSelectDetail) {
+                wbSelectDetail.innerHTML = '<option value="">暂不关联世界书</option>';
+                worldBookFolders.forEach(f => {
+                    const isSelected = item.boundWorldBookIds && item.boundWorldBookIds.includes(f.id);
+                    wbSelectDetail.innerHTML += `<option value="${f.id}" ${isSelected ? 'selected' : ''}>${f.name}</option>`;
+                });
+            }
         } else {
             orientRow.style.display = 'none';
             groupRow.style.display = 'none';
@@ -6643,7 +6873,7 @@
         });
     }
 
-    // 保存全屏页修改后的角色数据
+    // 保存全屏页修改后的角色数据（包含世界书绑定）
     async function saveDetailCharChanges() {
         if (!currentDetailId) return;
         const name = document.getElementById('detailCharNameInput').value.trim();
@@ -6660,8 +6890,8 @@
                 item.orient = document.getElementById('detailCharOrientInput').value.trim() || '未设定';
                 item.group = document.getElementById('detailCharGroupInput').value.trim() || '默认';
                 item.persona = persona;
-                item.worldBookId = document.getElementById('detailCharWorldBookSelect').value;
-                item.boundWorldBookIds = item.worldBookId ? [item.worldBookId] : [];
+                const boundWb = document.getElementById('detailCharWorldBookSelect') ? document.getElementById('detailCharWorldBookSelect').value : '';
+                item.boundWorldBookIds = boundWb ? [boundWb] : [];
                 if (tempAvatarBase64) item.avatar = tempAvatarBase64;
             }
             await dbSet('contacts_char_list', charList);
@@ -6728,7 +6958,7 @@
         imageUploader.click();
     };
 
-    // 保存新建 CHAR
+    // 保存新建 CHAR（包含世界书绑定）
     async function saveNewChar() {
         const name = document.getElementById('charNameInput').value.trim();
         if (!name) return alert('请填写人设名字');
@@ -6736,7 +6966,7 @@
         const orient = document.getElementById('charOrientInput').value.trim() || '未设定';
         const group = document.getElementById('charGroupInput').value.trim() || '默认';
         const persona = document.getElementById('charPersonaInput').value.trim();
-        const worldBookId = document.getElementById('charWorldBookSelect').value;
+        const boundWb = document.getElementById('charWorldBookSelect') ? document.getElementById('charWorldBookSelect').value : '';
 
         const newChar = {
             id: 'char_' + Date.now(),
@@ -6746,8 +6976,7 @@
             group,
             persona,
             avatar: tempAvatarBase64,
-            worldBookId: worldBookId,
-            boundWorldBookIds: worldBookId ? [worldBookId] : []
+            boundWorldBookIds: boundWb ? [boundWb] : []
         };
 
         charList.push(newChar);
@@ -7092,7 +7321,7 @@
 
         // 严格判断：只有当内存与硬盘中完全不存在任何账号时才弹出新建
         if (!currentMsgAccount && (!messageAccounts || messageAccounts.length === 0)) {
-            openCreateAccountOverlay(true);
+            openCreateAccountModal(true);
             return;
         }
 
@@ -7176,13 +7405,43 @@
         imageUploader.click();
     }
 
-    let activeMsgListChar = null;
+    /* ================= Message 专属壁纸管理 ================= */
+    async function chooseMessageAppWallpaper() {
+        imageUploader.onchange = function() {
+            if (this.files && this.files[0]) {
+                processSafeImage(this.files[0], async (safeUrl) => {
+                    currentMsgAccount.msgWallpaper = safeUrl;
+                    await syncSaveMsgAccounts();
+                    applyMessageAppWallpaper();
+                    showGlassAlert("更换成功", "消息应用专属壁纸已更新！");
+                });
+            }
+        };
+        imageUploader.value = '';
+        imageUploader.click();
+    }
+
+    function applyMessageAppWallpaper() {
+        const layer = document.getElementById('msgAppWallpaperLayer');
+        if (!layer) return;
+        if (currentMsgAccount && currentMsgAccount.msgWallpaper) {
+            layer.style.backgroundImage = `url('${currentMsgAccount.msgWallpaper}')`;
+        } else {
+            layer.style.backgroundImage = 'none';
+        }
+    }
+
+    /* ================= 列表联系人长按菜单与渲染 (支持多角色置顶与独立置顶排序) ================= */
+    let activeLongPressContactId = null;
 
     function renderMsgContactsAndChats() {
         const chatWrap = document.getElementById('msgChatListContainer');
         const contactWrap = document.getElementById('msgContactsListContainer');
+        if (!chatWrap || !contactWrap) return;
         chatWrap.innerHTML = '';
         contactWrap.innerHTML = '';
+
+        applyMessageAppWallpaper();
 
         const myContactsIds = currentMsgAccount.contacts || [];
         const allSystemChars = [...charList, ...npcList];
@@ -7201,11 +7460,33 @@
             return;
         }
 
-        // 置顶排序逻辑
+        // 1. 多角色置顶排序算法：
+        // - 所有置顶角色（无论多少个）统一锁定在最顶部
+        // - 置顶组内部：后置顶的 / 最新聊天的排在置顶组最上面
+        // - 非置顶组：统一排在所有置顶角色下方，按最新消息时间排序
         myChars.sort((a, b) => {
-            const pA = getChatCustomProfile(a.id).isPinned ? 1 : 0;
-            const pB = getChatCustomProfile(b.id).isPinned ? 1 : 0;
-            return pB - pA;
+            const profA = getChatCustomProfile(a.id);
+            const profB = getChatCustomProfile(b.id);
+            const isPinA = !!profA.isPinned;
+            const isPinB = !!profB.isPinned;
+
+            // 一方置顶、一方未置顶时，置顶项永远排在前面
+            if (isPinA && !isPinB) return -1;
+            if (!isPinA && isPinB) return 1;
+
+            // 多个角色同时置顶时：按置顶时间倒序（后置顶的排在上面）
+            if (isPinA && isPinB) {
+                const timeA = profA.pinnedAt || 0;
+                const timeB = profB.pinnedAt || 0;
+                return timeB - timeA;
+            }
+
+            // 都未置顶时：按最后一条消息时间倒序
+            const histA = allChatHistories[a.id];
+            const histB = allChatHistories[b.id];
+            const lastTimeA = (histA && histA.length > 0) ? (histA[histA.length - 1].timestamp || 0) : 0;
+            const lastTimeB = (histB && histB.length > 0) ? (histB[histB.length - 1].timestamp || 0) : 0;
+            return lastTimeB - lastTimeA;
         });
 
         myChars.forEach((ch) => {
@@ -7218,132 +7499,159 @@
 
             const item = document.createElement('div');
             item.className = 'msg-chat-item';
-            if (isPinned) item.style.background = 'rgba(120, 120, 128, 0.12)';
+            
+            // 置顶项微深灰白底色与微弱边框（支持亮色与暗色模式）
+            if (isPinned) {
+                item.style.background = 'var(--bg-surface-press, rgba(0, 0, 0, 0.04))';
+                item.style.border = '1px solid var(--border-glass-bright, rgba(0, 0, 0, 0.09))';
+            }
+
+            // 免打扰静音标志
+            const muteIconHtml = isMuted 
+                ? `<svg width="12" height="12" viewBox="0 0 24 24" stroke="var(--text-tertiary)" fill="none" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>` 
+                : `<span style="font-size:9.5px; color:var(--text-tertiary);">在线</span>`;
 
             item.innerHTML = `
                 <div class="msg-item-avatar" style="${displayAvatarStyle}">
                     ${!displayAvatar ? '<svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>' : ''}
+                    ${isMuted ? '<div class="msg-unread-badge muted"></div>' : ''}
                 </div>
                 <div class="msg-item-info">
                     <div class="msg-item-name-row">
-                        <span class="msg-item-name">${displayName}</span>
-                        <span class="msg-item-time">${isMuted ? '免打扰' : (isPinned ? '已置顶' : '在线')}</span>
+                        <div style="display:flex; align-items:center; gap:5px;">
+                            <span class="msg-item-name">${displayName}</span>
+                            ${isPinned ? '<svg width="11" height="11" viewBox="0 0 24 24" stroke="var(--accent-blue)" fill="none" stroke-width="2.2"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-2l-2-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v7l-2 3v2z"></path></svg>' : ''}
+                        </div>
+                        <div class="msg-item-time">${muteIconHtml}</div>
                     </div>
                     <div class="msg-item-preview">${getLastChatPreview(ch.id) || '点击发起对话'}</div>
                 </div>
             `;
 
-            // 长按 0.5 秒弹出低饱和浅灰菜单
+            // 2. 长按触摸判定（450ms触发，滑动自动取消，防止松手误进入聊天）
             let pressTimer = null;
-            let isLongPressTriggered = false;
+            let isLongPressed = false;
+            let touchStartX = 0, touchStartY = 0;
 
-            const startPress = (e) => {
-                isLongPressTriggered = false;
+            item.addEventListener('touchstart', (e) => {
+                isLongPressed = false;
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
                 pressTimer = setTimeout(() => {
-                    isLongPressTriggered = true;
+                    isLongPressed = true;
                     const rect = item.getBoundingClientRect();
-                    openMsgListContextMenu(rect, ch);
-                }, 480);
-            };
+                    openMsgContactLongPressMenu(rect, ch.id, isPinned, isMuted);
+                }, 450);
+            }, { passive: true });
 
-            const endPress = () => {
+            item.addEventListener('touchmove', (e) => {
+                const diffX = Math.abs(e.touches[0].clientX - touchStartX);
+                const diffY = Math.abs(e.touches[0].clientY - touchStartY);
+                if (diffX > 6 || diffY > 6) {
+                    clearTimeout(pressTimer);
+                }
+            }, { passive: true });
+
+            item.addEventListener('touchend', () => {
                 clearTimeout(pressTimer);
-            };
-
-            item.addEventListener('touchstart', startPress, { passive: true });
-            item.addEventListener('touchend', endPress);
-            item.addEventListener('touchmove', endPress);
-            item.addEventListener('contextmenu', (e) => {
-                e.preventDefault();
-                const rect = item.getBoundingClientRect();
-                openMsgListContextMenu(rect, ch);
             });
 
-            item.onclick = () => {
-                if (isLongPressTriggered) return;
+            item.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const rect = item.getBoundingClientRect();
+                openMsgContactLongPressMenu(rect, ch.id, isPinned, isMuted);
+            });
+
+            item.onclick = (e) => {
+                if (isLongPressed) {
+                    isLongPressed = false;
+                    return;
+                }
                 openChatScreen(ch);
             };
 
             chatWrap.appendChild(item);
 
-            // 通讯录点击直接进聊天
+            // 通讯录列表点击进入聊天
             const contactItem = item.cloneNode(true);
             contactItem.onclick = () => openChatScreen(ch);
             contactWrap.appendChild(contactItem);
         });
     }
 
-    // 弹出浅灰微拟态菜单
-    function openMsgListContextMenu(rect, charObj) {
-        activeMsgListChar = charObj;
-        const custom = getChatCustomProfile(charObj.id);
-        const isPinned = !!custom.isPinned;
-        const isMuted = !!custom.isMuted;
-        const menu = document.getElementById('msgListContextMenu');
+    function openMsgContactLongPressMenu(rect, charId, isPinned, isMuted) {
+        activeLongPressContactId = charId;
+        const menu = document.getElementById('msgContactMenuModal');
         if (!menu) return;
 
-        menu.innerHTML = `
-            <div class="msg-list-menu-item" onclick="triggerMsgListAction('pin')">
-                <svg viewBox="0 0 24 24"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-2l-2-3V5a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v7l-2 3v2z"></path></svg>
-                <span>${isPinned ? '取消置顶' : '置顶聊天'}</span>
-            </div>
-            <div class="msg-list-menu-item" onclick="triggerMsgListAction('mute')">
-                <svg viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-                <span>${isMuted ? '允许提醒' : '消息免打扰'}</span>
-            </div>
-            <div class="msg-list-menu-divider"></div>
-            <div class="msg-list-menu-item danger" onclick="triggerMsgListAction('del')">
-                <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                <span>删除对话</span>
-            </div>
-        `;
+        document.getElementById('menuPinText').innerText = isPinned ? '取消置顶' : '置顶聊天';
+        document.getElementById('menuMuteText').innerText = isMuted ? '允许提醒' : '消息免打扰';
 
         menu.style.display = 'flex';
-        const menuWidth = 135;
-        let left = rect.left + rect.width / 2 - menuWidth / 2;
-        let top = rect.bottom + 4;
 
-        if (left < 16) left = 16;
-        if (left + menuWidth > window.innerWidth - 16) left = window.innerWidth - menuWidth - 16;
-        if (top + 130 > window.innerHeight - 20) top = rect.top - 125;
+        // 智能定位：居中展开在被长按项附近
+        let left = rect.left + rect.width / 2 - 78;
+        let top = rect.bottom + 6;
+
+        if (left < 14) left = 14;
+        if (left + 160 > window.innerWidth - 14) left = window.innerWidth - 174;
+        if (top + 140 > window.innerHeight - 20) top = rect.top - 135;
 
         menu.style.left = `${left}px`;
         menu.style.top = `${top}px`;
 
-        const autoClose = (e) => {
-            if (!menu.contains(e.target)) {
-                closeMsgListContextMenu();
-                document.removeEventListener('touchstart', autoClose);
+        // 点击【置顶/取消置顶】事件绑定（支持多置顶）
+        document.getElementById('menuPinBtn').onclick = async (e) => {
+            e.stopPropagation();
+            closeMsgContactLongPressMenu();
+            const prof = getChatCustomProfile(charId);
+            prof.isPinned = !prof.isPinned;
+            if (prof.isPinned) {
+                prof.pinnedAt = Date.now(); // 记录置顶时间戳，保证后置顶的排在最上方
+            } else {
+                delete prof.pinnedAt;
             }
+            await syncSaveChatData();
+            renderMsgContactsAndChats();
         };
-        setTimeout(() => document.addEventListener('touchstart', autoClose, { passive: true }), 50);
-    }
 
-    function closeMsgListContextMenu() {
-        const menu = document.getElementById('msgListContextMenu');
-        if (menu) menu.style.display = 'none';
-        activeMsgListChar = null;
-    }
-
-    async function triggerMsgListAction(action) {
-        if (!activeMsgListChar || !currentMsgAccount) return;
-        const ch = activeMsgListChar;
-        const custom = getChatCustomProfile(ch.id);
-        closeMsgListContextMenu();
-
-        if (action === 'pin') {
-            custom.isPinned = !custom.isPinned;
+        // 点击【免打扰/允许提醒】事件绑定
+        document.getElementById('menuMuteBtn').onclick = async (e) => {
+            e.stopPropagation();
+            closeMsgContactLongPressMenu();
+            const prof = getChatCustomProfile(charId);
+            prof.isMuted = !prof.isMuted;
             await syncSaveChatData();
             renderMsgContactsAndChats();
-        } else if (action === 'mute') {
-            custom.isMuted = !custom.isMuted;
-            await syncSaveChatData();
-            renderMsgContactsAndChats();
-        } else if (action === 'del') {
-            currentMsgAccount.contacts = (currentMsgAccount.contacts || []).filter(id => id !== ch.id);
+        };
+
+        // 点击【删除对话】事件绑定
+        document.getElementById('menuDelBtn').onclick = async (e) => {
+            e.stopPropagation();
+            closeMsgContactLongPressMenu();
+            currentMsgAccount.contacts = (currentMsgAccount.contacts || []).filter(id => id !== charId);
             await syncSaveMsgAccounts();
             renderMsgContactsAndChats();
-        }
+        };
+
+        const autoClose = (e) => {
+            if (!menu.contains(e.target)) {
+                closeMsgContactLongPressMenu();
+                document.removeEventListener('touchstart', autoClose);
+                document.removeEventListener('click', autoClose);
+            }
+        };
+        setTimeout(() => {
+            document.addEventListener('touchstart', autoClose, { passive: true });
+            document.addEventListener('click', autoClose, { passive: true });
+        }, 50);
+    }
+
+    function closeMsgContactLongPressMenu() {
+        const menu = document.getElementById('msgContactMenuModal');
+        if (menu) menu.style.display = 'none';
+        activeLongPressContactId = null;
     }
 
 /* ================= 15. 独立聊天引擎 (引用回复 + 气泡长按菜单 + 真实转账交互) ================= */
@@ -7381,7 +7689,6 @@ Do NOT alter this syntax so the system can render the quote block cleanly.
         exitMultiSelectMode();
         cancelQuoteReply();
         closeChatPlusPanel();
-        applyChatWallpaper();
         renderChatMessages();
         document.getElementById('chatScreenOverlay').classList.add('open');
 
@@ -8699,12 +9006,18 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
     function openChatSettingsOverlay() {
         if (!currentChatChar) return;
         const custom = getChatCustomProfile(currentChatChar.id);
-        applyChatWallpaper();
-        updateChatAvatarPreviews();
         
         // 1. 恢复 CHAR 角色设定表单
         document.getElementById('chatCharRemarkInput').value = custom.remark || '';
         document.getElementById('chatLocalPersonaInput').value = custom.persona !== undefined ? custom.persona : (currentChatChar.persona || '');
+
+        const charAv = custom.charAvatar || currentChatChar.avatar || '';
+        const charBox = document.getElementById('chatCharAvatarPreview');
+        charBox.style.backgroundImage = charAv ? `url('${charAv}')` : '';
+
+        const userAv = custom.userAvatar || currentMsgAccount?.avatar || '';
+        const userBox = document.getElementById('chatUserAvatarPreview');
+        userBox.style.backgroundImage = userAv ? `url('${userAv}')` : '';
 
         // 2. 恢复 USER 设定表单 (优先读单聊专属，没有则读账号全局)
         const activeUserP = getCurrentUserPersonaForChat();
@@ -8754,19 +9067,19 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
         document.getElementById('chatSettingsOverlay').classList.remove('open');
     }
 
-    // 独立管理本对话角色头像
+    /* ================= 修复：聊天专属头像定制即时生效与持久化 ================= */
     function chooseChatCharAvatar() {
-        if (!currentChatChar) return;
         imageUploader.onchange = function() {
             if (this.files && this.files[0]) {
                 processSafeImage(this.files[0], async (url) => {
                     if (!allChatCustomProfiles[currentChatChar.id]) allChatCustomProfiles[currentChatChar.id] = {};
                     allChatCustomProfiles[currentChatChar.id].charAvatar = url;
-                    updateChatAvatarPreviews();
                     await syncSaveChatData();
-                    renderChatMessages();
-                    renderMessageUI();
-                    showGlassAlert("设置成功", "角色专属聊天头像已更新！");
+                    document.getElementById('chatCharAvatarPreview').style.backgroundImage = `url('${url}')`;
+                    const beautyChar = document.getElementById('beautyPreviewCharAvatar');
+                    if (beautyChar) beautyChar.style.backgroundImage = `url('${url}')`;
+                    renderChatMessages(); // 立即重新渲染聊天气泡头像
+                    renderMsgContactsAndChats(); // 立即刷新列表头像
                 });
             }
         };
@@ -8774,132 +9087,22 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
         imageUploader.click();
     }
 
-    // 独立管理本对话你的专属头像
     function chooseChatUserAvatar() {
-        if (!currentChatChar) return;
         imageUploader.onchange = function() {
             if (this.files && this.files[0]) {
                 processSafeImage(this.files[0], async (url) => {
                     if (!allChatCustomProfiles[currentChatChar.id]) allChatCustomProfiles[currentChatChar.id] = {};
                     allChatCustomProfiles[currentChatChar.id].userAvatar = url;
-                    updateChatAvatarPreviews();
                     await syncSaveChatData();
-                    renderChatMessages();
-                    renderMessageUI();
-                    showGlassAlert("设置成功", "你的专属聊天头像已更新！");
+                    document.getElementById('chatUserAvatarPreview').style.backgroundImage = `url('${url}')`;
+                    const beautyUser = document.getElementById('beautyPreviewUserAvatar');
+                    if (beautyUser) beautyUser.style.backgroundImage = `url('${url}')`;
+                    renderChatMessages(); // 立即重新渲染聊天气泡头像
                 });
             }
         };
         imageUploader.value = '';
         imageUploader.click();
-    }
-
-    // 统一刷新所有头像预览框（保持 1:1 自然正圆居中裁剪，不畸形放大）
-    function updateChatAvatarPreviews() {
-        if (!currentChatChar) return;
-        const custom = getChatCustomProfile(currentChatChar.id);
-        const charAv = custom.charAvatar || currentChatChar.avatar || '';
-        const userAv = custom.userAvatar || currentMsgAccount?.avatar || '';
-
-        const c1 = document.getElementById('chatCharAvatarPreview');
-        const c2 = document.getElementById('beautyPreviewCharAvatar');
-        const u1 = document.getElementById('chatUserAvatarPreview');
-        const u2 = document.getElementById('beautyPreviewUserAvatar');
-
-        const applyStyle = (el, url) => {
-            if (!el) return;
-            el.innerHTML = '';
-            if (url) {
-                el.style.backgroundImage = `url('${url}')`;
-                el.style.backgroundSize = 'cover';
-                el.style.backgroundPosition = 'center center';
-                el.style.backgroundRepeat = 'no-repeat';
-            } else {
-                el.style.backgroundImage = 'none';
-            }
-        };
-
-        applyStyle(c1, charAv);
-        applyStyle(c2, charAv);
-        applyStyle(u1, userAv);
-        applyStyle(u2, userAv);
-    }
-
-    /* ================= 聊天专属壁纸管理核心函数 ================= */
-    function chooseChatWallpaper() {
-        if (!currentChatChar) return;
-        imageUploader.onchange = function() {
-            if (this.files && this.files[0]) {
-                processSafeImage(this.files[0], async (safeUrl) => {
-                    if (!allChatCustomProfiles[currentChatChar.id]) allChatCustomProfiles[currentChatChar.id] = {};
-                    allChatCustomProfiles[currentChatChar.id].wallpaper = safeUrl;
-                    applyChatWallpaper();
-                    await syncSaveChatData();
-                    showGlassAlert("设置成功", "本对话专属壁纸已生效！");
-                });
-            }
-        };
-        imageUploader.value = '';
-        imageUploader.click();
-    }
-
-    function changeChatWpBlur(val) {
-        if (!currentChatChar) return;
-        if (!allChatCustomProfiles[currentChatChar.id]) allChatCustomProfiles[currentChatChar.id] = {};
-        allChatCustomProfiles[currentChatChar.id].wpBlur = val;
-        const blurText = document.getElementById('chatWpBlurText');
-        if (blurText) blurText.innerText = `${val}px`;
-        applyChatWallpaper();
-        syncSaveChatData();
-    }
-
-    async function clearChatWallpaper() {
-        if (!currentChatChar) return;
-        if (allChatCustomProfiles[currentChatChar.id]) {
-            delete allChatCustomProfiles[currentChatChar.id].wallpaper;
-            delete allChatCustomProfiles[currentChatChar.id].wpBlur;
-        }
-        const blurSlider = document.getElementById('chatWpBlurSlider');
-        const blurText = document.getElementById('chatWpBlurText');
-        if (blurSlider) blurSlider.value = 0;
-        if (blurText) blurText.innerText = '0px';
-        applyChatWallpaper();
-        await syncSaveChatData();
-        showGlassAlert("已清除", "本对话专属壁纸已重置为默认。");
-    }
-
-    function applyChatWallpaper() {
-        if (!currentChatChar) return;
-        const custom = getChatCustomProfile(currentChatChar.id);
-        const wpLayer = document.getElementById('chatWallpaperLayer');
-        const previewBox = document.getElementById('chatWpPreviewBox');
-        const blurSlider = document.getElementById('chatWpBlurSlider');
-        const blurText = document.getElementById('chatWpBlurText');
-
-        const wpUrl = custom.wallpaper || '';
-        const blurVal = custom.wpBlur || 0;
-
-        if (wpLayer) {
-            if (wpUrl) {
-                wpLayer.style.backgroundImage = `url('${wpUrl}')`;
-                wpLayer.style.filter = `blur(${blurVal}px)`;
-            } else {
-                wpLayer.style.backgroundImage = 'none';
-            }
-        }
-
-        if (previewBox) {
-            if (wpUrl) {
-                previewBox.style.backgroundImage = `url('${wpUrl}')`;
-                previewBox.innerHTML = '';
-            } else {
-                previewBox.style.backgroundImage = 'none';
-                previewBox.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>导入壁纸</span>`;
-            }
-        }
-
-        if (blurSlider) blurSlider.value = blurVal;
-        if (blurText) blurText.innerText = `${blurVal}px`;
     }
 
     function resetChatPersonaToDefault() {
@@ -9300,22 +9503,57 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
             card.className = 'wb-entry-item-card';
             card.style.cursor = 'pointer';
 
-            const displayName = entry.name || (entry.keys ? entry.keys : `全局条目 ${idx + 1}`);
-            const tagBadge = entry.constant 
-                ? `<span style="font-size:9.5px; background:rgba(52,199,89,0.15); color:#248a3d; padding:2px 6px; border-radius:6px; font-weight:600;">⚡ 全局常驻</span>`
-                : `<span style="font-size:9.5px; background:rgba(0,122,255,0.12); color:var(--accent-blue); padding:2px 6px; border-radius:6px; font-weight:500;">🔑 词触发: ${escapeHtml(entry.keys || '未设词')}</span>`;
+            const displayName = entry.name || `全局条目 ${idx + 1}`;
+            const isConst = entry.constant !== false;
 
             card.innerHTML = `
                 <div class="wb-entry-header">
-                    <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
-                        <span style="font-size:12.5px; font-weight:600; color:var(--text-primary);">${escapeHtml(displayName)}</span>
-                        ${tagBadge}
-                    </div>
+                    <span style="font-size:13px; font-weight:600; color:var(--text-primary);">${escapeHtml(displayName)}</span>
                     <span style="font-size:10.5px; color:#ff3b30; padding:2px 4px;" onclick="event.stopPropagation(); deleteGlobalWbEntry(${idx})">删除</span>
                 </div>
-                <div class="wb-entry-desc">${escapeHtml(entry.content || '')}</div>
+                <div style="display:flex; align-items:center; gap:4px; margin-top:-2px;">
+                    ${isConst 
+                        ? `<span style="font-size:9.5px; background:rgba(52,199,89,0.12); color:#248a3d; padding:2px 6px; border-radius:6px; font-weight:600;">常驻生效</span>`
+                        : `<span style="font-size:9.5px; background:rgba(120,120,128,0.12); color:var(--text-secondary); padding:2px 6px; border-radius:6px;">关键词: ${escapeHtml(entry.keys || '未设置')}</span>`
+                    }
+                </div>
+                <div class="wb-entry-desc" style="margin-top:2px;">${escapeHtml(entry.content || '')}</div>
             `;
             card.onclick = () => openWbEntryDetailScreen(idx, 'global');
+            container.appendChild(card);
+        });
+    }
+
+    function renderWbEntries() {
+        const container = document.getElementById('wbEntriesContainer');
+        container.innerHTML = '';
+        if (!currentActiveFolder || !currentActiveFolder.entries || currentActiveFolder.entries.length === 0) {
+            container.innerHTML = `<div style="text-align: center; padding: 30px; color: var(--text-tertiary); font-size: 11.5px;">当前文件夹内暂无设定条目，点击上方添加。</div>`;
+            return;
+        }
+
+        currentActiveFolder.entries.forEach((entry, idx) => {
+            const card = document.createElement('div');
+            card.className = 'wb-entry-item-card';
+            card.style.cursor = 'pointer';
+
+            const displayName = entry.name || `设定条目 ${idx + 1}`;
+            const isConst = entry.constant !== false;
+
+            card.innerHTML = `
+                <div class="wb-entry-header">
+                    <span style="font-size:13px; font-weight:600; color:var(--text-primary);">${escapeHtml(displayName)}</span>
+                    <span style="font-size:10.5px; color:#ff3b30; padding:2px 4px;" onclick="event.stopPropagation(); deleteWbEntry(${idx})">删除</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:4px; margin-top:-2px;">
+                    ${isConst 
+                        ? `<span style="font-size:9.5px; background:rgba(52,199,89,0.12); color:#248a3d; padding:2px 6px; border-radius:6px; font-weight:600;">常驻生效</span>`
+                        : `<span style="font-size:9.5px; background:rgba(120,120,128,0.12); color:var(--text-secondary); padding:2px 6px; border-radius:6px;">关键词: ${escapeHtml(entry.keys || '未设置')}</span>`
+                    }
+                </div>
+                <div class="wb-entry-desc" style="margin-top:2px;">${escapeHtml(entry.content || '')}</div>
+            `;
+            card.onclick = () => openWbEntryDetailScreen(idx, 'char');
             container.appendChild(card);
         });
     }
@@ -9374,28 +9612,20 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
             card.className = 'wb-entry-item-card';
             card.style.cursor = 'pointer';
 
-            const displayName = entry.name || `设定条目 ${idx + 1}`;
-            const keyText = entry.keys ? entry.keys : '未设置触发关键词';
-            const statusTag = entry.constant 
-                ? `<span style="font-size:9.5px; background:rgba(0,0,0,0.06); color:var(--text-secondary); padding:2px 6px; border-radius:6px; font-weight:500;">常驻生效</span>`
-                : `<span style="font-size:9.5px; background:rgba(0,0,0,0.06); color:var(--text-secondary); padding:2px 6px; border-radius:6px; font-weight:500;">关键词触发</span>`;
+            const displayName = entry.name || (entry.keys ? entry.keys : `条目 ${idx + 1}`);
+            const tagBadge = entry.constant 
+                ? `<span style="font-size:9.5px; background:rgba(52,199,89,0.15); color:#248a3d; padding:2px 6px; border-radius:6px; font-weight:600;">⚡ 常驻</span>`
+                : `<span style="font-size:9.5px; background:rgba(0,122,255,0.12); color:var(--accent-blue); padding:2px 6px; border-radius:6px; font-weight:500;">🔑 词触发: ${escapeHtml(entry.keys || '未设词')}</span>`;
 
             card.innerHTML = `
-                <div class="wb-entry-header" style="align-items:flex-start;">
-                    <div style="display:flex; flex-direction:column; gap:3px; flex:1; overflow:hidden;">
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <span style="font-size:12.5px; font-weight:600; color:var(--text-primary);">${escapeHtml(displayName)}</span>
-                            ${statusTag}
-                        </div>
-                        <!-- 关键词明确排列在条目名字正下方 -->
-                        <div style="font-size:10px; color:var(--accent-blue); font-family:monospace; display:flex; align-items:center; gap:4px;">
-                            <svg width="10" height="10" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="7.5" cy="15.5" r="4.5"/><path d="m21 3-9.5 9.5M15.5 7.5l3 3"/></svg>
-                            <span>${escapeHtml(keyText)}</span>
-                        </div>
+                <div class="wb-entry-header">
+                    <div style="display:flex; align-items:center; gap:6px; overflow:hidden;">
+                        <span style="font-size:12.5px; font-weight:600; color:var(--text-primary);">${escapeHtml(displayName)}</span>
+                        ${tagBadge}
                     </div>
-                    <span style="font-size:10.5px; color:#e05252; padding:2px 4px;" onclick="event.stopPropagation(); deleteWbEntry(${idx})">删除</span>
+                    <span style="font-size:10.5px; color:#ff3b30; padding:2px 4px;" onclick="event.stopPropagation(); deleteWbEntry(${idx})">删除</span>
                 </div>
-                <div class="wb-entry-desc" style="margin-top:2px;">${escapeHtml(entry.content || '')}</div>
+                <div class="wb-entry-desc">${escapeHtml(entry.content || '')}</div>
             `;
             card.onclick = () => openWbEntryDetailScreen(idx, 'char');
             container.appendChild(card);
@@ -9648,90 +9878,31 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
         imageUploader.click();
     }
 
-    /* ================= Message 专属壁纸控制（实时双重持久化） ================= */
-    let msgAppWallpaper = '';
-    let msgAppWpBlur = 0;
-
-    function chooseMessageAppWallpaper() {
-        imageUploader.onchange = function() {
-            if (this.files && this.files[0]) {
-                processSafeImage(this.files[0], async (safeUrl) => {
-                    msgAppWallpaper = safeUrl;
-                    applyMessageAppWallpaper();
-                    try {
-                        localStorage.setItem('msg_app_wallpaper', safeUrl);
-                        localStorage.setItem('msg_app_wp_blur', String(msgAppWpBlur));
-                    } catch(e) {}
-                    await dbSet('msg_app_wallpaper', safeUrl);
-                    await dbSet('msg_app_wp_blur', msgAppWpBlur);
-                    showGlassAlert("设置成功", "Message 应用独立壁纸已保存并生效！");
-                });
-            }
-        };
-        imageUploader.value = '';
-        imageUploader.click();
-    }
-
-    function applyMessageAppWallpaper() {
-        const layer = document.getElementById('msgAppWallpaperLayer');
-        const preview = document.getElementById('msgWpPreviewBox');
-        if (layer) {
-            if (msgAppWallpaper) {
-                layer.style.backgroundImage = `url('${msgAppWallpaper}')`;
-                layer.style.filter = `blur(${msgAppWpBlur}px)`;
-            } else {
-                layer.style.backgroundImage = 'none';
-            }
-        }
-        if (preview) {
-            if (msgAppWallpaper) {
-                preview.style.backgroundImage = `url('${msgAppWallpaper}')`;
-                preview.innerHTML = '';
-            } else {
-                preview.style.backgroundImage = 'none';
-                preview.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span style="font-size: 9.5px;">导入壁纸</span>`;
-            }
-        }
-    }
-
-    async function changeMsgAppWpBlur(val) {
-        msgAppWpBlur = val;
-        document.getElementById('msgWpBlurText').innerText = `${val}px`;
-        applyMessageAppWallpaper();
-        try { localStorage.setItem('msg_app_wp_blur', String(val)); } catch(e) {}
-        await dbSet('msg_app_wp_blur', val);
-    }
-
-    async function clearMessageAppWallpaper() {
-        msgAppWallpaper = '';
-        msgAppWpBlur = 0;
-        document.getElementById('msgWpBlurSlider').value = 0;
-        document.getElementById('msgWpBlurText').innerText = '0px';
-        applyMessageAppWallpaper();
-        try {
-            localStorage.setItem('msg_app_wallpaper', '');
-            localStorage.setItem('msg_app_wp_blur', '0');
-        } catch(e) {}
-        await dbSet('msg_app_wallpaper', '');
-        await dbSet('msg_app_wp_blur', 0);
-        showGlassAlert("已清除", "Message 专属壁纸已重置为默认。");
-    }
-
-    /* ================= Message 全屏创建账号驱动 ================= */
-    const createAccountOverlay = document.getElementById('createAccountOverlay');
-
-    function openCreateAccountOverlay(isFirstRun = false) {
+    function openCreateAccountModal(isFirstRun = false) {
         tempNewAccAvatar = '';
-        document.getElementById('newAccountAvatarBox').style.backgroundImage = 'none';
-        document.getElementById('newAccountAvatarBox').innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>';
-        document.getElementById('newAccountUsername').value = '';
-        document.getElementById('newAccountPassword').value = '';
-        document.getElementById('createAccountTitle').innerText = '';
-        createAccountOverlay.classList.add('open');
+        const av = document.getElementById('newAccountAvatarBox');
+        if (av) {
+            av.style.backgroundImage = 'none';
+            av.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>';
+        }
+        const uInput = document.getElementById('newAccountUsername');
+        const pInput = document.getElementById('newAccountPassword');
+        const tSpan = document.getElementById('createAccountScreenTitle');
+        if (uInput) uInput.value = '';
+        if (pInput) pInput.value = '';
+        if (tSpan) tSpan.innerText = isFirstRun ? '首次使用：创建账号' : '创建新账号';
+        
+        const overlay = document.getElementById('createAccountOverlay');
+        if (overlay) overlay.classList.add('open');
     }
 
     function closeCreateAccountOverlay() {
-        createAccountOverlay.classList.remove('open');
+        const overlay = document.getElementById('createAccountOverlay');
+        if (overlay) overlay.classList.remove('open');
+    }
+
+    function closeCreateAccountModal() {
+        closeCreateAccountOverlay();
     }
 
     document.getElementById('newAccountAvatarBox').onclick = function() {
@@ -9739,8 +9910,9 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
             if (this.files && this.files[0]) {
                 processSafeImage(this.files[0], (url) => {
                     tempNewAccAvatar = url;
-                    document.getElementById('newAccountAvatarBox').style.backgroundImage = `url('${url}')`;
-                    document.getElementById('newAccountAvatarBox').innerHTML = '';
+                    const box = document.getElementById('newAccountAvatarBox');
+                    box.style.backgroundImage = `url('${url}')`;
+                    box.innerHTML = '';
                 });
             }
         };
@@ -10115,44 +10287,33 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
             return null;
         }
     }
-    // 采用专属语义化 ID 绑定，彻底杜绝下标移位导致的文案错乱
-    function initPersistentEditableTexts() {
-        // 自动清理历史遗留的错乱下标缓存
-        for (let i = 0; i < 60; i++) {
-            localStorage.removeItem(`custom_text_idx_${i}`);
+    document.querySelectorAll('.editable').forEach((el, idx) => {
+        const textKey = el.id ? `custom_text_${el.id}` : `custom_text_idx_${idx}`;
+        
+        const localVal = localStorage.getItem(textKey);
+        if (localVal !== null) {
+            el.innerText = localVal;
+            el.dataset.userEdited = "true";
         }
-
-        document.querySelectorAll('.editable').forEach((el, idx) => {
-            // 优先读取 data-text-id，其次读 id，绝不再产生易错乱的数字索引
-            const textKey = el.dataset.textId ? `custom_text_${el.dataset.textId}` : (el.id ? `custom_text_${el.id}` : null);
-            if (!textKey) return;
-            
-            const localVal = localStorage.getItem(textKey);
-            if (localVal !== null && localVal.trim() !== '') {
-                el.innerText = localVal;
+        
+        dbGet(textKey).then(dbVal => {
+            if (dbVal !== null && dbVal !== undefined) {
+                el.innerText = dbVal;
                 el.dataset.userEdited = "true";
+                localStorage.setItem(textKey, dbVal);
             }
-            
-            dbGet(textKey).then(dbVal => {
-                if (dbVal !== null && dbVal !== undefined && String(dbVal).trim() !== '') {
-                    el.innerText = dbVal;
-                    el.dataset.userEdited = "true";
-                    localStorage.setItem(textKey, dbVal);
-                }
-            });
-
-            const saveContent = () => {
-                const currentTxt = el.innerText;
-                el.dataset.userEdited = "true";
-                localStorage.setItem(textKey, currentTxt);
-                dbSet(textKey, currentTxt);
-            };
-
-            el.addEventListener('input', saveContent);
-            el.addEventListener('blur', saveContent);
         });
-    }
-    initPersistentEditableTexts();
+
+        const saveContent = () => {
+            const currentTxt = el.innerText;
+            el.dataset.userEdited = "true";
+            localStorage.setItem(textKey, currentTxt);
+            dbSet(textKey, currentTxt);
+        };
+
+        el.addEventListener('input', saveContent);
+        el.addEventListener('blur', saveContent);
+    });
 
     /* ================= 12. 真实时间与电量 ================= */
     const weekNamesEn = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -10239,13 +10400,13 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
         document.getElementById('announcementScreenOverlay').classList.remove('open');
     }
     function switchAnnounceTab(tab) {
-        document.getElementById('annTabBtn_changelog').classList.toggle('active', tab === 'changelog');
-        document.getElementById('annTabBtn_thoughts').classList.toggle('active', tab === 'thoughts');
-        document.getElementById('annTabBtn_disclaimer').classList.toggle('active', tab === 'disclaimer');
-        
-        document.getElementById('annPane_changelog').style.display = tab === 'changelog' ? 'flex' : 'none';
-        document.getElementById('annPane_thoughts').style.display = tab === 'thoughts' ? 'flex' : 'none';
-        document.getElementById('annPane_disclaimer').style.display = tab === 'disclaimer' ? 'flex' : 'none';
+        const tabs = ['updates', 'thoughts', 'disclaimer'];
+        tabs.forEach(t => {
+            const btn = document.getElementById(`annTabBtn_${t}`);
+            const pane = document.getElementById(`annPane_${t}`);
+            if (btn) btn.classList.toggle('active', t === tab);
+            if (pane) pane.style.display = (t === tab ? 'flex' : 'none');
+        });
     }
 
     // 页面加载时自动检测是否首次进入
@@ -10263,29 +10424,6 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
 
     checkFirstTimeOnboarding();
 
-    // 页面切换与退出时强制执行全机数据双重落盘
-    async function autoFlushAllDataToDisk() {
-        try {
-            await syncSaveMsgAccounts();
-            await syncSaveChatData();
-            await syncSaveWorldBookData();
-            if (charList && charList.length > 0) {
-                localStorage.setItem('contacts_char_list', JSON.stringify(charList));
-                await dbSet('contacts_char_list', charList);
-            }
-            if (npcList && npcList.length > 0) {
-                localStorage.setItem('contacts_npc_list', JSON.stringify(npcList));
-                await dbSet('contacts_npc_list', npcList);
-            }
-        } catch(e) {}
-    }
-
-    window.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'hidden') autoFlushAllDataToDisk();
-    });
-    window.addEventListener('pagehide', autoFlushAllDataToDisk);
-    window.addEventListener('beforeunload', autoFlushAllDataToDisk);
-
     function setBatteryUI(level, isCharging) {
         document.getElementById('batteryPercent').innerText = `${level}%`;
         const bar = document.getElementById('batteryLevelBar');
@@ -10302,16 +10440,16 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
     setBatteryUI(79, false);
 
     if (navigator.getBattery) {
-        navigator.getBattery().then(battery => {
-            function update() {
-                const level = Math.round(battery.level * 100);
-                setBatteryUI(level, battery.charging);
+                navigator.getBattery().then(battery => {
+                    function update() {
+                        const level = Math.round(battery.level * 100);
+                        setBatteryUI(level, battery.charging);
+                    }
+                    update();
+                    battery.addEventListener('levelchange', update);
+                    battery.addEventListener('chargingchange', update);
+                });
             }
-            update();
-            battery.addEventListener('levelchange', update);
-            battery.addEventListener('chargingchange', update);
-        });
-    }
 </script>
 </body>
 </html>
