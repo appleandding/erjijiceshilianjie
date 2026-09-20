@@ -2284,6 +2284,85 @@
                         transform 0.28s cubic-bezier(0.32, 0.72, 0, 1),
                         visibility 0.28s ease;
             padding: max(14px, env(safe-area-inset-top, 14px)) 12px 14px 12px;
+            overflow: hidden;
+        }
+        .chat-screen-overlay.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: scale(1);
+        }
+
+        /* 聊天专属独立壁纸层 */
+        .chat-screen-wallpaper-layer {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            pointer-events: none;
+            transition: filter 0.25s ease, opacity 0.3s ease;
+        }
+
+        .chat-header-bar, .chat-body-scroll, .chat-bottom-input-bar, .chat-plus-panel, .chat-multiselect-bar, .chat-quote-bar {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 异地恋展开面板平滑过渡 */
+        .ldr-expand-panel {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: max-height 0.35s cubic-bezier(0.32, 0.72, 0, 1),
+                        opacity 0.25s ease,
+                        transform 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .ldr-expand-panel.open {
+            max-height: 380px;
+            opacity: 1;
+            transform: translateY(0);
+            padding-top: 6px;
+        }
+
+        /* 聊天专属独立壁纸层 */
+        .chat-screen-wallpaper-layer {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            pointer-events: none;
+            transition: filter 0.25s ease, opacity 0.3s ease;
+        }
+
+        .chat-header-bar, .chat-body-scroll, .chat-bottom-input-bar, .chat-plus-panel, .chat-multiselect-bar, .chat-quote-bar {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 异地恋展开面板平滑过渡 */
+        .ldr-expand-panel {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: max-height 0.35s cubic-bezier(0.32, 0.72, 0, 1),
+                        opacity 0.25s ease,
+                        transform 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .ldr-expand-panel.open {
+            max-height: 380px;
+            opacity: 1;
+            transform: translateY(0);
+            padding-top: 6px;
         }
         .chat-screen-overlay.open {
             opacity: 1;
@@ -4039,19 +4118,32 @@
         </div>
 
         <div class="theme-body" style="padding-top: 4px;">
-            <!-- 1. 更新公告列表 (最新在前) -->
+            <<!-- 1. 更新公告列表 (最新在前) -->
             <div id="annPane_updates" style="display: flex; flex-direction: column; gap: 12px;">
                 <div class="theme-card">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="theme-sec-title">v1.3.0 深度体验优化更新</span>
+                        <span class="theme-sec-title">v2.1.0 聊天生态与时空沉浸更新</span>
                         <span style="font-size: 10px; color: var(--accent-blue); font-weight: 600;">最新</span>
+                    </div>
+                    <div style="font-size: 11.5px; line-height: 1.6; color: var(--text-secondary); display: flex; flex-direction: column; gap: 6px;">
+                        <div>1. <strong>专属壁纸双模存储</strong>：支持为单聊设置独立背景壁纸，并新增「全局聊天页面统一 / 单独保存在此聊天」一键切换。</div>
+                        <div>2. <strong>新增【功能区】</strong>：上线「异地恋模式」，可自定义双方所在英文地名与别称，AI 自动感知两地时差、真实天气、节日与牵挂氛围。</div>
+                        <div>3. <strong>新增【提示词】</strong>：开放自定义系统提示词，支持关闭内置法则，API 严格执行专属提示词规则。</div>
+                        <div>4. <strong>聊天专属头像重构</strong>：彻底修复头像设置后气泡不生效问题，支持点击即时同步与全局数据安全持久化。</div>
+                        <div>5. <strong>纯净极简灰白</strong>：全面优化 iOS 液体微光毛玻璃质感，移除所有 Emoji，全量采用高精度 SVG 矢量图标。</div>
+                    </div>
+                </div>
+
+                <div class="theme-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="theme-sec-title">v1.3.0 深度体验优化更新</span>
+                        <span style="font-size: 10px; color: var(--text-tertiary);">历史</span>
                     </div>
                     <div style="font-size: 11.5px; line-height: 1.6; color: var(--text-secondary); display: flex; flex-direction: column; gap: 6px;">
                         <div>1. <strong>Message 体验升级</strong>：创建账号改为原生全屏页面；列表好友改为长按弹出置顶/免打扰/删除；新增消息应用独立全局壁纸。</div>
                         <div>2. <strong>聊天专属头像修复</strong>：修复了在聊天设置中上传专属头像后聊天气泡不显示的重大问题。</div>
                         <div>3. <strong>世界书与联系人打通</strong>：支持在创建/编辑角色时直接关联世界书，关键词移至条目下方规范排版。</div>
                         <div>4. <strong>透明底图与主题支持</strong>：上传组件及图标支持 PNG 透明背景；清空主题将同步清空所有小组件图片。</div>
-                        <div>5. <strong>界面固定与纯净色调</strong>：应用名称锁定为不可修改；移除所有 Emoji，全量采用矢量 SVG 图标与灰白质感。</div>
                     </div>
                 </div>
 
@@ -4398,6 +4490,9 @@
 
     <!-- ================= 独立全屏聊天视窗 ================= -->
     <div class="chat-screen-overlay" id="chatScreenOverlay">
+        <!-- 聊天专属独立壁纸层 -->
+        <div class="chat-screen-wallpaper-layer" id="chatScreenWallpaperLayer"></div>
+
         <!-- 顶栏 -->
         <div class="chat-header-bar">
             <button class="theme-back-btn" style="width: 32px; height: 32px; justify-content: flex-start;" onclick="closeChatScreen()">
@@ -4610,9 +4705,11 @@
             <div style="width: 32px;"></div>
         </div>
 
-        <!-- 头像下方三大分区切换标签 -->
-        <div class="settings-tabs-nav" style="margin-top: 8px;">
+        <!-- 头像下方 5 大分区切换标签 -->
+        <div class="settings-tabs-nav" style="margin-top: 8px; overflow-x: auto; scrollbar-width: none;">
             <button class="settings-tab-btn active" id="cTabBtn_persona" onclick="switchChatSettingTab('persona')">人设设定</button>
+            <button class="settings-tab-btn" id="cTabBtn_features" onclick="switchChatSettingTab('features')">功能区</button>
+            <button class="settings-tab-btn" id="cTabBtn_prompts" onclick="switchChatSettingTab('prompts')">提示词</button>
             <button class="settings-tab-btn" id="cTabBtn_beauty" onclick="switchChatSettingTab('beauty')">聊天美化</button>
             <button class="settings-tab-btn" id="cTabBtn_memory" onclick="switchChatSettingTab('memory')">记忆库</button>
         </div>
@@ -4680,9 +4777,15 @@
                     <div class="theme-card">
                         <span class="theme-sec-title">你的身份与人设设定 (注入 API)</span>
                         
+                        <!-- 姓名与用户名独立拆分 -->
                         <div style="display: flex; flex-direction: column; gap: 4px;">
-                            <span style="font-size: 11px; color: var(--text-secondary);">名字 / 称呼</span>
-                            <input type="text" class="theme-input" id="chatUserNameInput" placeholder="如: 玩家昵称 / 角色名...">
+                            <span style="font-size: 11px; color: var(--text-secondary); font-weight: 500;">姓名 / 角色真实称呼 (对话中被称呼)</span>
+                            <input type="text" class="theme-input" id="chatUserRealNameInput" placeholder="如: 顾念 / 林小雨 / 哥哥 (Char会在正文中称呼你此名字)...">
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-size: 11px; color: var(--text-secondary); font-weight: 500;">用户名 / 账号网名 (消息列表与引用展示)</span>
+                            <input type="text" class="theme-input" id="chatUserNicknameInput" placeholder="如: 淅沥沥 / SleepyCat (用于气泡引用展示)...">
                         </div>
 
                         <div style="display: flex; flex-direction: column; gap: 4px;">
@@ -4718,7 +4821,99 @@
                 </div>
             </div>
 
-            <!-- 2. 美化分区 -->
+            <!-- 2. 功能区 (异地恋模式) -->
+            <div id="cPane_features" style="display: none; flex-direction: column; gap: 12px;">
+                <div class="theme-card">
+                    <div class="theme-card-row">
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <span class="theme-sec-title">异地恋模式</span>
+                            <span style="font-size: 10.5px; color: var(--text-tertiary);">开启后角色感知双城时空、天气、时差与长情牵挂</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="ldrModeToggle" onchange="toggleLdrMode(this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- 展开填写面板 -->
+                    <div class="ldr-expand-panel" id="ldrInputsWrap">
+                        <!-- 一键读取本地时空与环境天气 -->
+                        <button class="theme-btn" style="width: 100%; border-color: var(--accent-blue); color: var(--accent-blue); font-size: 11.5px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="autoDetectUserTimeAndWeather()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            <span>一键自动读取本地真实时间与天气</span>
+                        </button>
+
+                        <div style="border-top: 1px dashed var(--border-subtle); padding-top: 8px; margin-top: 2px;">
+                            <span style="font-size: 11px; font-weight: 600; color: var(--text-primary);">你的所在地 (User)</span>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                            <input type="text" class="theme-input" id="userLdrEn" placeholder="地点英文 (如: Beijing)" style="flex: 1.2;">
+                            <input type="text" class="theme-input" id="userLdrAlias" placeholder="别称 (如: 临城)" style="flex: 0.9;">
+                        </div>
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <select class="theme-input" id="userLdrTimezone" style="flex: 1.3; font-size: 11px;">
+                                <option value="Asia/Shanghai">东八区 (北京/香港/新加坡 UTC+8)</option>
+                                <option value="Asia/Tokyo">东九区 (东京/首尔 UTC+9)</option>
+                                <option value="Europe/London">零时区 (伦敦/格林威治 UTC+0)</option>
+                                <option value="Europe/Paris">东一区 (巴黎/柏林 UTC+1)</option>
+                                <option value="America/New_York">西五区 (纽约/多伦多 UTC-5)</option>
+                                <option value="America/Los_Angeles">西八区 (旧金山/洛杉矶 UTC-8)</option>
+                                <option value="Australia/Sydney">东十区 (悉尼/墨尔本 UTC+10)</option>
+                            </select>
+                            <input type="text" class="theme-input" id="userLdrWeather" placeholder="当前天气 (如: 阴天微雨)" style="flex: 1;">
+                        </div>
+
+                        <div style="margin-top: 6px;">
+                            <span style="font-size: 11px; font-weight: 600; color: var(--text-primary);">角色所在地 (Char)</span>
+                        </div>
+                        <div style="display: flex; gap: 6px;">
+                            <input type="text" class="theme-input" id="charLdrEn" placeholder="地点英文 (如: Hong kong)" style="flex: 1.2;">
+                            <input type="text" class="theme-input" id="charLdrAlias" placeholder="别称 (如: 港城)" style="flex: 0.9;">
+                        </div>
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <select class="theme-input" id="charLdrTimezone" style="flex: 1.3; font-size: 11px;">
+                                <option value="Asia/Hong_Kong">东八区 (香港/北京 UTC+8)</option>
+                                <option value="Asia/Tokyo">东九区 (东京/首尔 UTC+9)</option>
+                                <option value="Europe/London">零时区 (伦敦/爱丁堡 UTC+0)</option>
+                                <option value="Europe/Paris">东一区 (巴黎/罗马 UTC+1)</option>
+                                <option value="America/New_York">西五区 (纽约/波士顿 UTC-5)</option>
+                                <option value="America/Los_Angeles">西八区 (洛杉矶/西雅图 UTC-8)</option>
+                                <option value="Australia/Sydney">东十区 (悉尼/堪培拉 UTC+10)</option>
+                            </select>
+                            <input type="text" class="theme-input" id="charLdrWeather" placeholder="角色天气 (如: 晴朗微风)" style="flex: 1;">
+                        </div>
+
+                        <button class="theme-btn primary" style="width: 100%; margin-top: 6px; font-weight: 600;" onclick="saveLdrSettings()">保存异地恋配置</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 提示词分区 (内置系统法则开关 + 自定义提示词) -->
+            <div id="cPane_prompts" style="display: none; flex-direction: column; gap: 12px;">
+                <div class="theme-card">
+                    <div class="theme-card-row">
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <span class="theme-sec-title">内置系统法则</span>
+                            <span style="font-size: 10.5px; color: var(--text-tertiary);">包含短句气泡切分、引用指令与转账识别规范</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="builtinPromptToggle" checked onchange="toggleBuiltinPrompt(this.checked)">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <span style="font-size: 10px; color: var(--text-tertiary); line-height: 1.4;">
+                        提示：关闭内置提示词后，API 将严格优先执行您在下方填写的自定义提示词。
+                    </span>
+                </div>
+
+                <div class="theme-card">
+                    <span class="theme-sec-title">自定义系统提示词 (Prompt)</span>
+                    <textarea class="settings-textarea" id="customSystemPromptInput" placeholder="填写您希望 AI 严格遵守的系统设定、聊天风格、语言习惯或世界观指令..." style="min-height: 160px; font-family: inherit;"></textarea>
+                    <button class="theme-btn primary" style="width: 100%; margin-top: 4px; font-weight: 600;" onclick="saveCustomPromptSettings()">保存提示词设置</button>
+                </div>
+            </div>
+
+            <!-- 4. 美化分区 -->
             <div id="cPane_beauty" style="display: none; flex-direction: column; gap: 12px;">
                 <!-- 实时气泡预览（头像完全对应当前聊天双方头像） -->
                 <div class="theme-card">
@@ -4739,7 +4934,7 @@
                     </div>
                 </div>
 
-                <!-- 独立聊天壁纸导入（不影响主页，可单独导入与调模糊） -->
+                <!-- 聊天壁纸导入与双模保存 -->
                 <div class="theme-card">
                     <span class="theme-sec-title">聊天专属壁纸设置</span>
                     <div style="display: flex; gap: 12px; align-items: center;">
@@ -4753,8 +4948,14 @@
                                 <span id="chatWpBlurText" style="font-size: 11px; color: var(--accent-blue); font-weight: 600;">0px</span>
                             </div>
                             <input type="range" class="theme-slider" id="chatWpBlurSlider" min="0" max="30" value="0" oninput="changeChatWpBlur(this.value)">
-                            <button class="theme-btn" style="height: 28px; font-size: 10.5px; margin-top: 2px;" onclick="clearChatWallpaper()">清除聊天壁纸</button>
+                            <button class="theme-btn" style="height: 28px; font-size: 10.5px; margin-top: 2px;" onclick="clearChatWallpaper()">清除壁纸</button>
                         </div>
+                    </div>
+
+                    <!-- 双模保存按钮组 -->
+                    <div style="display: flex; gap: 8px; margin-top: 6px;">
+                        <button class="theme-btn primary" style="flex: 1; height: 36px; font-weight: 600;" onclick="saveChatWallpaperMode(false)">单独保存在此聊天</button>
+                        <button class="theme-btn" style="flex: 1; height: 36px; border-color: var(--accent-blue); color: var(--text-primary); font-weight: 500;" onclick="saveChatWallpaperMode(true)">全局聊天页面统一</button>
                     </div>
                 </div>
 
@@ -4839,6 +5040,13 @@
                     </p>
                     <div id="chatMemoryListContainer" style="display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; padding: 2px 0;"></div>
                 </div>
+            </div>
+
+            <!-- 全局统一全部保存大按键 -->
+            <div style="padding: 10px 4px 20px 4px; width: 100%;">
+                <button class="theme-btn primary" style="width: 100%; height: 44px; min-height: 44px; font-size: 13.5px; font-weight: 600; border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.06);" onclick="saveAllChatSettingsUnified()">
+                    全部保存设置
+                </button>
             </div>
         </div>
     </div>
@@ -7691,15 +7899,104 @@ Do NOT alter this syntax so the system can render the quote block cleanly.
 3. Transfer Recognition: If User transfers money, acknowledge naturally based on persona. To send money to User, use: [TRANSFER amount="50.00" note="奶茶钱"].
 4. Tone: Natural, engaging, highly immersive. Never sound like a robot.`;
 
+    /* ================= 专属聊天壁纸状态与双模保存 ================= */
+    let tempChatWallpaperUrl = '';
+    let globalChatWallpaper = '';
+    let globalChatWallpaperBlur = 0;
+
+    function applyCurrentChatWallpaper() {
+        const layer = document.getElementById('chatScreenWallpaperLayer');
+        if (!layer || !currentChatChar) return;
+        const custom = getChatCustomProfile(currentChatChar.id);
+
+        const wp = (custom.chatWallpaper !== undefined && custom.chatWallpaper !== '') 
+            ? custom.chatWallpaper 
+            : globalChatWallpaper;
+
+        const blur = (custom.chatWpBlur !== undefined) 
+            ? custom.chatWpBlur 
+            : globalChatWallpaperBlur;
+
+        if (wp) {
+            layer.style.backgroundImage = `url('${wp}')`;
+            layer.style.filter = `blur(${blur || 0}px)`;
+        } else {
+            layer.style.backgroundImage = 'none';
+        }
+    }
+
+    function chooseChatWallpaper() {
+        imageUploader.onchange = function() {
+            if (this.files && this.files[0]) {
+                processSafeImage(this.files[0], (url) => {
+                    tempChatWallpaperUrl = url;
+                    const previewBox = document.getElementById('chatWpPreviewBox');
+                    previewBox.style.backgroundImage = `url('${url}')`;
+                    previewBox.innerHTML = '';
+                    showGlassAlert("壁纸已选取", "请选择【单独保存在此聊天】或【全局聊天页面统一】以完成应用。");
+                });
+            }
+        };
+        imageUploader.value = '';
+        imageUploader.click();
+    }
+
+    function changeChatWpBlur(val) {
+        document.getElementById('chatWpBlurText').innerText = `${val}px`;
+        const layer = document.getElementById('chatScreenWallpaperLayer');
+        if (layer) layer.style.filter = `blur(${val}px)`;
+    }
+
+    async function saveChatWallpaperMode(isGlobal) {
+        if (!currentChatChar) return;
+        const blur = parseInt(document.getElementById('chatWpBlurSlider').value) || 0;
+        const wpUrl = tempChatWallpaperUrl || getChatCustomProfile(currentChatChar.id).chatWallpaper || globalChatWallpaper;
+
+        if (!wpUrl) return showGlassAlert("提示", "请先点击【导入壁纸】选取一张背景图片！");
+
+        if (isGlobal) {
+            globalChatWallpaper = wpUrl;
+            globalChatWallpaperBlur = blur;
+            await dbSet('setting_global_chat_wallpaper', globalChatWallpaper);
+            await dbSet('setting_global_chat_wallpaper_blur', globalChatWallpaperBlur);
+            showGlassAlert("保存成功", "该壁纸已应用为所有角色聊天的全局统一背景！");
+        } else {
+            const custom = getChatCustomProfile(currentChatChar.id);
+            custom.chatWallpaper = wpUrl;
+            custom.chatWpBlur = blur;
+            await syncSaveChatData();
+            showGlassAlert("保存成功", `该壁纸已成功单独保存在与【${currentChatChar.name}】的专属聊天中！`);
+        }
+
+        applyCurrentChatWallpaper();
+    }
+
+    async function clearChatWallpaper() {
+        if (!currentChatChar) return;
+        const custom = getChatCustomProfile(currentChatChar.id);
+        custom.chatWallpaper = '';
+        tempChatWallpaperUrl = '';
+        document.getElementById('chatWpPreviewBox').style.backgroundImage = 'none';
+        document.getElementById('chatWpPreviewBox').innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>导入壁纸</span>';
+        await syncSaveChatData();
+        applyCurrentChatWallpaper();
+        showGlassAlert("已清除", "当前聊天的独立壁纸已清除。");
+    }
+
     // 打开聊天页面
     async function openChatScreen(charObj) {
         currentChatChar = charObj;
         await syncLoadChatData();
 
+        // 恢复全局聊天壁纸
+        globalChatWallpaper = (await dbGet('setting_global_chat_wallpaper')) || '';
+        globalChatWallpaperBlur = (await dbGet('setting_global_chat_wallpaper_blur')) || 0;
+
         const custom = getChatCustomProfile(charObj.id);
         const remarkName = custom.remark || charObj.name;
         document.getElementById('chatHeaderRemarkName').innerText = remarkName;
 
+        applyCurrentChatWallpaper();
         exitMultiSelectMode();
         cancelQuoteReply();
         closeChatPlusPanel();
@@ -7707,13 +8004,116 @@ Do NOT alter this syntax so the system can render the quote block cleanly.
         document.getElementById('chatScreenOverlay').classList.add('open');
 
         const input = document.getElementById('chatInputText');
-        // 支持软键盘与各类回车编码（keyCode 13）无缝触发
         input.onkeydown = (e) => {
             if (e.key === 'Enter' || e.keyCode === 13) {
                 e.preventDefault();
                 sendUserChatMessage();
             }
         };
+    }
+
+    /* ================= 异地恋模式与提示词逻辑 ================= */
+    function toggleLdrMode(isOpen) {
+        const wrap = document.getElementById('ldrInputsWrap');
+        if (isOpen) wrap.classList.add('open');
+        else wrap.classList.remove('open');
+    }
+
+    // 一键自动读取本地真实时间、时区与天气
+    function autoDetectUserTimeAndWeather() {
+        try {
+            const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Shanghai';
+            const tzSelect = document.getElementById('userLdrTimezone');
+            
+            // 自动匹配时区
+            let matched = false;
+            for (let i = 0; i < tzSelect.options.length; i++) {
+                if (tzSelect.options[i].value === userTz) {
+                    tzSelect.selectedIndex = i;
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched && userTz.includes('Shanghai')) tzSelect.value = 'Asia/Shanghai';
+
+            // 自动填入地点英文默认值
+            const enInput = document.getElementById('userLdrEn');
+            if (!enInput.value.trim()) {
+                enInput.value = userTz.split('/')[1] || 'Beijing';
+            }
+
+            // 根据真实时间估算天气与环境
+            const hours = new Date().getHours();
+            const weatherInput = document.getElementById('userLdrWeather');
+            if (!weatherInput.value.trim()) {
+                if (hours >= 6 && hours < 18) weatherInput.value = '晴朗微风';
+                else weatherInput.value = '夜幕微凉';
+            }
+
+            showGlassAlert("读取成功", `已自动获取本地时区：${userTz}\n已同步填充时间与环境！`);
+        } catch(e) {
+            showGlassAlert("读取提示", "已采用标准东八区时区。");
+        }
+    }
+
+    async function saveLdrSettings() {
+        if (!currentChatChar) return;
+        const custom = getChatCustomProfile(currentChatChar.id);
+        const isOpen = document.getElementById('ldrModeToggle').checked;
+
+        custom.ldrConfig = {
+            enabled: isOpen,
+            userEn: document.getElementById('userLdrEn').value.trim(),
+            userAlias: document.getElementById('userLdrAlias').value.trim(),
+            userTz: document.getElementById('userLdrTimezone').value || 'Asia/Shanghai',
+            userWeather: document.getElementById('userLdrWeather').value.trim() || '晴',
+            charEn: document.getElementById('charLdrEn').value.trim(),
+            charAlias: document.getElementById('charLdrAlias').value.trim(),
+            charTz: document.getElementById('charLdrTimezone').value || 'Asia/Hong_Kong',
+            charWeather: document.getElementById('charLdrWeather').value.trim() || '晴'
+        };
+
+        await syncSaveChatData();
+        showGlassAlert("保存成功", isOpen ? "异地恋模式已开启！AI 会自动感知两地时差、天气与异地情愫。" : "异地恋模式已关闭。");
+    }
+
+    // 根据时区计算两地真实时间与环境
+    function buildLdrEnvironmentContext(ldrConfig) {
+        if (!ldrConfig || !ldrConfig.enabled) return '';
+
+        const uCityEn = ldrConfig.userEn || 'User Location';
+        const uAlias = ldrConfig.userAlias ? ` (${ldrConfig.userAlias})` : '';
+        const cCityEn = ldrConfig.charEn || 'Char Location';
+        const cAlias = ldrConfig.charAlias ? ` (${ldrConfig.charAlias})` : '';
+
+        // 计算 User 所在时区的当前真实时间
+        let userTimeStr = '';
+        try {
+            userTimeStr = new Date().toLocaleTimeString('zh-CN', { timeZone: ldrConfig.userTz || 'Asia/Shanghai', hour: '2-digit', minute: '2-digit' });
+        } catch(e) { userTimeStr = new Date().toLocaleTimeString(); }
+
+        // 计算 Char 所在时区的当前真实时间
+        let charTimeStr = '';
+        try {
+            charTimeStr = new Date().toLocaleTimeString('zh-CN', { timeZone: ldrConfig.charTz || 'Asia/Hong_Kong', hour: '2-digit', minute: '2-digit' });
+        } catch(e) { charTimeStr = new Date().toLocaleTimeString(); }
+
+        return `[Special Mode: Long-Distance Relationship (异地恋模式 Activated)]
+- User Current City: ${uCityEn}${uAlias} (Local Time: ${userTimeStr}, Weather: ${ldrConfig.userWeather || '晴'})
+- Your (Character) Current City: ${cCityEn}${cAlias} (Local Time: ${charTimeStr}, Weather: ${ldrConfig.charWeather || '晴'})
+- Psychological & Behavioral Tone: You and User are currently in a sincere long-distance relationship separated by distance. You clearly perceive both sides' local times, time zone differences, and weather conditions. You deeply care about User's daily life, rest, and safety across distance, expressing genuine warmth and missed affection.`;
+    }
+
+    function toggleBuiltinPrompt(isChecked) {}
+
+    async function saveCustomPromptSettings() {
+        if (!currentChatChar) return;
+        const custom = getChatCustomProfile(currentChatChar.id);
+        custom.enableBuiltinPrompt = document.getElementById('builtinPromptToggle').checked;
+        custom.customSystemPrompt = document.getElementById('customSystemPromptInput').value.trim();
+
+        await syncSaveChatData();
+        showGlassAlert("保存成功", "提示词配置已更新！后续对话将严格生效。");
     }
 
     function closeChatScreen() {
@@ -7759,7 +8159,13 @@ Do NOT alter this syntax so the system can render the quote block cleanly.
             const avatar = msg.role === 'user' ? userAvatar : charAvatar;
             const avatarElem = document.createElement('div');
             avatarElem.className = 'chat-msg-avatar';
-            if (avatar) avatarElem.style.backgroundImage = `url('${avatar}')`;
+            
+            // 采用真实 <img> 标签强力渲染，彻底解决任何格式下背景图不显示的问题
+            if (avatar && avatar.trim() !== '') {
+                avatarElem.innerHTML = `<img src="${avatar}" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; pointer-events:none;">`;
+            } else {
+                avatarElem.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
+            }
 
             // 承接消息隐藏头像，仅保留对齐占位
             if (isConsecutive) {
@@ -8617,9 +9023,10 @@ Do NOT alter this syntax so the system can render the quote block cleanly.
             worldBookContext = buildWorldBookContext(targetWbIds, history);
         }
 
-        // 提取 User 人设 (优先读取当前单聊专属设定，其次读当前账号全局设定)
+        // 提取 User 人设与时空环境
         const userProfile = getCurrentUserPersonaForChat();
         const timeEnvironment = getRealTimeEnvironmentContext();
+        const ldrContext = buildLdrEnvironmentContext(custom.ldrConfig);
 
         // 1. 提取记忆总结列表 (以新后旧注入)
         let memorySummariesContext = '';
@@ -8628,10 +9035,19 @@ Do NOT alter this syntax so the system can render the quote block cleanly.
             memorySummariesContext = `[Long-term Memory & Historical Event Summaries (Chronological / Latest on top)]:\n${memLines}\n`;
         }
 
-        const systemPrompt = `
-${SYSTEM_CHAT_PROMPT_RULE}
+        // 2. 组装系统法则（支持开关内置法则与自定义提示词）
+        let systemPromptRules = '';
+        if (custom.enableBuiltinPrompt !== false) {
+            systemPromptRules += `${SYSTEM_CHAT_PROMPT_RULE}\n\n`;
+        }
+        if (custom.customSystemPrompt && custom.customSystemPrompt.trim()) {
+            systemPromptRules += `[User Custom System Prompt & Instructions]:\n${custom.customSystemPrompt.trim()}\n\n`;
+        }
 
+        const systemPrompt = `
+${systemPromptRules}
 ${timeEnvironment}
+${ldrContext ? ldrContext + '\n' : ''}
 
 [Character (You)]:
 Name: ${currentChatChar.name}
@@ -8640,11 +9056,13 @@ Persona & Background: ${activePersona}
 ${memorySummariesContext}
 ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
 [User Persona & Details (The Person You Are Chatting With)]:
-- Name / Call: ${userProfile.name || currentMsgAccount?.username || 'User'}
+- User Screen / Account Nickname (用于引用/展示网名): ${userProfile.nickname || currentMsgAccount?.username || 'User'}
+- User Real Name / Direct Call (你在剧情对话正文中称呼对方的名字): ${userProfile.realName || '玩家'}
 - Gender: ${userProfile.gender || '未知'}
 - Identity / Relationship: ${userProfile.role || '朋友/聊天对象'}
 - Detailed Persona & Habits: ${userProfile.desc || '常规互动'}
 - Payment Status: ${isPaymentActivated() ? '已开通微信支付' : '未开通支付'}
+- Calling Guideline: When conversing directly, address the user as "${userProfile.realName || '玩家'}". When quoting previous messages, use the format [QUOTE "${userProfile.nickname || currentMsgAccount?.username || 'User'}": "..."].
 `;
 
         const apiMessages = [{ role: 'system', content: systemPrompt.trim() }];
@@ -8792,9 +9210,9 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
     return allChatCustomProfiles[charId];
 }
 
-    // 修复：聊天设置页三大主标签切换（人设 / 美化 / 记忆）
+    // 聊天设置页 5 大主标签切换（人设 / 功能 / 提示词 / 美化 / 记忆）
     function switchChatSettingTab(tabKey) {
-        const tabs = ['persona', 'beauty', 'memory'];
+        const tabs = ['persona', 'features', 'prompts', 'beauty', 'memory'];
         tabs.forEach(t => {
             const btn = document.getElementById(`cTabBtn_${t}`);
             const pane = document.getElementById(`cPane_${t}`);
@@ -8802,7 +9220,6 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
             if (pane) pane.style.display = (t === tabKey ? 'flex' : 'none');
         });
 
-        // 切换到美化时刷新美化头像
         if (tabKey === 'beauty' && currentChatChar) {
             const custom = getChatCustomProfile(currentChatChar.id);
             const charAv = custom.charAvatar || currentChatChar.avatar || '';
@@ -8811,9 +9228,15 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
             const uBox = document.getElementById('beautyPreviewUserAvatar');
             if (cBox) cBox.style.backgroundImage = charAv ? `url('${charAv}')` : '';
             if (uBox) uBox.style.backgroundImage = userAv ? `url('${userAv}')` : '';
+
+            const wpBox = document.getElementById('chatWpPreviewBox');
+            const activeWp = custom.chatWallpaper || globalChatWallpaper;
+            if (activeWp) {
+                wpBox.style.backgroundImage = `url('${activeWp}')`;
+                wpBox.innerHTML = '';
+            }
         }
 
-        // 切换到记忆时刷新记忆库表单与列表
         if (tabKey === 'memory') {
             renderChatMemoryPane();
         }
@@ -8975,52 +9398,108 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
         document.getElementById('personaSub_user').style.display = subTab === 'user' ? 'flex' : 'none';
     }
 
-    // 获取当前对话应生效的 USER 人设 (默认性别设为女，后续可自由修改)
+    // 获取当前对话应生效的 USER 人设（区分真实姓名与账号用户名）
     function getCurrentUserPersonaForChat() {
         if (!currentChatChar) return {};
         const custom = getChatCustomProfile(currentChatChar.id);
-        if (custom.userPersona && (custom.userPersona.name || custom.userPersona.desc || custom.userPersona.gender)) {
+        if (custom.userPersona && (custom.userPersona.realName || custom.userPersona.nickname || custom.userPersona.desc)) {
             return custom.userPersona;
         }
-        // 账号级全局人设
         if (currentMsgAccount && currentMsgAccount.defaultUserPersona) {
             return currentMsgAccount.defaultUserPersona;
         }
         return {
-            name: currentMsgAccount ? currentMsgAccount.username : 'User',
-            gender: '女', // 严格默认设置为“女”
+            realName: '玩家',
+            nickname: currentMsgAccount ? currentMsgAccount.username : 'User',
+            gender: '女',
             role: '恋人',
             desc: ''
         };
     }
 
-    // 保存 USER 人设 (isGlobal: true 为账号全局保存, false 为单聊保存)
+    // 保存 USER 人设
     async function saveChatUserPersona(isGlobal = false) {
         if (!currentMsgAccount) return;
         
-        const name = document.getElementById('chatUserNameInput').value.trim() || currentMsgAccount.username;
+        const realName = document.getElementById('chatUserRealNameInput').value.trim() || '玩家';
+        const nickname = document.getElementById('chatUserNicknameInput').value.trim() || currentMsgAccount.username;
         const gender = document.getElementById('chatUserGenderSelect').value;
         const role = document.getElementById('chatUserRoleInput').value.trim();
         const desc = document.getElementById('chatUserPersonaDescInput').value.trim();
 
-        const personaData = { name, gender, role, desc };
+        const personaData = { realName, nickname, gender, role, desc };
 
         if (isGlobal) {
-            // 存入当前登录账号的全局默认人设中 (不互通到其他账号)
             currentMsgAccount.defaultUserPersona = personaData;
             await syncSaveMsgAccounts();
-            showGlassAlert("保存成功", `已将此 User 人设应用为此账号【${currentMsgAccount.username}】的全局默认人设！\n所有角色对话均会默认遵循该设定。`);
+            showGlassAlert("保存成功", `已将姓名【${realName}】与网名【${nickname}】应用为账号全局默认人设！`);
         } else {
-            // 仅保存在当前会话的专属配置中
             if (!currentChatChar) return;
-            if (!allChatCustomProfiles[currentChatChar.id]) allChatCustomProfiles[currentChatChar.id] = {};
-            allChatCustomProfiles[currentChatChar.id].userPersona = personaData;
+            const custom = getChatCustomProfile(currentChatChar.id);
+            custom.userPersona = personaData;
             await syncSaveChatData();
-            showGlassAlert("保存成功", `已为与【${currentChatChar.name}】的对话保存专属 User 人设！`);
+            showGlassAlert("保存成功", `已为与【${currentChatChar.name}】的对话保存专属设定！`);
         }
     }
 
-    function openChatSettingsOverlay() {
+    // 【全部保存设置】大按键核心函数 (一次性打包保存所有 Tab 配置并强力持久化)
+    async function saveAllChatSettingsUnified() {
+        if (!currentChatChar) return;
+        const custom = getChatCustomProfile(currentChatChar.id);
+
+        // 1. 保存 CHAR 人设与备注
+        custom.remark = document.getElementById('chatCharRemarkInput').value.trim();
+        custom.persona = document.getElementById('chatLocalPersonaInput').value.trim();
+
+        // 2. 保存关联世界书
+        const checkedWbBoxes = document.querySelectorAll('input[name="boundWbFolder"]:checked');
+        custom.boundWorldBookIds = Array.from(checkedWbBoxes).map(b => b.value);
+
+        // 3. 保存 USER 人设 (真实姓名与用户名)
+        custom.userPersona = {
+            realName: document.getElementById('chatUserRealNameInput').value.trim() || '玩家',
+            nickname: document.getElementById('chatUserNicknameInput').value.trim() || currentMsgAccount.username,
+            gender: document.getElementById('chatUserGenderSelect').value,
+            role: document.getElementById('chatUserRoleInput').value.trim(),
+            desc: document.getElementById('chatUserPersonaDescInput').value.trim()
+        };
+
+        // 4. 保存异地恋配置
+        custom.ldrConfig = {
+            enabled: document.getElementById('ldrModeToggle').checked,
+            userEn: document.getElementById('userLdrEn').value.trim(),
+            userAlias: document.getElementById('userLdrAlias').value.trim(),
+            userTz: document.getElementById('userLdrTimezone').value || 'Asia/Shanghai',
+            userWeather: document.getElementById('userLdrWeather').value.trim() || '晴',
+            charEn: document.getElementById('charLdrEn').value.trim(),
+            charAlias: document.getElementById('charLdrAlias').value.trim(),
+            charTz: document.getElementById('charLdrTimezone').value || 'Asia/Hong_Kong',
+            charWeather: document.getElementById('charLdrWeather').value.trim() || '晴'
+        };
+
+        // 5. 保存提示词配置
+        custom.enableBuiltinPrompt = document.getElementById('builtinPromptToggle').checked;
+        custom.customSystemPrompt = document.getElementById('customSystemPromptInput').value.trim();
+
+        // 6. 保存记忆深度参数
+        custom.contextDepth = parseInt(document.getElementById('chatContextDepthInput').value) || 100;
+        custom.summaryInterval = parseInt(document.getElementById('chatSummaryIntervalInput').value) || 50;
+
+        // 双保险写入 IndexedDB 与 localStorage
+        await syncSaveChatData();
+
+        // 即刻刷新页面渲染与标题
+        const remarkName = custom.remark || currentChatChar.name;
+        document.getElementById('chatHeaderRemarkName').innerText = remarkName;
+
+        renderChatMessages();
+        renderMsgContactsAndChats();
+        closeChatSettingsOverlay();
+
+        showGlassAlert("全部保存成功", "头像、人设、异地恋、提示词及全部配置已成功写入数据库！");
+    }
+
+        function openChatSettingsOverlay() {
         if (!currentChatChar) return;
         const custom = getChatCustomProfile(currentChatChar.id);
         
@@ -9030,21 +9509,53 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
 
         const charAv = custom.charAvatar || currentChatChar.avatar || '';
         const charBox = document.getElementById('chatCharAvatarPreview');
-        charBox.style.backgroundImage = charAv ? `url('${charAv}')` : '';
+        if (charAv) {
+            charBox.innerHTML = `<img src="${charAv}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`;
+        } else {
+            charBox.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
+        }
 
         const userAv = custom.userAvatar || currentMsgAccount?.avatar || '';
         const userBox = document.getElementById('chatUserAvatarPreview');
-        userBox.style.backgroundImage = userAv ? `url('${userAv}')` : '';
+        if (userAv) {
+            userBox.innerHTML = `<img src="${userAv}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;">`;
+        } else {
+            userBox.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`;
+        }
 
-        // 2. 恢复 USER 设定表单 (优先读单聊专属，没有则读账号全局)
+        // 2. 恢复 USER 设定表单 (独立回显姓名与网名)
         const activeUserP = getCurrentUserPersonaForChat();
-        document.getElementById('chatUserNameInput').value = activeUserP.name || (currentMsgAccount ? currentMsgAccount.username : '');
+        document.getElementById('chatUserRealNameInput').value = activeUserP.realName || '玩家';
+        document.getElementById('chatUserNicknameInput').value = activeUserP.nickname || (currentMsgAccount ? currentMsgAccount.username : '');
         document.getElementById('chatUserGenderSelect').value = activeUserP.gender || '女';
         document.getElementById('chatUserRoleInput').value = activeUserP.role || '';
         document.getElementById('chatUserPersonaDescInput').value = activeUserP.desc || '';
 
-        // 默认显示 CHAR 选项卡
+        // 3. 恢复功能区 (异地恋模式) 时区与天气完整回显
+        const ldr = custom.ldrConfig || {};
+        const ldrToggle = document.getElementById('ldrModeToggle');
+        ldrToggle.checked = !!ldr.enabled;
+        toggleLdrMode(!!ldr.enabled);
+        document.getElementById('userLdrEn').value = ldr.userEn || '';
+        document.getElementById('userLdrAlias').value = ldr.userAlias || '';
+        document.getElementById('userLdrTimezone').value = ldr.userTz || 'Asia/Shanghai';
+        document.getElementById('userLdrWeather').value = ldr.userWeather || '';
+        document.getElementById('charLdrEn').value = ldr.charEn || '';
+        document.getElementById('charLdrAlias').value = ldr.charAlias || '';
+        document.getElementById('charLdrTimezone').value = ldr.charTz || 'Asia/Hong_Kong';
+        document.getElementById('charLdrWeather').value = ldr.charWeather || '';
+
+        // 4. 恢复提示词配置
+        document.getElementById('builtinPromptToggle').checked = custom.enableBuiltinPrompt !== false;
+        document.getElementById('customSystemPromptInput').value = custom.customSystemPrompt || '';
+
+        // 5. 恢复美化壁纸模糊度
+        document.getElementById('chatWpBlurSlider').value = custom.chatWpBlur || 0;
+        document.getElementById('chatWpBlurText').innerText = `${custom.chatWpBlur || 0}px`;
+
+        // 默认显示人设设定
         switchPersonaSubTab('char');
+        switchChatSettingTab('persona');
 
         // 3. 填充多选世界书复选框
         const checkboxList = document.getElementById('chatBoundWorldBookCheckboxList');
@@ -9084,19 +9595,22 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
         document.getElementById('chatSettingsOverlay').classList.remove('open');
     }
 
-    /* ================= 修复：聊天专属头像定制即时生效与持久化 ================= */
+    /* ================= 专属头像即时响应与设置保存 ================= */
     function chooseChatCharAvatar() {
         imageUploader.onchange = function() {
             if (this.files && this.files[0]) {
                 processSafeImage(this.files[0], async (url) => {
-                    if (!allChatCustomProfiles[currentChatChar.id]) allChatCustomProfiles[currentChatChar.id] = {};
-                    allChatCustomProfiles[currentChatChar.id].charAvatar = url;
+                    const custom = getChatCustomProfile(currentChatChar.id);
+                    custom.charAvatar = url;
                     await syncSaveChatData();
+
                     document.getElementById('chatCharAvatarPreview').style.backgroundImage = `url('${url}')`;
                     const beautyChar = document.getElementById('beautyPreviewCharAvatar');
                     if (beautyChar) beautyChar.style.backgroundImage = `url('${url}')`;
-                    renderChatMessages(); // 立即重新渲染聊天气泡头像
-                    renderMsgContactsAndChats(); // 立即刷新列表头像
+
+                    renderChatMessages();
+                    renderMsgContactsAndChats();
+                    showGlassAlert("头像已生效", "角色专属头像已更新并保存在聊天视窗！");
                 });
             }
         };
@@ -9108,13 +9622,16 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
         imageUploader.onchange = function() {
             if (this.files && this.files[0]) {
                 processSafeImage(this.files[0], async (url) => {
-                    if (!allChatCustomProfiles[currentChatChar.id]) allChatCustomProfiles[currentChatChar.id] = {};
-                    allChatCustomProfiles[currentChatChar.id].userAvatar = url;
+                    const custom = getChatCustomProfile(currentChatChar.id);
+                    custom.userAvatar = url;
                     await syncSaveChatData();
+
                     document.getElementById('chatUserAvatarPreview').style.backgroundImage = `url('${url}')`;
                     const beautyUser = document.getElementById('beautyPreviewUserAvatar');
                     if (beautyUser) beautyUser.style.backgroundImage = `url('${url}')`;
-                    renderChatMessages(); // 立即重新渲染聊天气泡头像
+
+                    renderChatMessages();
+                    showGlassAlert("头像已生效", "你在本对话中的专属头像已更新！");
                 });
             }
         };
@@ -9129,24 +9646,23 @@ ${worldBookContext ? `[WorldBook Setting Context]:\n${worldBookContext}\n` : ''}
 
     async function saveChatCustomSettings() {
         if (!currentChatChar) return;
-        if (!allChatCustomProfiles[currentChatChar.id]) allChatCustomProfiles[currentChatChar.id] = {};
+        const custom = getChatCustomProfile(currentChatChar.id);
         
-        allChatCustomProfiles[currentChatChar.id].remark = document.getElementById('chatCharRemarkInput').value.trim();
-        allChatCustomProfiles[currentChatChar.id].persona = document.getElementById('chatLocalPersonaInput').value.trim();
+        custom.remark = document.getElementById('chatCharRemarkInput').value.trim();
+        custom.persona = document.getElementById('chatLocalPersonaInput').value.trim();
 
         const checkedWbBoxes = document.querySelectorAll('input[name="boundWbFolder"]:checked');
-        const selectedWbIds = Array.from(checkedWbBoxes).map(b => b.value);
-        allChatCustomProfiles[currentChatChar.id].boundWorldBookIds = selectedWbIds;
+        custom.boundWorldBookIds = Array.from(checkedWbBoxes).map(b => b.value);
 
         await syncSaveChatData();
         
-        const remarkName = allChatCustomProfiles[currentChatChar.id].remark || currentChatChar.name;
+        const remarkName = custom.remark || currentChatChar.name;
         document.getElementById('chatHeaderRemarkName').innerText = remarkName;
 
         closeChatSettingsOverlay();
         renderChatMessages();
         renderMessageUI();
-        showGlassAlert("保存成功", "本对话专属设定及关联世界书已保存！");
+        showGlassAlert("保存成功", "所有聊天设置与专属配置已完整持久化保存！");
     }
 
     async function clearCurrentChatHistory() {
