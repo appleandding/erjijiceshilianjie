@@ -3,7 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>耳机耳机耳机机机机机机</title>
+    <title>耳机机</title>
+
+    <!-- 1. 桌面应用 (PWA) 与网页图标配置 -->
+    <link rel="icon" type="image/jpeg" href="https://image.58sb.cn/file/img/ggv6DdGS.jpg">
+    <link rel="apple-touch-icon" href="https://image.58sb.cn/file/img/ggv6DdGS.jpg">
+    <meta name="theme-color" content="#eeeeef">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="小手机">
+
+    <!-- 2. 内嵌标准 Web App Manifest (支持 Edge / Chrome 地址栏直接亮起安装图标) -->
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJbmFtZSI6IuiAg+acuuiAg+acuuiAg+acuua6uuacua6uuacua6uuacuSIsInNob3J0X25hbWUiOiLlsI/miYvmnLoiLCJkZXNjcmlwdGlvbiI6Iue6r+WHgOaLn+aAgeaJv+acuuezu+e7nyIsInN0YXJ0X3VybCI6Ii4vIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzE2MTcxOSIsInRoZW1lX2NvbG9yIjoiI2VlZWVlZiIsImljb25zIjpbeyJzcmMiOiJodHRwczovL2ltYWdlLjU4c2IuY24vZmlsZS9pbWcvZ2d2NkRkR1MuanBnIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL2pwZWciLCJwdXJwb3NlIjoiYW55In0seyJzcmMiOiJodHRwczovL2ltYWdlLjU4c2IuY24vZmlsZS9pbWcvZ2d2NkRkR1MuanBnIiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL2pwZWciLCJwdXJwb3NlIjoiYW55IG1hc2thYmxlIn1dfQ==">
+
     <style>
 /* ================= 1. 纯净中性灰白变量（无蓝光、无蓝阴影） ================= */
         :root {
@@ -54,6 +66,14 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        @font-face {
+            font-family: "ZSFT-336";
+            src: url("https://fontsapi.zeoseven.com/336/main.woff2") format("woff2");
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+        }
+
         html, body {
             width: 100vw;
             height: 100vh;
@@ -65,6 +85,62 @@
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif;
             color: var(--text-primary);
             transition: color 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* 仅在更新公告大标题生效的独立英文字体 */
+        .update-custom-title {
+            font-family: "ZSFT-336", -apple-system, sans-serif !important;
+            font-size: 26px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            color: var(--text-primary);
+            line-height: 1.15;
+            user-select: none;
+        }
+
+        /* 全屏更新公告弹窗样式 */
+        .update-modal-mask {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 999999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .update-modal-mask.open {
+            display: flex;
+            opacity: 1;
+        }
+        .update-modal-card {
+            width: 100%;
+            max-width: 360px;
+            max-height: 88vh;
+            background: rgba(252, 252, 254, 0.92);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            border-top: 1.2px solid #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18), inset 0 1px 1.5px rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 18px 16px 18px;
+            transform: scale(0.95);
+            transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        .dark-mode .update-modal-card {
+            background: rgba(30, 31, 35, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        .update-modal-mask.open .update-modal-card {
+            transform: scale(1);
         }
 
         /* 纯粹直出全屏容器 */
@@ -4118,11 +4194,11 @@
         </div>
 
         <div class="theme-body" style="padding-top: 4px;">
-            <<!-- 1. 更新公告列表 (最新在前) -->
+            <!-- 1. 更新公告列表 (最新在前) -->
             <div id="annPane_updates" style="display: flex; flex-direction: column; gap: 12px;">
                 <div class="theme-card">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="theme-sec-title">v2.1.0 聊天生态与时空沉浸更新</span>
+                        <span class="theme-sec-title">v2.1.0 更新</span>
                         <span style="font-size: 10px; color: var(--accent-blue); font-weight: 600;">最新</span>
                     </div>
                     <div style="font-size: 11.5px; line-height: 1.6; color: var(--text-secondary); display: flex; flex-direction: column; gap: 6px;">
@@ -5354,6 +5430,85 @@
         </div>
     </div>
 
+    <!-- ================= v2.1.0 专属全屏更新公告弹窗 ================= -->
+    <div class="update-modal-mask" id="updateV210Modal">
+        <div class="update-modal-card">
+            <!-- 专属大标题：仅此处应用特定艺术英文字体 -->
+            <div style="margin-bottom: 8px;">
+                <div class="update-custom-title">Erjiji update</div>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; border-bottom: 1px solid var(--border-subtle);">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" stroke="var(--accent-blue)" fill="none" stroke-width="2.2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    <span style="font-size: 13.5px; font-weight: 700; color: var(--text-primary);">更新公告</span>
+                </div>
+                <span style="font-size: 11px; color: var(--accent-blue); font-weight: 600; background: rgba(114,116,122,0.1); padding: 2px 8px; border-radius: 8px;">v 2.1.0</span>
+            </div>
+
+            <!-- 可滑动的更新内容正文 -->
+            <div style="flex: 1; overflow-y: auto; padding: 12px 4px; font-size: 11.5px; line-height: 1.6; color: var(--text-secondary); display: flex; flex-direction: column; gap: 12px;" class="theme-body">
+                <div style="font-size: 10.5px; color: var(--text-tertiary);">更新时间：2026年9月20日</div>
+
+                <div>
+                    <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 3px;">一、Message模块优化</div>
+                    <div>1. 新增聊天专属壁纸功能，仅在角色聊天页面生效，新增操作按钮，支持选择全局聊天页面统一应用壁纸或是单独保存至当前聊天。</div>
+                    <div>2. 新增功能区分区，内置异地恋模式胶囊滑动开关，开启后向下展开填写面板，需要填写用户所在地（地点英文+别称）、角色所在地（地点英文+别称），点击保存后角色将识别异地恋状态，读取对应异地恋时间天气节日相关信息。</div>
+                    <div>3. 新增提示词分区，支持用户自定义填写提示词，需关闭内置提示词开关后，API才会读取用户自定义提示词内容。</div>
+                    <div>4. 修复角色专属头像显示异常问题，完成头像设置后可在聊天页面头像框正常展示，下滑页面点击保存设置，即可保存全部配置内容，包含专属头像并同步应用至聊天页面。</div>
+                </div>
+
+                <div>
+                    <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 3px;">二、Message应用优化</div>
+                    <div>1. 创建账号调整为全屏展示，不再使用弹窗形式。</div>
+                    <div>2. 联系人列表操作调整，置顶删除免消息打扰功能修改为长按唤起，取消左滑操作。</div>
+                    <div>3. 优化我的页面，新增消息壁纸设置项，壁纸为APP全局背景，全屏覆盖包含顶栏，不会对聊天壁纸产生影响。</div>
+                    <div>4. 修复聊天头像BUG，解决上传定制专属头像后聊天页面无法正常显示的问题。</div>
+                </div>
+
+                <div>
+                    <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 3px;">三、联系人世界书APP优化</div>
+                    <div>1. 支持在填写联系人信息时绑定已创建完成的世界书。</div>
+                    <div>2. 酒馆导入卡片对应的世界书，将关键词放置在世界书条目名称下方。</div>
+                </div>
+
+                <div>
+                    <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 3px;">四、主题APP优化</div>
+                    <div>1. 点击全局清除功能同步清除小组件图片，切换预设主题同步切换小组件图片。</div>
+                    <div>2. 上传图片功能支持透明底图片，小组件同样支持上传透明底图片。</div>
+                </div>
+
+                <div>
+                    <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 3px;">五、输入文字修改优化</div>
+                    <div>1. 应用名称设置为固定内容，禁止点击修改。</div>
+                </div>
+
+                <div>
+                    <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 3px;">六、数据优化</div>
+                    <div>1. 所有功能更新均保留全部用户数据，包含聊天记录、导入或创建的角色卡数据、世界书数据，不执行强制清除操作，用户所有设置内容全部持久保存。</div>
+                </div>
+
+                <div>
+                    <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 3px;">七、公告APP新增</div>
+                    <div>1. 新增更新公告板块，所有版本更新记录在此存储，按照新更新在前旧更新在后的顺序排列。</div>
+                </div>
+
+                <div>
+                    <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 3px;">八、BUG修复与体验优化</div>
+                    <div>1. 修复Message用户头像保存失效问题，退出APP重新进入后头像数据不会丢失。</div>
+                    <div>2. 优化char引用user消息逻辑，不再整段引用文本，支持单条消息气泡引用回复，保障格式不会错乱。</div>
+                    <div>3. 优化转账消息逻辑，不再固定将转账内容放在第一句，支持自然对话行文，在对话过程中提及转账时再输出转账内容，后续可继续接续对话内容。</div>
+                </div>
+            </div>
+
+            <button class="theme-btn primary" style="width: 100%; height: 40px; min-height: 40px; font-weight: 600; margin-top: 8px; border-radius: 12px;" onclick="closeUpdateV210Modal()">
+                已看完所有更新内容
+            </button>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -5517,13 +5672,14 @@
         dbSet('setting_dark_mode', isDark);
     }
 
-    /* ================= 4. 图片安全处理引擎 (支持透明 PNG 与大图无损) ================= */
+    /* ================= 4. 图片安全处理引擎 (高保真轻量化与透明通道无损) ================= */
     function processSafeImage(file, callback) {
         const reader = new FileReader();
         reader.onload = function(e) {
             const img = new Image();
             img.onload = function() {
-                const maxDim = 1200;
+                // 适度优化至 480px 超清视网膜尺寸，彻底杜绝 localStorage 爆仓并保留透明通道
+                const maxDim = 480;
                 let w = img.width;
                 let h = img.height;
                 if (w > maxDim || h > maxDim) {
@@ -5539,9 +5695,8 @@
                 canvas.width = w;
                 canvas.height = h;
                 const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, w, h); // 保证透明通道完整保留
+                ctx.clearRect(0, 0, w, h);
                 ctx.drawImage(img, 0, 0, w, h);
-                // 使用 image/png 完美保留透明背景
                 const safeUrl = canvas.toDataURL('image/png');
                 callback(safeUrl);
             };
@@ -7459,86 +7614,86 @@
     let currentMsgAccount = null;
     let tempNewAccAvatar = '';
 
-    // 永久保存函数（强制双重实时落盘：localStorage + IndexedDB 互备）
+    // 永久保存函数（双重持久化：每个账号头像独立写入 IndexedDB 专属槽位，绝对不被清空）
     async function syncSaveMsgAccounts() {
         if (!messageAccounts || messageAccounts.length === 0) return;
 
-        // 1. 强制即时写入 localStorage（手机本地 HTML 运行环境最稳定可靠的存储）
+        // 1. 同步当前活跃账号中的头像到列表
+        if (currentMsgAccount && currentMsgAccount.id) {
+            const target = messageAccounts.find(a => String(a.id) === String(currentMsgAccount.id));
+            if (target) {
+                target.avatar = currentMsgAccount.avatar;
+                target.username = currentMsgAccount.username;
+            }
+        }
+
+        // 2. 独立将头像直存 IndexedDB（超大容量，永不受 5MB 限制）
+        await initDB();
+        for (const acc of messageAccounts) {
+            if (acc.avatar) {
+                await dbSet(`permanent_avatar_${acc.id}`, acc.avatar);
+            }
+        }
+
+        // 3. 写入 localStorage 与 IndexedDB
         try {
             localStorage.setItem('message_accounts_v1', JSON.stringify(messageAccounts));
-        } catch(e) {
-            // 如遇大图片撑满限制，自动剥离超大头像降级保存账号核心数据，确保账号永不消失
-            try {
-                const safeAccounts = messageAccounts.map(a => ({
-                    ...a,
-                    avatar: (a.avatar && a.avatar.length > 30000) ? '' : a.avatar
-                }));
-                localStorage.setItem('message_accounts_v1', JSON.stringify(safeAccounts));
-            } catch(err) {}
-        }
+        } catch(e) {}
 
         if (currentMsgAccount && currentMsgAccount.id) {
-            try {
-                localStorage.setItem('message_active_account_id', String(currentMsgAccount.id));
-            } catch(e) {}
+            try { localStorage.setItem('message_active_account_id', String(currentMsgAccount.id)); } catch(e) {}
+            await dbSet('message_active_account_id', String(currentMsgAccount.id));
         }
 
-        // 2. 写入 IndexedDB（双保险）
-        try {
-            await initDB();
-            await dbSet('message_accounts_v1', messageAccounts);
-            if (currentMsgAccount && currentMsgAccount.id) {
-                await dbSet('message_active_account_id', String(currentMsgAccount.id));
-            }
-        } catch(e) {}
+        await dbSet('message_accounts_v1', messageAccounts);
     }
 
-    // 永久读取函数（带内存防覆盖机制，确保退出重进时账号永不丢失）
+    // 永久读取函数（智能合并与头像强力还原，杜绝任何清除）
     async function syncLoadMsgAccounts() {
+        await initDB();
         let loadedList = null;
 
-        // 1. 优先从 localStorage 极速同步读取
+        // 1. 优先读取 IndexedDB 数据库
         try {
-            const raw = localStorage.getItem('message_accounts_v1');
-            if (raw) {
-                const parsed = JSON.parse(raw);
-                if (Array.isArray(parsed) && parsed.length > 0) {
-                    loadedList = parsed;
-                }
-            }
+            const dbList = await dbGet('message_accounts_v1');
+            if (Array.isArray(dbList) && dbList.length > 0) loadedList = dbList;
         } catch(e) {}
 
-        // 2. 若 localStorage 读不到，尝试读取 IndexedDB
+        // 2. 兜底读取 localStorage
         if (!loadedList || loadedList.length === 0) {
             try {
-                await initDB();
-                const dbList = await dbGet('message_accounts_v1');
-                if (Array.isArray(dbList) && dbList.length > 0) {
-                    loadedList = dbList;
+                const raw = localStorage.getItem('message_accounts_v1');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) loadedList = parsed;
                 }
             } catch(e) {}
         }
 
-        // 3. 内存保护锁：如果本地读到了数据，更新内存；如果本地没读到但内存已有，坚决不抹除内存，反向保存！
         if (loadedList && loadedList.length > 0) {
             messageAccounts = loadedList;
-        } else if (messageAccounts && messageAccounts.length > 0) {
-            await syncSaveMsgAccounts();
-        } else {
-            messageAccounts = [];
         }
 
-        // 4. 读取并锁定当前登录账号 ID
+        // 3. 深度恢复每个账号的专属头像
+        for (const acc of messageAccounts) {
+            const savedAvatar = await dbGet(`permanent_avatar_${acc.id}`);
+            if (savedAvatar) {
+                acc.avatar = savedAvatar;
+            }
+        }
+
+        // 4. 锁定当前活跃账号
         let activeId = null;
         try { activeId = localStorage.getItem('message_active_account_id'); } catch(e) {}
         if (!activeId) {
-            try { activeId = await dbGet('message_active_account_id'); } catch(e) {}
+            activeId = await dbGet('message_active_account_id');
         }
 
         if (messageAccounts.length > 0) {
             currentMsgAccount = messageAccounts.find(a => String(a.id) === String(activeId)) || messageAccounts[0];
-            if (currentMsgAccount && currentMsgAccount.id) {
-                try { localStorage.setItem('message_active_account_id', String(currentMsgAccount.id)); } catch(e) {}
+            if (currentMsgAccount && !currentMsgAccount.avatar) {
+                const myAv = await dbGet(`permanent_avatar_${currentMsgAccount.id}`);
+                if (myAv) currentMsgAccount.avatar = myAv;
             }
         } else {
             currentMsgAccount = null;
@@ -7887,17 +8042,57 @@
     let isMultiSelectMode = false;
     let activeLongPressContext = null; // 当前长按触发上下文
 
-    // 系统法则提示词（严格锁定引用回复与转账格式）
+    // 系统法则提示词（升级版：单气泡精准引用 + 对话任意位置自然触发转账）
     const SYSTEM_CHAT_PROMPT_RULE = `[System Rule: Chat Expansion, Transfer & Quote Guidelines]
-1. WeChat/QQ Casual Texting: Output short fragmented natural sentences separated by [BUBBLE].
-2. Quote Reply Format (Strict Rule):
-When you reply or tease a specific phrase said by User, strictly format it at the very beginning of your response using:
-[QUOTE "User's exact words"]
+1. WeChat/QQ Casual Texting: Output natural, immersive short fragmented sentences separated by [BUBBLE].
+2. Single-Bubble Quote Reply Rule (Strict):
+When you reply or tease User's message, DO NOT quote entire multi-sentence paragraphs. Only quote the specific short phrase or single bubble text you are directly reacting to.
+Format strictly at the beginning of the responding bubble: [QUOTE "Specific single short phrase from User"]
 Example:
 [QUOTE "怕鱼刺"] 那换成玉米排骨汤怎么样？[BUBBLE]这个肯定没有刺。
-Do NOT alter this syntax so the system can render the quote block cleanly.
-3. Transfer Recognition: If User transfers money, acknowledge naturally based on persona. To send money to User, use: [TRANSFER amount="50.00" note="奶茶钱"].
-4. Tone: Natural, engaging, highly immersive. Never sound like a robot.`;
+3. Natural Mid-Chat Transfer Rule:
+You do NOT need to put the transfer at the very start of the reply. Talk naturally first, and when the conversation naturally touches upon sending money, buying drinks, treats, or gifts, output [TRANSFER amount="50.00" note="说明"] smoothly between sentences, and feel free to continue speaking after it.
+Example:
+今天降温太厉害啦，千万别着凉。[BUBBLE][TRANSFER amount="30.00" note="买杯热热的生椰拿铁"][BUBBLE]下班路过那家咖啡店记得去买一杯暖暖手。
+4. Tone: Highly emotional, intimate, natural. Never sound robotic.`;
+
+    /* ================= 18. v2.1.0 更新弹窗控制与 PWA 一键支持 ================= */
+    function openUpdateV210Modal() {
+        const modal = document.getElementById('updateV210Modal');
+        if (modal) modal.classList.add('open');
+    }
+
+    function closeUpdateV210Modal() {
+        const modal = document.getElementById('updateV210Modal');
+        if (modal) modal.classList.remove('open');
+        localStorage.setItem('has_seen_v210_update', 'true');
+        dbSet('has_seen_v210_update', true);
+    }
+
+    // 自动检测并弹出 v2.1.0 更新通知
+    async function checkV210UpdateOnLaunch() {
+        await initDB();
+        let seen = localStorage.getItem('has_seen_v210_update');
+        if (!seen) seen = await dbGet('has_seen_v210_update');
+        if (!seen) {
+            setTimeout(() => {
+                openUpdateV210Modal();
+            }, 600);
+        }
+    }
+    checkV210UpdateOnLaunch();
+
+    /* ================= 19. PWA 桌面应用安装与生命周期 ================= */
+    let deferredPwaPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // 捕获浏览器安装事件
+        e.preventDefault();
+        deferredPwaPrompt = e;
+    });
+
+    window.addEventListener('appinstalled', () => {
+        deferredPwaPrompt = null;
+    });
 
     /* ================= 专属聊天壁纸状态与双模保存 ================= */
     let tempChatWallpaperUrl = '';
